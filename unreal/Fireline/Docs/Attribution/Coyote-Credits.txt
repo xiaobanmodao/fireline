@@ -1,0 +1,11 @@
+Coyote Sight (Low-Poly) — GoldbergR
+https://sketchfab.com/3d-models/coyote-sight-low-poly-e1722de935a849c6bf6d757679719cf8
+Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+
+Downloaded from the author’s official Sketchfab original OBJ download on 2026-09-21.
+Fireline modifications: coordinate conversion, a short rail mounting riser,
+replacement of the original baked reticle geometry with a collimated red-dot
+material, and conversion of the lens shell to one translucent surface.
+Original solid-color body geometry and palette are retained.
+No endorsement by the original author is implied.

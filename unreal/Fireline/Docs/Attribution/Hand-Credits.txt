@@ -1,0 +1,49 @@
+Current native DJMaesen hands (2026-09-20)
+
+Current protagonist hand geometry, native joint bind, skin influences and rifle finger motion:
+DJMaesen (@bumstrum), FPS animated carbine, CC BY 4.0.
+https://sketchfab.com/3d-models/fps-animated-carbine-62977bb4c53047a185b9f3a0cdf56b87
+https://creativecommons.org/licenses/by/4.0/
+Derivative: original hand surfaces and normalized weights retained; cropped forearms, charcoal gloves, Ryan sleeve fit and inner cuffs; adapted knife and lobby posing. UE supports at most 12 influences; tiny source weights are pruned/quantized during engine import.
+Ryan / rcorre remains the body and sleeve provider; TastyTony / Pichuliru remains the rifle provider. KrazzyElf remains the knife provider; knife motion references remain listed in Karambit-Credits.txt.
+Editable current source: SourceAssets/DJNativeHands/Integrated.
+The historical revisions below describe older assets retained for comparison; their WRAD-only geometry statements do not describe the current protagonist.
+
+---- Historical revisions ----
+
+Fireline five-finger hand derivative (2026-09-13)
+
+Hand topology and initial finger skin gradients:
+WRAD ARMS — wwwriks / wriks, CC0 1.0 Universal.
+https://github.com/wwwriks/wrad-arms
+Source commit: f3987244176c33d2c20d4f9e139980af12684d87
+Source arms.blend SHA-256: ccbdb02c33cfc028aa51a7082295078b536bb9b411ab02a057b49beb667ed61c
+Changes: hand-only extraction, joint topology subdivision, new blue glove materials,
+closed wrist sleeve, adaptation to Ryan wrists, matched 30-bone finger skeleton,
+M4 grip poses and open/closed/finger/wrist test animation authored for Fireline.
+
+Character and existing shoulder/elbow animation:
+Ryan / rcorre — SciFi LowPoly FPS Character, CC BY 4.0.
+https://rcorre.itch.io/scifi-fps-character
+Changes: original mitten areas replaced by the hand derivative; first-person arms
+and full-body player share the new hand geometry and matched skeleton.
+
+M4A1 geometry: TastyTony; palette and rig adaptation: Pichuliru, CC BY 4.0.
+https://opengameart.org/content/ultimate-low-poly-guns
+Existing Fireline mechanical tracks and gun geometry retained.
+
+Anatomical-hand-model by Emma L. D. Lieker is a local reference only (CC BY-NC 4.0).
+No Lieker geometry, texture, weight or animation data is included in this game.
+The selected D_U M9 is not integrated in this version.
+
+Game integration of the accepted own-hand revision (2026-09-14):
+Animation, palm-cupping, finger binding and contact-space reference:
+DJMaesen (@bumstrum) — fps animated carbine, CC BY 4.0.
+https://sketchfab.com/3d-models/fps-animated-carbine-62977bb4c53047a185b9f3a0cdf56b87
+https://creativecommons.org/licenses/by/4.0/
+Changes: source reload frames 70–136 retargeted and retimed to 2.35 seconds;
+mechanical object motion baked onto the chosen TastyTony/Pichuliru M4;
+WRAD-derived hand surfaces refined and rebound against anatomical landmarks.
+The donor carbine and donor hand vertices/faces are not shipped as player models.
+The player retains Ryan arms/body and the WRAD-derived five-finger hands.
+Editable matched game source: SourceAssets/DJMaesen/GameReady/Ryan_DJOwn_Game.blend.

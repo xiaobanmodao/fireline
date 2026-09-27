@@ -1,0 +1,966 @@
+{
+  "selected_red_dot": {
+    "name": "Coyote Sight (Low-Poly)",
+    "author": "GoldbergR",
+    "source_url": "https://sketchfab.com/3d-models/coyote-sight-low-poly-e1722de935a849c6bf6d757679719cf8",
+    "source_uid": "e1722de935a849c6bf6d757679719cf8",
+    "license": "CC BY 4.0",
+    "triangles_on_source_page": 680,
+    "texture_count_on_source_platform": 0,
+    "material_count_on_source_platform": 5,
+    "selected_on": "2026-09-21",
+    "selection": "User corrected the initial Kobra choice to candidate 6, Coyote Sight by GoldbergR. Kobra is not selected.",
+    "style_requirement": "Predominantly solid colors/material color blocks, consistent with the selected low-poly firearm style.",
+    "status": "Downloaded from the official signed-in Sketchfab original OBJ button; imported and integrated into the UE5 M4. Mac package optic and menu checks passed.",
+    "target_rifle": "Existing selected TastyTony/Pichuliru M4A1",
+    "download_manifest": "assets/source/goldbergr-coyote/download-manifest.json",
+    "prepared_source": "SourceAssets/Optics/Coyote/CoyoteSight.blend",
+    "ue_mesh": "/Game/Fireline/Optics/SM_CoyoteSight",
+    "prepared_triangles": 668,
+    "controls": "Settings > Rifle sight > Iron sights / Coyote red dot > Apply and save",
+    "validation": "Docs/Validation/coyote",
+    "derivative_changes": [
+      "Rigid M4_body rail attachment with 2 cm riser",
+      "Original solid-color palette retained",
+      "Single complete lens surface and collimated red-dot material replace source baked reticle"
+    ]
+  },
+  "assets": [
+    {
+      "role": "retained_character_candidate",
+      "authors": "Drazen (drazenk)",
+      "source_file": "assets/source/drazen-character/original/source/Low poly figures.blend",
+      "source_url": "https://sketchfab.com/3d-models/rigged-low-poly-male-female-figures-blender-ce0604608f96477a875569ff28e15889",
+      "license": "CC BY 4.0",
+      "sha256": "c3676af1c435bc2d1c8d1e8a574d7e451573fc3e641f51a5a231a5fe33859df8",
+      "selection": "Temporarily disabled: user explicitly restored the original Ryan science-fiction character.",
+      "derivative": "Original Drazen male topology and skinning, including fingers; native full body plus view arm crops; retargeted native-bone animation and blue/red material",
+      "runtime_directory": "/Game/Fireline/Drazen",
+      "first_person_directory": "/Game/Fireline/Drazen",
+      "first_person_animation_directory": "/Game/Fireline/Drazen/View"
+    },
+    {
+      "role": "selected_character",
+      "authors": "Ryan (rcorre)",
+      "source_file": "assets/source/ryan-character/original/Character.blend",
+      "source_url": "https://rcorre.itch.io/scifi-fps-character",
+      "license": "CC BY 4.0",
+      "sha256": "0880d74bae612b0196692ab5059ae48d9682064e39097692629e3c76bfac9268",
+      "runtime_directory": "/Game/Fireline/Hands",
+      "first_person_directory": "/Game/Fireline/Hands",
+      "knife_directory": "/Game/Fireline/Karambit",
+      "target_directory": "/Game/Fireline/Action",
+      "selection": "User explicitly requested the original science-fiction character back on 2026-09-17."
+    },
+    {
+      "role": "selected_rifle",
+      "authors": "TastyTony; palette/rig adaptation Pichuliru",
+      "source_file": "assets/source/tastytony/original/ARs/M4A1.blend",
+      "source_url": "https://opengameart.org/content/ultimate-low-poly-guns",
+      "license": "CC BY 4.0",
+      "sha256": "170753b5dd88d52aaf0c8d9caa0a140bb179b761d6fd346423d5baffe2f5fd3d"
+    }
+  ],
+  "rules": [
+    "Ryan reference Rifle.blend is NOT the selected firearm.",
+    "Epic mannequins/weapons are template placeholders only.",
+    "Do not import the rejected Fireline unified character as a production base.",
+    "The legacy web M9 is project-authored, not TastyTony or Ryan. Current UE melee is KrazzyElf A2 + Artem Dubinin B1 under selected_karambit. D_U M9 is a retained historical fallback."
+  ],
+  "selected_melee": {
+    "name": "low-poly M9 Bayonet",
+    "authors": "D_U (DU1701)",
+    "source_url": "https://sketchfab.com/3d-models/low-poly-m9-bayonet-0c00f5cbe79d46b7afaa5d8c709c3f56",
+    "license": "CC BY 4.0",
+    "triangles_on_source_page": 922,
+    "status": "Historical packaged M9, motion rejected by user. Superseded by selected_karambit A2 + B1; retained only as legacy fallback.",
+    "source_file": "assets/source/du1701-m9/original/source/st_knife.blend",
+    "rules": [
+      "Do not use the AdamKokrito candidate as the selected melee model.",
+      "Keep the existing web M9 as a historical study only.",
+      "Preserve the accepted WRAD/Ryan hands and charcoal glove palette; do not replace them with donor geometry.",
+      "2026-09-15 latest user direction supersedes inspect-only staging: use the selected CS:GO M9 demonstration for three distinct actions — equip, inspect, attack. Do not mix rapid-click cancellation/retrigger segments into a single clip."
+    ],
+    "sha256": "479c3b389876e62f7c487e41efd305d3f9662282d41dd6b5c8f01faba37d82f4",
+    "credits_file": "assets/source/du1701-m9/CREDITS.txt",
+    "editable_derivative": "unreal/Fireline/SourceAssets/M9Selected/Ryan_DU_M9_Actions.blend",
+    "runtime_directory": "/Game/Fireline/M9",
+    "mesh_triangles": 922,
+    "motion_reference": {
+      "url": "https://www.bilibili.com/video/BV1vW41147Xo/",
+      "author": "随天天",
+      "description": "CS:GO M9 handling demonstration; video-only visual reference. Original Fireline-authored curves; no Valve files imported.",
+      "segments_seconds": {
+        "draw": [
+          5.017,
+          5.583
+        ],
+        "inspect": [
+          12.125,
+          15.7
+        ],
+        "inspect_return": [
+          17.3,
+          17.75
+        ],
+        "single_slash": [
+          20.02,
+          20.8
+        ]
+      },
+      "excluded": "Repeated inputs around 15.75 s, alternate attacks after 21.1 s, attack/inspect interruptions after 25 s, and the slow replay after about 42 s."
+    },
+    "action_duration_seconds": {
+      "draw": 0.6333333333333333,
+      "inspect": 3.4166666666666665,
+      "slash": 0.7833333333333333
+    },
+    "validation": "unreal/Fireline/Docs/Validation/m9-inspect/README.md",
+    "preview_url": "http://127.0.0.1:5182/",
+    "size_revision": {
+      "user_request": "m9太小了把它放大一点",
+      "length_scale": 1.15,
+      "total_length_m": 0.368,
+      "blade_guard_width_scale": 1.15,
+      "grip_width_scale": 1.0,
+      "draw_free_flight_clearance_scale": 1.4,
+      "unchanged_actions": [
+        "Hold",
+        "Inspect"
+      ],
+      "source_config": "unreal/Fireline/SourceAssets/M9Selected/size.json",
+      "length_anchor_x_m": 0.045,
+      "grip_length_scale": 1.0,
+      "slash_support_hand_retract_m": 0.2
+    },
+    "rules_scope": "Historical M9 stage only. Old WRAD-only hand restriction is superseded by the later DJ native hand selection."
+  },
+  "hand_derivative": {
+    "authors": "DJMaesen / bumstrum (native hand mesh, bind, skin and rifle motion); Ryan / rcorre (body/sleeves); Fireline (adaptation)",
+    "source_file": "assets/source/djmaesen-carbine/original/source/arms@carbine.fbx",
+    "source_url": "https://sketchfab.com/3d-models/fps-animated-carbine-62977bb4c53047a185b9f3a0cdf56b87",
+    "license": "CC BY 4.0",
+    "editable_derivative": "unreal/Fireline/SourceAssets/DJNativeHands/Integrated",
+    "runtime_directory": "/Game/Fireline/Hands",
+    "knife_directory": "/Game/Fireline/Karambit",
+    "mesh_budget": {
+      "native_vertices_per_hand": 1849,
+      "native_triangles_per_hand": 3666,
+      "native_bones": 46,
+      "new_cuff_triangles_pair": 1296
+    },
+    "scope": "Current native DJ hand surface. Ryan body retained, sleeve attachment matched to native forearms; rifle, empty, knife and lobby share the original native hand bind.",
+    "palette": {
+      "name": "matte tactical charcoal",
+      "base_color_linear": [
+        0.045,
+        0.05,
+        0.058
+      ],
+      "roughness": 0.86,
+      "scope": "Hand/glove material slots only; user-selected 2026-09-14. Applied to source, OwnRefined preview and /Hands player in both views."
+    },
+    "validation": "Docs/Validation/dj-native-hands/integration/README.md",
+    "status": "Imported and rendered in UE; latest positive user feedback is on native hand shape, not a claim of universally perfect contacts.",
+    "cuff_revision": {
+      "source": "SourceAssets/DJNativeHands/CuffRevision",
+      "imported_source_snapshot": "SourceAssets/DJNativeHands/CuffRevision/Imports/049ba3c4e47b",
+      "scope": "Rigid Ryan forearm cuff, welded flexible charcoal under-sleeve. Original DJ hand surface, weights, skeletons and all animation curves unchanged.",
+      "validation": "Docs/Validation/dj-cuff-revision/README.md"
+    },
+    "arm_chain_revision": {
+      "source": "SourceAssets/DJNativeHands/ArmChain",
+      "imported_source_snapshot": "SourceAssets/DJNativeHands/ArmChain/Imports/68cce6582ab3",
+      "scope": "Fixed-length shoulder/elbow/wrist IK. Legacy/native forearm aliases share one rigid deformation. Bounded clavicle reach, stable elbow plane; sprint assembly moved inward to remain reachable. DJ hand surface/weights and all binds retained.",
+      "validation": "Docs/Validation/dj-arm-chain/README.md"
+    },
+    "reference_fit_revision": {
+      "source": "SourceAssets/DJNativeHands/ReferenceFit",
+      "imported_source_snapshot": "SourceAssets/DJNativeHands/ReferenceFit/Imports/e8ecabebf119",
+      "scope": "Donor-relative whole-arm fitting on retained Ryan/DJ surfaces. Rigid bind registration; retained hand shape/weights; fitted original faceted sleeves. Rifle shared contact transform; Artem B1 knife arm relationships and matched periodic timing.",
+      "validation": "Docs/Validation/reference-arm-fit/README.md",
+      "status": "Imported and packaged. Named source, native UE and packaged regressions completed; actual key poses reviewed. See validation for scope; not universal visual acceptance."
+    },
+    "first_person_presentation": {
+      "source": "SourceAssets/DJNativeHands/FirstPerson",
+      "imported_source_snapshot": "SourceAssets/DJNativeHands/FirstPerson/Imports/8cdd312d6593",
+      "runtime_directories": [
+        "/Game/Fireline/FirstPerson/Hands",
+        "/Game/Fireline/FirstPerson/Karambit"
+      ],
+      "scope": "18 first-person clips; original selected hand/arm mesh, bind bones and weights retained. Whole-arm shoulder/elbow placement, smooth wrist-direction limits, lower-left free knife hand, weapon-specific camera offsets. Third-person animations remain separate.",
+      "source_wrist_direction_limits_degrees": {
+        "rifle": 30,
+        "knife": 28
+      },
+      "angle_definition": "elbow-to-wrist versus wrist-to-middle-finger-root; chosen Fireline presentation thresholds, not published Apex parameters",
+      "camera_relative_offsets_cm": {
+        "rifle": [
+          20,
+          3,
+          -164
+        ],
+        "knife": [
+          16,
+          0,
+          -162
+        ]
+      },
+      "validation": "Docs/Validation/fps-presentation/README.md",
+      "status": "Imported, packaged and checked. Source/UE poses reviewed; native and packaged draw checks pass (4 equips, 80 samples); packaged weapon/ADS, 20 controls and 11 fire/reload interruption checks pass. Evidence and scope in validation report."
+    }
+  },
+  "selected_animation_reference": {
+    "name": "fps animated carbine",
+    "author": "DJMaesen (@bumstrum)",
+    "source_url": "https://sketchfab.com/3d-models/fps-animated-carbine-62977bb4c53047a185b9f3a0cdf56b87",
+    "source_file": "assets/source/djmaesen-carbine/original/source/arms@carbine.fbx",
+    "sha256": "5f781dec17c1088aee1c346afa73da61154d5952a3a9ee29816d88731c1333b1",
+    "license": "CC BY 4.0",
+    "credits_file": "assets/source/djmaesen-carbine/CREDITS.txt",
+    "scope": "Animation and hand binding adaptation onto Ryan/WRAD hands and TastyTony/Pichuliru M4; donor weapon stays reference-only.",
+    "status": "User-accepted OwnRefined WRAD derivative integrated into /Hands and packaged Mac game. Native package checks and playback recorded under Docs/Validation/djmaesen/game-integration.",
+    "comparison_candidate": {
+      "editable_file": "unreal/Fireline/SourceAssets/DJMaesen/Ryan_M4_DJHands_Study.blend",
+      "hand_geometry_author": "DJMaesen",
+      "hands_combined_vertices": 1930,
+      "hands_combined_triangles": 3852,
+      "scope": "Cropped/reduced blue hand derivative on Ryan arms/body with TastyTony/Pichuliru M4, isolated under /Game/Fireline/DJMaesenStudy/Alternative.",
+      "status": "Explicitly rejected by user on 2026-09-14: retain existing WRAD-derived hand mesh and match reference motion; never integrate this donor-geometry candidate."
+    },
+    "own_hand_revision": {
+      "editable_file": "unreal/Fireline/SourceAssets/DJMaesen/Ryan_M4_DJOwn_Refined.blend",
+      "geometry_source": "Existing WRAD-derived hands: hand-only subdivision, connected surface refit and cuff fairing; Ryan arms/body and TastyTony/Pichuliru M4 retained. No DJMaesen hand vertices or faces substituted.",
+      "animation_reference": "DJMaesen source frames 70–136, 2.20 seconds; palm-cupping, phalanges, magazine, charging handle, bolt and magazine descendants sampled on the same clock.",
+      "regeneration": "retarget_djmaesen_m4.py --anatomical --refine-cage --coherent-fit --left-contact-correct --trigger-contact",
+      "ue_review": "/Game/Fireline/DJMaesenStudy/OwnRefined",
+      "status": "Accepted and applied to the playable UE5 game. Hold/reload/ADS/mobility/empty-state and recorded audio checks pass. Previously documented palm/cuff art limits remain.",
+      "review_url": "http://127.0.0.1:5181/review/",
+      "latest_user_feedback": "2026-09-14: 现在不错，应用到游戏中 — accepted after trigger correction; integrate into UE game.",
+      "trigger_revision": {
+        "changed_bones": [
+          "Finger_index_02_R",
+          "Finger_index_03_R"
+        ],
+        "pose": "Anatomical bend-plane correction; smooth uncurl before reload index lift and return after support settles.",
+        "hold_pad_gap_mm": 0.47766,
+        "previous_hold_pad_gap_mm": 14.22648,
+        "validation": "133 evaluated reload frames; no new index/gun crossing frames; all non-index bone matrices unchanged. Existing unrelated intersections remain.",
+        "check": "unreal/Fireline/Docs/Validation/djmaesen/trigger-contact-check.json"
+      },
+      "game_integration": {
+        "editable_file": "unreal/Fireline/SourceAssets/DJMaesen/GameReady/Ryan_DJOwn_Game.blend",
+        "runtime_directory": "/Game/Fireline/Hands",
+        "reload_seconds": 2.35,
+        "report": "unreal/Fireline/Docs/Validation/djmaesen/game-integration/README.md",
+        "package_manifest": "unreal/Fireline/Docs/Validation/djmaesen/game-integration/delivered-build.json"
+      }
+    }
+  },
+  "selected_karambit": {
+    "selected_by_user": "A2 + B1, 2026-09-15",
+    "model": {
+      "name": "Low Poly Stylized Karambit Knife",
+      "author": "KrazzyElf",
+      "source_url": "https://sketchfab.com/3d-models/low-poly-stylized-karambit-knife-5f5785340e66497fa74c6b28ab9b9524",
+      "license": "CC BY 4.0",
+      "triangles_on_source_page": 3196,
+      "download_status": "downloaded and GLB header/metadata verified, 2026-09-15; normal Chrome download with supported download event",
+      "source_file": "assets/source/krazzyelf-karambit/original/low_poly_stylized_karambit_knife.glb",
+      "sha256": "c09c828f45f039b7eb5de647308b1e9a3e37b7d5851eb77cb4e0dd65877a4142",
+      "texture_resolution": 1024,
+      "triangles_verified": 3196
+    },
+    "animation": {
+      "name": "Knife FPS Animations",
+      "author": "Artem Dubinin",
+      "source_url": "https://www.fab.com/listings/ccff0d84-8219-4daf-9859-348b393b3d83",
+      "source_directory": "assets/source/artem-knife-reference/original/Art",
+      "archive": "/Users/hht/Downloads/knife_fps_animations.unitypackage",
+      "archive_sha256": "0713fdcd0cbcaeef4f39485ac57915b032b3c112c6e566b23c259699590ddd22",
+      "source_audio": "excluded: author marked sounds as demonstration placeholders"
+    },
+    "status": "Integrated and packaged in UE5 Mac. Native first/third-person playback, visible bounds, rifle restoration, short-tap input/guards and melee checks completed. Small local contact defects remain; not certified art-perfect.",
+    "rules": [
+      "Use the selected A2 model, not Artem donor knife as the production knife.",
+      "Current protagonist uses Ryan body/sleeves and DJMaesen native hand geometry/bind/weights; use active_player.dj_native_hands and first_person_presentation for later matched derivatives.",
+      "Use matched source hand and weapon clocks including independent knife spin.",
+      "Calibrate actual A2 grip length, ring inner clearance and blade silhouette before final scaling.",
+      "Do not import the current OwnHands_Artem_Calibration.blend; contacts are unaccepted."
+    ],
+    "validation": "unreal/Fireline/Docs/Validation/karambit/README.md",
+    "runtime_directory": "/Game/Fireline/Karambit",
+    "editable_derivative": "unreal/Fireline/SourceAssets/Karambit/Ryan_KrazzyElf_Karambit.blend",
+    "preview_url": "http://127.0.0.1:5183/",
+    "actions_seconds": {
+      "Hold": 1,
+      "Draw": 1,
+      "Inspect": 4.7,
+      "Slash": 0.6666666666666666
+    },
+    "proportions": {
+      "uniform_source_scale": 0.000333,
+      "ring_inner_diameter_mm": 25.974,
+      "original_surface_triangles": 3196,
+      "nonuniform_knife_scaling": false
+    },
+    "integration": "Current runtime uses matched Ryan/DJ native body and view arms. Default key 2 selects KrazzyElf A2; Artem B1 remains the motion reference. Earlier WRAD integration is historical; -FirelineLegacyM9 is a legacy fallback.",
+    "package_manifest": "unreal/Fireline/Docs/Validation/karambit/delivered-build.json",
+    "inspect_revision": {
+      "presentation_seconds": 0.2,
+      "presentation_bridge_seconds": 0.3333333333333333,
+      "extra_full_turns": 5,
+      "added_vs_previous": 1,
+      "total_seconds": 4.7,
+      "raise_playback_rate": 1,
+      "loop_join": "joint-local pose and angular/linear velocity closure",
+      "source": "unreal/Fireline/SourceAssets/Karambit/inspect-spin-revision.json",
+      "spin_speed_multiplier": 1.2,
+      "extra_cycle_seconds": 0.4166666666666667,
+      "thumb": "Stable local pose during spins; smooth entry/catch; fixed root spread from stable-thumb-fit.json"
+    },
+    "left_palm_revision": {
+      "scope": "Left carpal surface and skin weights in retained WRAD/Ryan body and view arms; action curves/rest bones/right hand unchanged",
+      "source_report": "unreal/Fireline/SourceAssets/Karambit/left-palm-fix.json",
+      "status": "Historical pre-DJ WRAD palm repair; not the current hand surface."
+    },
+    "preview_status": "Historical local study URL, not a live service guarantee or current desktop entry."
+  },
+  "body_study": {
+    "requested": "2026-09-16: armor deferred, ultra-low-poly bare body first",
+    "author": "Fireline new body topology; Ryan/rcorre skeleton and motion; WRAD/Ryan hand derivative",
+    "source_directory": "unreal/Fireline/SourceAssets/LightBody",
+    "runtime_directory": "/Game/Fireline/LightBody",
+    "status": "Rejected custom body study. User stopped shoulder repairs and requested ten free existing low-poly character candidates for selection. Do not integrate or continue refining this candidate unless explicitly requested.",
+    "triangles_rifle_variant": 2136,
+    "first_person_unchanged": true,
+    "validation": "unreal/Fireline/Docs/Validation/light-body/README.md",
+    "triangles_knife_variant": 2098,
+    "junction_revision": "Docs/Validation/light-body/junctions/reference-study.md",
+    "structural_reference": {
+      "author": "Quaternius",
+      "name": "Universal Base Characters Standard",
+      "url": "https://quaternius.itch.io/universal-base-characters",
+      "license": "CC0",
+      "scope": "Topology and skinning study; not a gameplay mesh/provider replacement"
+    },
+    "elbow_revision": "Docs/Validation/light-body/elbows/README.md",
+    "anatomy_revision": "Docs/Validation/light-body/anatomy/README.md",
+    "visual_references": [
+      {
+        "author": "Gary Huang",
+        "title": "Bangalore — Apex Legends",
+        "url": "https://argh.artstation.com/projects/xzqZkR",
+        "scope": "Viewed for proportion/silhouette reference only; no game assets copied"
+      },
+      {
+        "author": "Jeremy Jodoin",
+        "title": "Valkyrie — Apex Legends",
+        "url": "https://jeremy_jodoin.artstation.com/projects/R3rQJX",
+        "scope": "Production-work description reference; no geometry/textures copied"
+      }
+    ],
+    "quality_priority": "User clarified: no detailed modeling; proportional anatomy, correct skeleton and coordination between body parts. Low-poly surface is intentional.",
+    "latest_user_feedback": "Custom LightBody rejected. User selected Drazen male/female; male first. Preserve accepted first-person assets.",
+    "shoulder_gap_study": "unreal/Fireline/Docs/Validation/light-body/shoulder-study/README.md"
+  },
+  "native_player": {
+    "provider": "Drazen (drazenk)",
+    "selected_by_user": "2026-09-17: 主角要用新的模型",
+    "editable_derivative": "unreal/Fireline/SourceAssets/DrazenOriginal/Drazen_Original_ControlRig.blend",
+    "body_triangles": 3170,
+    "view_triangles": 1100,
+    "first_person_arms": "/Game/Fireline/DrazenOriginal/SK_DrazenArms",
+    "knife_arms": "/Game/Fireline/DrazenOriginal/SK_DrazenKnifeArms",
+    "motion_directories": [
+      "/Game/Fireline/DrazenOriginal"
+    ],
+    "geometry": "Original native body and five-finger topology, original weights; no old glove vertices",
+    "validation": "unreal/Fireline/Docs/Validation/drazen-original",
+    "export_derivative": "unreal/Fireline/SourceAssets/DrazenOriginal/Drazen_Original_Game.blend",
+    "rig": "All 59 original Drazen bones, native names, bind matrices, lengths, connected flags and weights retained. Only weapon bones appended. Author arm/leg IK and finger hinge controls used; stretch disabled. No G_/K_ donor anatomy, hand scale or detached shoulders.",
+    "status": "Disabled at user request. Original Ryan science-fiction character restored; retain Drazen experiments as backups only."
+  },
+  "active_player": {
+    "provider": "Ryan (rcorre)",
+    "body": "/Game/Fireline/Hands/SK_RyanAction",
+    "arms": "/Game/Fireline/Hands/SK_RyanActionArms",
+    "knife_body": "/Game/Fireline/Karambit/SK_KarambitBody",
+    "reason": "User restored Ryan science-fiction body; later selected original DJMaesen hand surface and authorized natural sleeve/action integration.",
+    "wrist_revision": {
+      "source_directory": "unreal/Fireline/SourceAssets/ContinuousWrist/Imports/1a8311da3ab2",
+      "scope": "Continuous retained WRAD palm heel, wrist and soft forearm under independent Ryan armor; separate rifle/knife fitting; all four player meshes. Original distal finger contact weights, bind skeletons and animation assets preserved.",
+      "validation": "unreal/Fireline/Docs/Validation/continuous-wrist/README.md",
+      "status": "Rejected by user on 2026-09-19: long snail-like wrist and empty-hand elbow crossing. Do not regenerate or restore this revision as a repair.",
+      "previous_rejected_source_directory": "unreal/Fireline/SourceAssets/WristRebuild",
+      "working_directory": "unreal/Fireline/SourceAssets/ContinuousWrist"
+    },
+    "native_arm_adaptation": {
+      "source_directory": "unreal/Fireline/SourceAssets/NativeArmReference",
+      "reference": "DrazenOriginal/Drazen_Original_Game.blend",
+      "status": "Superseded for hand surface: point projection caused bind self-intersections. Retain the corrected empty-arm elbow plane; use HandSurfaceRepair for hand geometry.",
+      "scope": "Drazen native empty-arm orientations, connected fixed-length Ryan arm chain, native neutral wrist surface/weight reference. Ryan geometry/providers retained; no 23 cm generated sleeve.",
+      "imported_source_snapshot": "SourceAssets/NativeArmReference/Imports/618e69ee9643"
+    },
+    "hand_surface_repair": {
+      "source_directory": "SourceAssets/HandSurfaceRepair",
+      "imported_source_snapshot": "SourceAssets/HandSurfaceRepair/Imports/8929142898c1",
+      "scope": "Non-folded continuous WRAD-derived cage, preserved finger cross sections, thicker existing wrist section. Original empty four-finger gesture retained; only thumb opposition reduced. Bind bones and weapon motion preserved.",
+      "validation": "Docs/Validation/hand-surface/README.md",
+      "status": "Superseded by HandProportions. Previous group replacement left stale LowerArm influences; do not reimport the old snapshots as a wrist repair.",
+      "imported_mesh_snapshot": "SourceAssets/HandSurfaceRepair/Imports/eabccb67ad0d"
+    },
+    "hand_proportions": {
+      "source_directory": "SourceAssets/HandProportions",
+      "imported_source_snapshot": "SourceAssets/HandProportions/Imports/5df55edba1eb",
+      "scope": "Completely replace stale hand influences, normalize matched weights, enlarge palm/finger/wrist tissue with sampled-pose self-intersection constraints. Four body/view meshes; all bind bones and action curves preserved.",
+      "validation": "Docs/Validation/hand-proportions/README.md",
+      "status": "Rejected wrist shape by user on 2026-09-19; preserve complete weight-replacement fix and source as rollback/reference, superseded by WristContour."
+    },
+    "wrist_contour": {
+      "source_directory": "SourceAssets/WristContour",
+      "imported_source_snapshot": "SourceAssets/WristContour/Imports/633063c8e7ea",
+      "scope": "Retained WRAD wrist surface recentered around joint; rifle thumb CMC moved from behind wrist to palm with anatomical forward bend plane and matched proximal motion; local thenar relaxation. Six sleeve-cap vertices retract and twelve cuff influences follow forearm. Five meshes, shared rifle skeleton, fourteen rifle actions, lobby idle, blendspace imported together.",
+      "providers_unchanged": [
+        "Ryan / rcorre",
+        "WRAD / wwwriks",
+        "TastyTony / Pichuliru",
+        "KrazzyElf",
+        "DJMaesen motion reference",
+        "Artem Dubinin knife motion reference"
+      ],
+      "validation": "Docs/Validation/wrist-contour/README.md",
+      "status": "Not accepted: user reports severe finger defects in ordinary poses. Read-only audit confirms ordinary grip/self/weapon intersections; previous wrist repair worsened rifle contact. Do not treat passing functional audits as art acceptance.",
+      "rollback": "Restore whole SourceAssets/WristContour/BeforeImport set; do not combine old mesh/skeleton/motion selectively.",
+      "finger_diagnosis": "Docs/Validation/finger-diagnosis-20260920/README.md"
+    },
+    "dj_native_hands": {
+      "source_directory": "SourceAssets/DJNativeHands/Integrated",
+      "imported_source_snapshot": "SourceAssets/DJNativeHands/Integrated/Imports/3043691fac5b",
+      "validation": "Docs/Validation/dj-native-hands/integration/README.md",
+      "replaces": "WRAD-derived WristContour hand surfaces on protagonist",
+      "cuff_mesh_snapshot": "SourceAssets/DJNativeHands/CuffRevision/Imports/049ba3c4e47b"
+    },
+    "reference_fit_revision": {
+      "source": "SourceAssets/DJNativeHands/ReferenceFit",
+      "imported_source_snapshot": "SourceAssets/DJNativeHands/ReferenceFit/Imports/e8ecabebf119",
+      "scope": "Donor-relative whole-arm fitting on retained Ryan/DJ surfaces. Rigid bind registration; retained hand shape/weights; fitted original faceted sleeves. Rifle shared contact transform; Artem B1 knife arm relationships and matched periodic timing.",
+      "validation": "Docs/Validation/reference-arm-fit/README.md",
+      "status": "Imported and packaged. Named source, native UE and packaged regressions completed; actual key poses reviewed. See validation for scope; not universal visual acceptance."
+    },
+    "first_person_presentation": {
+      "source": "SourceAssets/DJNativeHands/FirstPerson",
+      "imported_source_snapshot": "SourceAssets/DJNativeHands/FirstPerson/Imports/0bf311b45228",
+      "runtime_directories": [
+        "/Game/Fireline/FirstPerson/Hands",
+        "/Game/Fireline/FirstPerson/Karambit"
+      ],
+      "scope": "18 first-person clips; original selected hand/arm mesh, bind bones and weights retained. Whole-arm shoulder/elbow placement, smooth wrist-direction limits, lower-left free knife hand, weapon-specific camera offsets. Third-person animations remain separate.",
+      "source_wrist_direction_limits_degrees": {
+        "rifle": 30,
+        "knife": 28
+      },
+      "angle_definition": "elbow-to-wrist versus wrist-to-middle-finger-root; chosen Fireline presentation thresholds, not published Apex parameters",
+      "camera_relative_offsets_cm": {
+        "rifle": [
+          20,
+          3,
+          -164
+        ],
+        "knife": [
+          16,
+          0,
+          -162
+        ]
+      },
+      "validation": "Docs/Validation/fps-presentation/README.md",
+      "status": "Imported and packaged. Source and actual native/packaged elbow-pole, fixed-length arm, wrist, assembled gun, hip-fire and ADS checks pass. See reload-elbow report for evidence; not blanket art acceptance.",
+      "reload_elbow_revision": "Docs/Validation/reload-elbow/README.md",
+      "rifle_support_wrist_limit_idle_reload_degrees": 28,
+      "hip_fire_alignment": {
+        "reference_distance_cm": 2000,
+        "scope": "Current MP7 hip bore converges at 20 m from its neutral muzzle placement. M4 matches the calibrated MP7 rear-sight anchor and bore direction; cache from neutral clips, preserve separate iron/Coyote ADS calibration."
+      },
+      "camera_relative_offsets_status": "Historical authoring/base offsets. Current firearm hip placement is calibrated in RangeAim.cpp; M4 now matches MP7 rear-sight/bore. Knife base offset remains as listed."
+    }
+  },
+  "requested_hand_replacement": {
+    "requested": "2026-09-20: 我要你做成dj这种一模一样的",
+    "provider": "DJMaesen (@bumstrum)",
+    "source_file": "unreal/Fireline/SourceAssets/DJMaesen/Original_Imported.blend",
+    "original_fbx": "assets/source/djmaesen-carbine/original/source/arms@carbine.fbx",
+    "source_url": "https://sketchfab.com/3d-models/fps-animated-carbine-62977bb4c53047a185b9f3a0cdf56b87",
+    "license": "CC BY 4.0",
+    "scope": "Use original DJ hand surface, native bind and weights; retain Ryan body and selected TastyTony M4 / KrazzyElf knife. This latest request supersedes the previous WRAD-only restriction for hand replacement.",
+    "status": "Integrated into UE and rebuilt Mac Development package. Rendered rifle/empty/reload, knife clips and lobby checked; packaged hands audit and 20 weapon-control and 11 fire/reload-interruption checks pass. Hand-shape user approval is preserved, not generalized to blanket art acceptance.",
+    "source_derivative": "SourceAssets/DJNativeHands/rifle.blend",
+    "provenance": "SourceAssets/DJNativeHands/provenance.json",
+    "validation": "Docs/Validation/dj-native-hands/README.md",
+    "preview": "http://127.0.0.1:5185/",
+    "user_visual_feedback": {
+      "date": "2026-09-20",
+      "quote": "现在这个看着还不错",
+      "preview": "http://127.0.0.1:5185/",
+      "decision": "Use this DJMaesen native hand shape as the baseline. Preserve its palm, thenar/thumb structure and finger proportions during subsequent integration.",
+      "scope": "Positive feedback on the displayed source-preview hand shape; not a blanket acceptance of all animation contacts, knife/lobby adaptation or UE runtime integration."
+    },
+    "integrated_source": "SourceAssets/DJNativeHands/Integrated",
+    "import_snapshot": "SourceAssets/DJNativeHands/Integrated/Imports/3043691fac5b",
+    "previous_production_source": "SourceAssets/WristContour/Imports/633063c8e7ea",
+    "skin_precision": "16-bit weights and up to 12 influences in UE, with <=0.0035 mm sampled source approximation error; editable original normalized weights retained.",
+    "runtime_validation": "Docs/Validation/dj-native-hands/integration/runtime-results.json",
+    "package": "/Users/hht/UnrealBuilds/Fireline/Mac/Fireline.app",
+    "cuff_mesh_snapshot": "SourceAssets/DJNativeHands/CuffRevision/Imports/049ba3c4e47b",
+    "cuff_validation": "Docs/Validation/dj-cuff-revision/README.md",
+    "arm_chain_snapshot": "SourceAssets/DJNativeHands/ArmChain/Imports/68cce6582ab3",
+    "arm_chain_validation": "Docs/Validation/dj-arm-chain/README.md",
+    "reference_fit_snapshot": "SourceAssets/DJNativeHands/ReferenceFit/Imports/e8ecabebf119"
+  },
+  "legacy_hand_derivative": {
+    "authors": "WRAD ARMS / wwwriks (hand topology), Ryan / rcorre (arms/body), DJMaesen (animation/anatomical binding reference), Fireline (adaptation and poses)",
+    "source_file": "assets/source/wrad-arms/arms.blend",
+    "source_url": "https://github.com/wwwriks/wrad-arms",
+    "license": "CC0 1.0 for WRAD, CC BY 4.0 for Ryan",
+    "sha256": "ccbdb02c33cfc028aa51a7082295078b536bb9b411ab02a057b49beb667ed61c",
+    "editable_derivative": "unreal/Fireline/SourceAssets/DJMaesen/GameReady/Ryan_DJOwn_Game.blend",
+    "runtime_directory": "/Game/Fireline/Hands",
+    "scope": "Not the current protagonist hand surface; use hand_derivative and active_player.dj_native_hands.",
+    "mesh_budget": {
+      "vertices": 1908,
+      "triangles": 3808,
+      "finger_bones": 30
+    },
+    "grip_refinement": "User-accepted OwnRefined WRAD surface/binding with palm cups and DJ hold/reload. Right index anatomical bend correction retained, 0.478 mm reference trigger pad gap. All rifle body states carry the same contact pose in gun space; empty test actions rematched to new bind.",
+    "motion_parameters": [
+      "SourceAssets/DJMaesen/GameReady/integration-source.json",
+      "SourceAssets/DJMaesen/trigger-contact-fit.json"
+    ],
+    "motion_duration_seconds": 2.35,
+    "palette": {
+      "name": "matte tactical charcoal",
+      "base_color_linear": [
+        0.045,
+        0.05,
+        0.058
+      ],
+      "roughness": 0.86,
+      "scope": "Hand/glove material slots only; user-selected 2026-09-14. Applied to source, OwnRefined preview and /Hands player in both views."
+    },
+    "status": "Historical WRAD/Ryan derivative, superseded by DJMaesen native hands on 2026-09-20; retained for source attribution and comparisons only."
+  },
+  "selected_mp7": {
+    "name": "Low-Poly HK MP7",
+    "author": "TastyTony",
+    "source_url": "https://sketchfab.com/3d-models/low-poly-hk-mp7-0ebd1e2b7a60408cb3b587b4807635ab",
+    "source_uid": "0ebd1e2b7a60408cb3b587b4807635ab",
+    "license": "CC BY 4.0",
+    "source_file": "assets/source/tastytony-hk-mp7/original/source/HK MP7.fbx",
+    "manifest": "assets/source/tastytony-hk-mp7/download-manifest.json",
+    "triangles": 6956,
+    "selection": "User explicitly selected the browser-open HK MP7 with original foregrip; do not use the pack MP7A2 or add a replacement foregrip.",
+    "animation_author": "TheParaziT",
+    "animation_url": "https://sketchfab.com/3d-models/mp7a1-animations-0a55689855594f2496c2debdb7e6f5bc",
+    "animation_manifest": "assets/source/theparazit-mp7/download-manifest.json",
+    "status": "Integrated, built and verified in the UE5 Mac package; named controls/pose/ADS checks passed",
+    "runtime_directory": "/Game/Fireline/MP7",
+    "source_derivative": "unreal/Fireline/SourceAssets/MP7/MP7_Ryan_DJ.blend",
+    "validation": "unreal/Fireline/Docs/Validation/mp7/README.md",
+    "controls": {
+      "select": "3",
+      "inspect": "F",
+      "reload": "R",
+      "aim": "right mouse button"
+    },
+    "game_balance": {
+      "capacity": 40,
+      "rpm": 1000,
+      "body_damage": 11,
+      "head_damage": 16
+    },
+    "palette": "Solid-color matte charcoal derivative; ten original FBX slots defaulted to light gray. Original file preserved.",
+    "action_seconds": {
+      "Draw": 0.8333333333333334,
+      "Inspect": 2.8,
+      "Reload": 2.316666666666667,
+      "EmptyReload": 2.716666666666667
+    },
+    "source_snapshot": "SourceAssets/MP7/Imports/87890ee881f4",
+    "delivery": "unreal/Fireline/Docs/Validation/mp7/delivered-build.json",
+    "input_readiness": {
+      "source_fps": 60,
+      "draw_frame": 21,
+      "reload_frame": 115,
+      "empty_reload_frame": 143,
+      "behavior": "Fire and held ADS preempt only cosmetic recovery after grip/mechanics are ready; magazine insertion ammo commit and early-fire recovery stay independent. Original source clips unchanged.",
+      "validation": "Docs/Validation/weapon-polish/README.md"
+    },
+    "physical_magazine_revision": {
+      "date": "2026-09-23",
+      "version": "0.1.6",
+      "drop_frames_60hz": {
+        "loaded": 25,
+        "empty": 17
+      },
+      "replacement_frames_60hz": {
+        "loaded": 54,
+        "empty": 39
+      },
+      "behavior": "Independent physics magazine from selected MP7 mesh; hide animated old magazine/bullet until belt fetch; existing source clips, ammo seating and interruption rules retained.",
+      "validation": "Docs/Validation/mp7-magazine-drop/README.md"
+    }
+  },
+  "spent_casing_effects": {
+    "author": "Fireline project-authored",
+    "source": "SourceAssets/Casings/SpentCasings.blend",
+    "runtime_directory": "/Game/Fireline/Effects/Casings",
+    "meshes": {
+      "SM_Casing556": {
+        "length_cm": 4.5,
+        "diameter_cm": 0.95,
+        "triangles": 188,
+        "mouth_wall_mm": 0.3,
+        "cavity_depth_cm": 4.1499999999999995,
+        "materials": [
+          "CasingBrass",
+          "CasingInterior"
+        ],
+        "projectile": false
+      },
+      "SM_Casing46": {
+        "length_cm": 3.0,
+        "diameter_cm": 0.7939999999999999,
+        "triangles": 188,
+        "mouth_wall_mm": 0.3,
+        "cavity_depth_cm": 2.65,
+        "materials": [
+          "CasingBrass",
+          "CasingInterior"
+        ],
+        "projectile": false
+      }
+    },
+    "scope": "New spent-shell visuals only; no selected firearm, body, hands, binds or animation assets modified. No shell landing audio.",
+    "motion_revision": {
+      "date": "2026-09-21",
+      "trajectory": "Narrow weapon-relative forward/right/up ejection cone, player velocity inheritance and weapon-space angular velocity.",
+      "collision": "True-length capsule sweeps, damped bounce/spin, 0.10-second settle parallel to surface.",
+      "pool_per_weapon": 32,
+      "lifetime_seconds": 2.8,
+      "brass_base_color": [
+        0.4,
+        0.26,
+        0.095
+      ],
+      "brass_metallic": 0.45,
+      "brass_roughness": 0.55,
+      "validation": "Docs/Validation/weapon-polish/README.md"
+    },
+    "appearance_revision": {
+      "date": "2026-09-22",
+      "change": "Flat cut mouth with 0.3 mm rim, full-depth cavity and separate dark rough inner material. Replaces shallow brass recess; no projectile. Dimensions, ejection port, pool and trajectory unchanged.",
+      "validation": "Docs/Validation/movement-casings/README.md"
+    }
+  },
+  "selected_m4_animation": {
+    "name": "M4A1 Animated Low Poly",
+    "author": "sycgff",
+    "source_url": "https://sketchfab.com/3d-models/m4a1-animated-low-poly-91de835e74e24b65b69659bdbe392ea9",
+    "license": "CC BY 4.0",
+    "selected": "Candidate 4, user 2026-09-22",
+    "archive": "assets/source/sycgff-m4/m4a1-animated-low-poly.zip",
+    "motion_scope": [
+      "Draw",
+      "Remove",
+      "Reload"
+    ],
+    "runtime_directory": "/Game/Fireline/SycgffM4",
+    "source_snapshot": "SourceAssets/SycgffM4/Imports/be7b2462cbf1",
+    "retarget": "Selected donor weapon/mechanical trajectories and draw/remove/reload timing; calibrated native DJ hand contacts adapted with fixed-length downward elbows. Retain TastyTony/Pichuliru M4, DJ hands, Ryan body, bind frames and weights. Exclude donor static CubeAction and camera tracks. Magazine locks at seating.",
+    "timing_frames_60hz": {
+      "draw": 32,
+      "remove": 29,
+      "reload": 110,
+      "magazine_seat": 55,
+      "drop": 16,
+      "bolt_pull": 75,
+      "bolt_release": 90,
+      "draw_ready": 26,
+      "reload_ready": 103,
+      "replacement_magazine_reveal": 32
+    },
+    "validation": "Docs/Validation/sycgff-m4/original-fire/README.md",
+    "rollback_commit": "916cc2c",
+    "rollback_package": "/Users/hht/UnrealBuilds/Fireline/Versions/pre-sycgff-20260922/Fireline.app",
+    "status": "0.1.6: M4 first-person rear-sight anchor and bore direction match MP7. Keep 0.85x reload, loaded/empty variants and procedural firing. 0.1.5 third-person control retained; cheek/stock contact and armor seams remain art work.",
+    "release_tag": "fireline-0.1.6-mp7-magazine",
+    "excluded_motion": {
+      "clip": "Fire",
+      "reason": "User: 开火不要用他的动画",
+      "runtime": "Not loaded or played. Restore pre-sycgff procedural weapon kick; keep independent camera recoil and shot effects.",
+      "asset": "Original/adapted Fire files retained for history only."
+    },
+    "tactical_reload": {
+      "source_snapshot": "SourceAssets/SycgffM4/Tactical/Imports/cf09ea0e9874",
+      "runtime_asset": "/Game/Fireline/SycgffM4/A_M4_TacticalReload",
+      "start_condition": "Ammo > 0 captured once at reload start. No chamber simulation.",
+      "frames_60hz": {
+        "seat": 55,
+        "ready": 81,
+        "end": 84
+      },
+      "empty_frames_60hz": {
+        "seat": 55,
+        "ready": 103,
+        "end": 110
+      },
+      "scope": "Shared existing magazine handling, separately authored smooth support-hand return. Empty reload remains original Reload. Loaded reload omits both bolt sounds. Preserve authorized fire/switch interruptions and magazine-seat refill.",
+      "validation": "Docs/Validation/m4-reload-variants/README.md"
+    },
+    "reload_playback": {
+      "play_rate": 0.85,
+      "loaded_seconds": 1.6470588235294117,
+      "empty_seconds": 2.156862745098039,
+      "seat_seconds": 1.0784313725490196,
+      "clock": "Shared authored animation time for pose, audio, ammo, magazine drop/reveal and readiness. MP7 remains 1.0.",
+      "validation": "Docs/Validation/m4-reload-speed/README.md"
+    },
+    "hip_presentation": {
+      "date": "2026-09-23",
+      "version": "0.1.6",
+      "reference": "Selected HK MP7 neutral camera-space rear-sight position and bore direction",
+      "scope": "Move the complete first-person contact assembly; keep M4 scale, iron/Coyote sight calibration, clips, 0.85x reload and third-person body control."
+    }
+  },
+  "third_person_firearm_pose": {
+    "version": "0.1.5",
+    "implementation": "Source/Fireline/Range/RangeBodyPose.cpp",
+    "scope": [
+      "M4 full body",
+      "MP7 full body"
+    ],
+    "art_assets_changed": false,
+    "first_person_changed": false,
+    "knife_changed": false,
+    "reference": "Docs/Validation/third-person-repair/ryan-original-reference.json",
+    "validation": "Docs/Validation/third-person-repair/README.md",
+    "checks": 107,
+    "limits": "Named runtime cases and visual review; precise cheek/stock contact and armor seams still require art refinement."
+  },
+  "current_release": {
+    "version": "0.1.10",
+    "date": "2026-09-23",
+    "commit": "15353a5",
+    "tag": "fireline-0.1.10-model-icons",
+    "state_document": "Docs/CURRENT_STATUS.md",
+    "validation": "Docs/Validation/model-icons-0.1.10/README.md",
+    "note": "Older nested revisions describe their own milestones. Disabled/rejected candidates are not active assets."
+  },
+  "shield_break_hud_revision": {
+    "version": "0.1.7",
+    "source": "Till Behrend Glass Break, CC0; layered with existing qubodup Stone break, CC0",
+    "source_manifest": "SourceAssets/Audio/till-behrend-glass-break/manifest.json",
+    "runtime_audio": "/Game/Fireline/Audio/S_ShieldBreak",
+    "effects": "12 project-authored irregular procedural shield slivers; existing blood atlas varied once per impact at 0.90-1.10x and +/-18 degrees",
+    "hud": "Canvas tactical edge layout",
+    "providers_changed": false,
+    "validation": "Docs/Validation/hud-impact-0.1.7/README.md"
+  },
+  "whole_shield_break_revision": {
+    "version": "0.1.8",
+    "audio": "0.25-second CC0 glass-dominant break with 0.12-second selected Stone underlayer",
+    "audio_manifest": "SourceAssets/Audio/till-behrend-glass-break/manifest.json",
+    "visual": "120 independently moving irregular triangular panels across the whole shield ellipsoid; existing contact point FX retained",
+    "enemy_bar": "distance-scaled, 38-62 screen px at 720p, visible only on recent damage",
+    "providers_changed": false,
+    "validation": "Docs/Validation/full-shield-0.1.8/README.md"
+  },
+  "player_hud_shield_hit_revision": {
+    "version": "0.1.9",
+    "visual": "Eight ordinary shield-hit sparks, 1.30x dimensions / 1.20x travel relative to 0.1.8; same 0.22s duration and component pool",
+    "hud": "Project-authored Apex-inspired segmented cyan shield / thin white health / equipment silhouettes / large current-magazine count; low health and ammunition states",
+    "source": "Original vector insignia and weapon silhouettes; engine runtime fonts; no new downloaded assets",
+    "providers_changed": false,
+    "validation": "Docs/Validation/player-hud-0.1.9/README.md"
+  },
+  "model_weapon_icons_revision": {
+    "version": "0.1.10",
+    "source_manifest": "SourceAssets/UI/WeaponIcons/manifest.json",
+    "models": [
+      "TastyTony/Pichuliru M4A1",
+      "TastyTony HK MP7",
+      "KrazzyElf Karambit"
+    ],
+    "method": "Orthographic white transparent side renders from production meshes; no hand-drawn weapon polygons",
+    "runtime_directory": "/Game/Fireline/UI",
+    "enemy_separator": "1 logical pixel at 720p; total panel height 9, distance width unchanged",
+    "original_models_modified": false,
+    "validation": "Docs/Validation/model-icons-0.1.10/README.md"
+  },
+  "locomotion_development": {
+    "status": "Previous candidates preserved; LegDirection corrects left gait orientation in isolated desktop test, not a published full locomotion release",
+    "provider": "Epic Games — existing UE project Rifle Walk/Jog animation assets",
+    "license_scope": "Existing Epic/Unreal content terms; UE project use, not CC0 or extracted Apex assets",
+    "source_directory": "/Game/Characters/Mannequins/Anims/Rifle",
+    "derived_directory": "/Game/Fireline/LocomotionStudy",
+    "target": "Existing Ryan / DJMaesen native binding, geometry and weights preserved",
+    "ready_clips": 14,
+    "source_clips": 16,
+    "rejected": "Walk Bwd_Left and Bwd_Right do not close; runtime mixes cardinal walks instead",
+    "validation": "Validation/directional-locomotion/README.md",
+    "research": "Research/DIRECTIONAL_MOVEMENT_REVIEW_20260924.md",
+    "restart_validation": "Validation/full-body-restart/README.md",
+    "cmu_side_step_candidate": {
+      "provider": "CMU Graphics Lab Motion Capture Database, subject 141 trial 33",
+      "source_url": "https://mocap.cs.cmu.edu/subjects/141/141_33.amc",
+      "source_directory": "SourceAssets/LocomotionReferences/CMU141",
+      "source_sha256_amc": "e008a287501a30a377e3f99fa748bc45494b9e420e3a9881d3e6e73f97de7071",
+      "license_scope": "Free for all uses including commercial products; credit CMU database; do not resell raw data",
+      "directory": "/Game/Fireline/LocomotionStudy/CMUSideStep/Ready",
+      "change": "Isolated native Ryan left/right lateral walk cycles from CMU 141_33 frames 325-398 and 886-957; corrected ASF channel order, distance-matched source phases, native fixed-length IK; no source mesh/bind/weights replaced",
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineCMUSideStepStudy"
+      ],
+      "default_enabled": false,
+      "full_visual_acceptance": false,
+      "validation": "Validation/cmu-side-step/README.md"
+    },
+    "contact_phase_candidate": {
+      "directory": "/Game/Fireline/LocomotionStudy/ContactPhase",
+      "clips": 14,
+      "change": "derived L/R flat-support marker data only; original sources/Ready/native meshes unchanged",
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineContactPhaseStudy"
+      ],
+      "default_enabled": false,
+      "validation": "Validation/contact-phase/README.md",
+      "visual_acceptance": false
+    },
+    "stride_coverage_candidate": {
+      "directory": "/Game/Fireline/LocomotionStudy/StrideCoverage",
+      "clips": 16,
+      "new_sources": [
+        "/Game/Characters/Mannequins/Anims/Pistol/Walk/MF_Pistol_Walk_Bwd_Right",
+        "/Game/Characters/Mannequins/Anims/Pistol/Walk/MF_Pistol_Walk_Bwd_Left"
+      ],
+      "provider": "Epic Games; same existing UE asset terms",
+      "adaptation": "Existing isolated Epic-to-Ryan retarget; native-bind fixed-length two-bone stride contraction, near-flat marker timing",
+      "original_assets_modified": false,
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineStrideCoverageStudy"
+      ],
+      "default_enabled": false,
+      "full_visual_acceptance": false,
+      "validation": "Validation/stride-coverage/README.md"
+    },
+    "body_coordination_candidate": {
+      "directory": "/Game/Fireline/LocomotionStudy/BodyCoordination",
+      "clips": 16,
+      "provider": "Epic Games; existing UE Rifle/Pistol sources used by StrideCoverage, same license scope",
+      "adaptation": "Spine FK chain retarget with per-op target mapping; common native carry-stance registration; native lengths, lower-body calibration and local hand/weapon contacts preserved",
+      "geometry_bind_weights_changed": false,
+      "source_assets_modified": false,
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineBodyCoordinationStudy"
+      ],
+      "default_enabled": false,
+      "full_visual_acceptance": false,
+      "validation": "Validation/body-coordination/README.md"
+    },
+    "leg_direction_candidate": {
+      "directory": "/Game/Fireline/LocomotionStudy/LegDirection",
+      "clips": 16,
+      "provider": "Epic Games existing UE Rifle/Pistol sources; same UE license scope",
+      "adaptation": "Native bind-space paired reflection of pelvis/legs/spine, L/R marker exchange, right-handed native carry retained, component-space spine-cycle amplitude 0.35",
+      "geometry_bind_weights_changed": false,
+      "source_assets_modified": false,
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineLegDirectionStudy"
+      ],
+      "default_enabled": false,
+      "full_visual_acceptance": false,
+      "validation": "Validation/leg-direction/README.md"
+    },
+    "gait_continuity_candidate": {
+      "validation": "Validation/gait-continuity/README.md",
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineGaitContinuityStudy"
+      ],
+      "uses_existing_assets": "/Game/Fireline/LocomotionStudy/LegDirection/Ready",
+      "new_asset_or_provider": false,
+      "change": "Transfer native ground playback phase, sample weights and marker cache across weapon meshes; zero-delta update before evaluation",
+      "original_assets_modified": false,
+      "published": false
+    },
+    "knee_continuity_candidate": {
+      "directory": "/Game/Fireline/LocomotionStudy/KneeContinuity/Ready",
+      "clips": 16,
+      "provider": "Existing Epic locomotion adapted to Ryan/DJ native skeleton; no provider change",
+      "change": "Repair unstable near-extension stride knee poles from adjacent reliable thigh-local bend planes",
+      "original_assets_modified": false,
+      "geometry_bind_weights_changed": false,
+      "published": false,
+      "validation": "Validation/knee-continuity/README.md"
+    },
+    "armed_locomotion_candidate": {
+      "directory": "/Game/Fireline/LocomotionStudy/ArmedLocomotion/Ready",
+      "clips": 24,
+      "provider": "Existing Epic Games Rifle/Pistol full-body walk/jog sources; UE content terms",
+      "adaptation": "Yaw-only mean spine registration preserving lean, source-phase hand/weapon curves, fixed-length expanded high-speed stride; action-aware full-body stance blending",
+      "geometry_bind_weights_changed": false,
+      "source_assets_modified": false,
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineArmedLocomotionStudy"
+      ],
+      "default_enabled": false,
+      "full_visual_acceptance": false,
+      "validation": "Validation/armed-locomotion/README.md",
+      "scope": "New high-speed adaptation, not newly authored Apex sprint; native Ryan/DJ and all selected weapon providers retained",
+      "user_visual_status": "Rejected armed-running appearance; preserved for comparison. Superseded in development direction by section 24."
+    },
+    "sprint_carry_candidate": {
+      "date": "2026-09-25",
+      "reference": "Bangalore rifle running presentation by RITZKING and official Apex Bangalore trailer; visual observation only, no extracted Apex assets",
+      "provider_change": false,
+      "geometry_bind_weights_changed": false,
+      "source_assets_modified": false,
+      "implementation": "Project-authored common contact assembly carry target and shared damped transition, existing Epic-derived leg/spine phase, separately composed first-person presentation",
+      "runtime_flags": [
+        "FirelineDirectionalLocomotion",
+        "FirelineArmedLocomotionStudy",
+        "FirelineArmedReadyStudy",
+        "FirelineSprintCarryStudy"
+      ],
+      "default_enabled": false,
+      "full_visual_acceptance": false,
+      "validation": "Validation/sprint-carry/README.md"
+    },
+    "authored_ground_candidate": {
+      "date": "2026-09-26",
+      "status": "isolated cardinal start/stop candidate; P2 incomplete",
+      "provider": "Epic Games Lyra original animation; existing Epic/UE terms",
+      "source_directory": "/Game/Characters/Heroes/Mannequin/Animations/Locomotion/Rifle",
+      "derived_directory": "/Game/Fireline/LocomotionStudy/AuthoredGround",
+      "enabled_flag": "FirelineAuthoredGroundStudy",
+      "disabled_failed_flags": [
+        "FirelineAuthoredSideJogStudy",
+        "FirelineAuthoredPivotStudy"
+      ],
+      "target": "Ryan/DJ native mesh, bind, weights and weapon contacts preserved",
+      "validation": "Validation/authored-ground-transitions/README.md",
+      "launcher": "/Users/hht/Desktop/火力对决/测试版·原片起停.app"
+    }
+  },
+  "run_fire_runtime_revision": {
+    "date": "2026-09-25",
+    "validation": "Validation/run-fire/README.md",
+    "changed_assets": [],
+    "scope": "Runtime gait amplitude and shot-driven grounded walking cap; preserve all providers and immutable originals"
+  }
+}

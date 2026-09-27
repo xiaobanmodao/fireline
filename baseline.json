@@ -1,0 +1,21 @@
+{
+  "id": "gamepad-reconstructed-20260927",
+  "historical_exact": false,
+  "engine": "5.8",
+  "map": "/Game/Fireline/Maps/FirelineRange",
+  "flags": [
+    "FirelineDirectionalLocomotion",
+    "FirelineCMUSideStepStudy",
+    "FirelineCharacterStart",
+    "FirelineContactCarryStudy",
+    "FirelineLocomotionContactFixStudy",
+    "FirelineAuthoredGroundStudy"
+  ],
+  "excluded_experiments": [
+    "FirelineMatchedGroundStudy",
+    "FirelineCombatGroundStudy",
+    "FirelineSourceBodyStudy",
+    "FirelineAuthoredSideJogStudy",
+    "FirelineAuthoredPivotStudy"
+  ]
+}

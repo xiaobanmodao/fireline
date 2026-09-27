@@ -1,0 +1,10 @@
+Rigged low poly male & female figures. (Blender)
+Author: Drazen (drazenk)
+https://sketchfab.com/3d-models/rigged-low-poly-male-female-figures-blender-ce0604608f96477a875569ff28e15889
+License: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
+Downloaded original Blender archive via authenticated Sketchfab download, 2026-09-16.
+Fireline derivatives: male animation retarget and blue/red team material adaptation. Original source preserved. Female retained for later characters.
+
+Body derivative uses the existing WRAD/Ryan glove integration. See Hand-Credits.txt. Rifle/knife animation references and their authors remain separately credited.
+
+2026-09-17: Native Drazen male hands and full arms are now used by the protagonist in both camera views. First-person arms are cropped from the same original mesh. Original topology/weights retained; native bone motion adapted to DJMaesen/Artem references. Legacy WRAD/Ryan hand meshes are not the active protagonist geometry.

@@ -1,0 +1,18 @@
+HK MP7 model: "Low-Poly HK MP7" by TastyTony.
+https://sketchfab.com/3d-models/low-poly-hk-mp7-0ebd1e2b7a60408cb3b587b4807635ab
+Licensed CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+Changes: metre-scale normalization, registration to retained Ryan/DJ hands,
+mechanical bone remapping, sight/muzzle landmarks, UE solid-color materials.
+Original supplied foregrip and gun silhouette retained; not the local pack MP7A2.
+
+Motion reference: "MP7A1 Animations" by TheParaziT.
+https://sketchfab.com/3d-models/mp7a1-animations-0a55689855594f2496c2debdb7e6f5bc
+Licensed CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+Changes: idle/draw/inspect/normal and empty reload retargeting to Ryan/DJ,
+fixed-length arm adaptation, anatomical wrist correction, matched magazine
+travel, continuous hold endpoints and game-state interruption integration.
+Donor gun/arms are reference only and are not the gameplay geometry.
+
+Retained character/hands: Ryan (rcorre) / DJMaesen. See Hand-Credits.txt.
+Optic: GoldbergR Coyote. See Coyote-Credits.txt.
+No endorsement by the source artists is implied.

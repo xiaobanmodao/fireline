@@ -1,0 +1,6 @@
+Epic Games — Lyra Starter Game, locally installed UE 5.8 sample.
+Original MF Rifle Start / Stop / Pivot and MM / MF lateral Jog references.
+Used under applicable Epic / Unreal content terms for this Unreal project; not CC0 and not Apex assets.
+Original package paths and SHA256: Docs/Validation/authored-ground-transitions/source-manifest.json.
+Derived native Ryan study assets are isolated in /Game/Fireline/LocomotionStudy/AuthoredGround.
+Existing character, hand and weapon provider credits remain unchanged.

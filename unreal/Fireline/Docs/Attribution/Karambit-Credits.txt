@@ -1,0 +1,24 @@
+FIRELINE — Selected A2 + B1 karambit
+
+Model: Low Poly Stylized Karambit Knife — KrazzyElf
+https://sketchfab.com/3d-models/low-poly-stylized-karambit-knife-5f5785340e66497fa74c6b28ab9b9524
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+3,196 original triangles, original UVs and 1K PBR textures retained.
+Fireline adaptation: uniform size, coordinate/ring registration, skeletal
+binding, material import and OpenGL-to-Unreal normal map convention.
+
+Animation/reference: Knife FPS Animations — Artem Dubinin
+https://www.fab.com/listings/ccff0d84-8219-4daf-9859-348b393b3d83
+Official free asset pack. Provider terms apply; no CC0/CC BY relicensing of B1.
+Hand and independent knife tracks are sampled together; separate Draw, Inspect
+and swing_0 clips. Fireline adapts finger contacts, source/rest space and returns.
+Donor hands and the donor ViperFANG knife are not the selected runtime meshes.
+Demo sound placeholders are excluded.
+
+Current hands: DJMaesen / bumstrum native hand topology, bind and weights;
+Ryan / rcorre sleeves/body, Fireline adaptation. Earlier WRAD / wwwriks hand
+topology is retained as historical source attribution, not the current hand mesh.
+Existing accepted rifle uses TastyTony / Pichuliru and DJMaesen reference motion.
+See Hand-Credits.txt, other Fireline legal files and Docs/asset-lock.json.
+
+Audio reuses licensed recordings listed in M9-Credits.txt and Audio-Credits.txt.

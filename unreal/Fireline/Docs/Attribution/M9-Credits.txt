@@ -1,0 +1,26 @@
+FIRELINE — M9 knife and animation credits
+
+Selected knife: low-poly M9 Bayonet by D_U (DU1701)
+https://sketchfab.com/3d-models/low-poly-m9-bayonet-0c00f5cbe79d46b7afaa5d8c709c3f56
+License: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+Fireline changes: uniform scale/orientation, existing hand-rig binding,
+skeletal material setup. Original 922-triangle geometry and material regions
+retained. D_U is not an animation provider for this implementation.
+
+M9 motion: original Fireline-authored draw, inspect and single slash curves.
+Visual reference: CS:GO M9 demonstration, uploaded by 随天天:
+https://www.bilibili.com/video/BV1vW41147Xo/
+No Valve model, animation-curve or audio files are included.
+Player uses the already selected Ryan/rcorre body/arms and WRAD/wwwriks
+hand derivative. See Hand-Credits.txt and the other Fireline legal notices.
+
+New sound recordings:
+Whoosh — qubodup, Freesound 60013, CC0 1.0
+https://freesound.org/people/qubodup/sounds/60013/
+Knife draw — neilsher, Freesound 411741, CC0 1.0
+https://freesound.org/people/neilsher/sounds/411741/
+https://creativecommons.org/publicdomain/zero/1.0/
+Used public HQ MP3 renditions, not the original lossless downloads.
+Fireline changes: trim, mono 48 kHz PCM conversion, fades and peak balancing.
+Hit/cover feedback reuses the existing recordings in Audio-Credits.txt.

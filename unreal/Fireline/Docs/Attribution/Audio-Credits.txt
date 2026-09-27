@@ -1,0 +1,56 @@
+Fireline audio credits — selected September 13, 2026
+
+M4A1 gunshot, magazine removal/insertion, charging handle:
+SnakeF8, Snake's Authentic Gun Sounds
+https://f8studios.itch.io/snakes-authentic-gun-sounds
+Author permits free commercial use and editing, attribution optional.
+Files used: 556 Single Isolated WAV.wav; AR Reload Part 1 WAV.wav;
+AR Reload Part 2 WAV.wav; AR Charging Handle WAV.wav.
+Edits: crop isolated events, remove DC, peak balance, short fades, 48 kHz PCM.
+
+Headshot confirmation (user-selected):
+MadPanCake, Kill Sound/Impact
+https://freesound.org/people/MadPanCake/sounds/660768/
+Page license: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Includes subbass_hit_001 by szpury, licensed CC BY 4.0:
+https://freesound.org/people/szpury/sounds/233752/
+https://creativecommons.org/licenses/by/4.0/
+We preserve attribution to szpury and MadPanCake for this derivative.
+Edits: shorten tail to 1.05 seconds with fade, remove DC, peak balance, 48 kHz PCM.
+
+Hard-cover bullet impact:
+OGsoundFX, Guns & Explosions Album - Bullet Impact 14.wav
+https://freesound.org/people/OGsoundFX/sounds/423107/
+CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
+Edits: mono, tail trim/fade, remove DC, peak balance, 48 kHz PCM.
+
+Normal hit confirmation:
+User391915396, Hitmarker Sound Effect
+https://freesound.org/people/User391915396/sounds/570335/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Edits: fade, remove DC, peak balance, 48 kHz PCM.
+
+Projectile near-miss:
+modusmogulus, Fly-by whiz SFX (subsonic)
+https://freesound.org/people/modusmogulus/sounds/789222/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Whip-based designed effect, not an authentic supersonic bullet recording.
+Edits: mono, tail trim/fade, remove DC, peak balance, 48 kHz PCM.
+
+Freesound integration sources are the public high-quality MP3 renditions
+linked on the corresponding sound pages; source files are retained.
+SnakeF8 sources are the WAV files in the author's original download archive.
+No casing-drop audio is included. No game-extracted audio is included.
+Licenses above apply to the corresponding source/derivative audio, without
+implying endorsement by any author. See SourceAssets/Audio/processing.json
+in the development project for file hashes and exact edit parameters.
+
+Impact — Iwan 'qubodup' Gabovitch
+https://opengameart.org/content/impact
+CC0. User selected preview segment 1 (Meat01) for flesh, segment 4 (Stone) for shields, 2026-09-18.
+Fireline derivatives: gain/fades and a layered Stone break accent. Original recordings retained in SourceAssets/Audio/qubodup-impact.
+
+Shield-break glass layer — Till Behrend, Glass Break
+https://opengameart.org/content/glass-break
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Combined with a brief existing qubodup Stone break layer, trimmed to a 0.25-second crack and peak-balanced. Original and derivative retained in SourceAssets/Audio/till-behrend-glass-break and qubodup-impact/prepared.
