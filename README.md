@@ -36,6 +36,8 @@ UE 5.8 桌面 FPS。当前开发基线：**手柄阶段重建基线** `gamepad-r
 
 同日按用户要求轻微收整髋部和腿部轮廓，保留腿长、膝踝关节、靴底和既有动作；同一比例演示入口已更新。[后续开发顺序](unreal/Fireline/Docs/NEXT_DEVELOPMENT.md)：先将该回放改造成可操作的独立M4起停测试，再做多方向、武器操作、完整跑跳滑铲和其他武器。
 
+2026-09-28：[M4操作接入前诊断](unreal/Fireline/Docs/Validation/m4-operation-source/README.md)。选定片段已提取；两次全身换弹接法未通过，已撤回，现有走跑入口不变。
+
 ## 版本规则
 
 2026-09-27：[成熟动作系统完整对照](unreal/Fireline/Docs/Research/mature-animation-systems/README.md)。用户再次否决当前动作观感；新增下载ALS完整工程、读取原片／曲线／动画图并对照Lyra与当前双重手臂重建。仅研究，游戏运行时未改；桌面「参考·ALS原版动作.app」是独立原版观察入口。

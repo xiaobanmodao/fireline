@@ -1,0 +1,18 @@
+{
+  "scope": "direct native operation endpoint transferred from same-input carry pose; 134 sampled operation frames, not every failed-pose cause",
+  "arm_length_overrun_cm_and_frame": [
+    [
+      13.415764817247506,
+      {
+        "frame": 1524,
+        "case": 7.0,
+        "reload_time": 0.35416782,
+        "operation_weight": 1.0
+      }
+    ],
+    [
+      -1,
+      null
+    ]
+  ]
+}

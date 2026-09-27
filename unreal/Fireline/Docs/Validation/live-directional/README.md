@@ -59,3 +59,6 @@ Source Movement的物理tick停用后，额外复现其GaitAmount速度区间映
 `audit_live_carry.py --directional --fps 60` 读取原生最终姿态做表面检查；`measure_directional_source.py --fps 60` 对照同次源输出。`--sample-step`只用于定位，不能用于最终验收。重新注册时先使用 `-LiveDirectionalCalibrate` 捕获未加跑姿注册的数据，保存到calibration-60，再执行calibrate_directional_carry.py；不能对已修正姿态重复拟合并叠加注册。
 
 公开仓库不包含第三方网格/动画二进制；原始726个ALS文件与1252个Fireline资源均需独立校验。没有新增下载、付费服务或子智能体。
+
+
+2026-09-28证据路径备注：阶段3失败试验已撤回，活动宿主恢复本阶段代码。恢复回归重新生成了固定`audit-60`目录下CSV，原manifest中这些路径的指纹属于此前运行；历史报告/截图及30/120Hz证据保留。新回归指纹和通过项见[恢复记录](../m4-operation-source/restoration.json)。没有因此新增本阶段的操作动作或视觉验收。

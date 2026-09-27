@@ -1,0 +1,264 @@
+{
+  "baseline": "d56ecf6",
+  "scope": "unchanged Stage2 restoration regression; no operation or visual acceptance",
+  "native_audit": {
+    "frames": 4153,
+    "fps": 60,
+    "sample_step": 1,
+    "failed_poses": 0,
+    "max_speed_cm_s": 431.71020508,
+    "single_capsule_backward_step_cm_min": -7.195170460000099,
+    "visual_to_capsule_xy_offset_cm_max": 0.0,
+    "limb_length_error_cm_max": 5.097451349911353e-08,
+    "receiver_relative_grip_error_cm_max": 9.636602742337778e-08,
+    "sole_height_cm_min": [
+      0.019998453675332484,
+      0.019998453707790742
+    ],
+    "lowest_sole_height_cm_max": 7.291564169547253,
+    "wrist_bend_deg_range": [
+      [
+        17.224822929208226,
+        10.128985008070545
+      ],
+      [
+        36.6630405396447,
+        32.31991297151847
+      ]
+    ],
+    "vertex_chest_intrusion_cm_max": [
+      0.0,
+      0.0
+    ],
+    "joint_step_cm_max": {
+      "LowerArm_L": 5.057483949061899,
+      "LowerArm_R": 5.24271478675241,
+      "DJ_wrist_L": 5.22722574841766,
+      "DJ_wrist_R": 5.201725259000323,
+      "LowerLeg_L": 10.741251273864892,
+      "LowerLeg_R": 8.427024749257432
+    },
+    "minimum_reach_margin_cm": 0.15,
+    "visual_acceptance": false,
+    "scope": "M4 flat-floor eight-direction walk/jog, reversal, speed change, directional boundaries and native turn-in-place; no action/air/slope acceptance",
+    "skinned_sole_correction_cm_max": 2.8918457,
+    "fully_locked_ankle_xy_speed_cm_s_max": 105.25070176487988,
+    "surface_vertex_clearance_cm_min": [
+      0.6574748502799608,
+      0.3822675380753964
+    ],
+    "triangle_clipping_frames": 4153,
+    "intersecting_torso_triangles": 0,
+    "cases": {
+      "0": {
+        "frames": 204,
+        "failures": 0.0,
+        "sole_min_cm": 0.020000679224875806,
+        "lowest_sole_max_cm": 0.3635689864553642,
+        "penetration_max_cm": 0.0
+      },
+      "1": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.019999422285386537,
+        "lowest_sole_max_cm": 0.5203491663908156,
+        "penetration_max_cm": 0.0
+      },
+      "2": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020000177829867072,
+        "lowest_sole_max_cm": 0.39676527925218164,
+        "penetration_max_cm": 0.0
+      },
+      "3": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.02000010554283449,
+        "lowest_sole_max_cm": 0.3929476652904137,
+        "penetration_max_cm": 0.0
+      },
+      "4": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.02000880804208993,
+        "lowest_sole_max_cm": 0.407997916380029,
+        "penetration_max_cm": 0.0
+      },
+      "5": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.019998453675332484,
+        "lowest_sole_max_cm": 0.472673219457722,
+        "penetration_max_cm": 0.0
+      },
+      "6": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020000352069394878,
+        "lowest_sole_max_cm": 0.35650704039127645,
+        "penetration_max_cm": 0.0
+      },
+      "7": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.019998453707790742,
+        "lowest_sole_max_cm": 0.39979900243660216,
+        "penetration_max_cm": 0.0
+      },
+      "8": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020025230363435953,
+        "lowest_sole_max_cm": 6.688814695951711,
+        "penetration_max_cm": 0.0
+      },
+      "9": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020036604073096598,
+        "lowest_sole_max_cm": 7.291564169547253,
+        "penetration_max_cm": 0.0
+      },
+      "10": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020061238242116808,
+        "lowest_sole_max_cm": 6.073519532025169,
+        "penetration_max_cm": 0.0
+      },
+      "11": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020069766907143682,
+        "lowest_sole_max_cm": 1.8300160588706542,
+        "penetration_max_cm": 0.0
+      },
+      "12": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020048624410686222,
+        "lowest_sole_max_cm": 1.8577748286845703,
+        "penetration_max_cm": 0.0
+      },
+      "13": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020041859301800247,
+        "lowest_sole_max_cm": 1.867338697824621,
+        "penetration_max_cm": 0.0
+      },
+      "14": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020048458053642304,
+        "lowest_sole_max_cm": 5.956328235177142,
+        "penetration_max_cm": 0.0
+      },
+      "15": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020036604512267076,
+        "lowest_sole_max_cm": 6.467389787791396,
+        "penetration_max_cm": 0.0
+      },
+      "16": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020001998463889392,
+        "lowest_sole_max_cm": 5.645749650041484,
+        "penetration_max_cm": 0.0
+      },
+      "17": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.020039519108466464,
+        "lowest_sole_max_cm": 6.807708801953934,
+        "penetration_max_cm": 0.0
+      },
+      "18": {
+        "frames": 144,
+        "failures": 0.0,
+        "sole_min_cm": 0.02004041184814065,
+        "lowest_sole_max_cm": 2.4514116068609204,
+        "penetration_max_cm": 0.0
+      },
+      "19": {
+        "frames": 288,
+        "failures": 0.0,
+        "sole_min_cm": 0.02003832222282298,
+        "lowest_sole_max_cm": 0.020740412666580887,
+        "penetration_max_cm": 0.0
+      },
+      "20": {
+        "frames": 288,
+        "failures": 0.0,
+        "sole_min_cm": 0.02003859558012544,
+        "lowest_sole_max_cm": 0.02074955023168734,
+        "penetration_max_cm": 0.0
+      },
+      "21": {
+        "frames": 288,
+        "failures": 0.0,
+        "sole_min_cm": 0.02004132141539816,
+        "lowest_sole_max_cm": 0.02086242732254584,
+        "penetration_max_cm": 0.0
+      },
+      "22": {
+        "frames": 288,
+        "failures": 0.0,
+        "sole_min_cm": 0.020037633819957046,
+        "lowest_sole_max_cm": 0.020722917527921103,
+        "penetration_max_cm": 0.0
+      },
+      "23": {
+        "frames": 205,
+        "failures": 0.0,
+        "sole_min_cm": 0.020051011443672606,
+        "lowest_sole_max_cm": 6.302494433124598,
+        "penetration_max_cm": 0.0
+      }
+    },
+    "actor_source_yaw_error_deg_max": 1.0000007932831068e-08,
+    "pelvis_reach_offset_cm_max": 0.50391448,
+    "trajectory_reach_offset_cm_max": 0.04026627,
+    "case_notes": {
+      "0-7": "walk forward, front-left, left, back-left, back, back-right, right, front-right",
+      "8-15": "same directions jogging",
+      "16": "walk-jog-walk",
+      "17": "rapid left/right reversal",
+      "18": "direction boundary crossing",
+      "19-22": "90/180/0/-90 native stationary turn",
+      "23": "jog while changing facing"
+    },
+    "planted_sole_height_cm_max": 0.02819931543915033,
+    "walk_lowest_sole_height_cm_max": 0.5203491663908156,
+    "speed_step_cm_max": 7.195170468452674
+  },
+  "evidence": {
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveM4Operations/restoration-record/poses.csv": {
+      "sha256": "4c3b63b2bb92674110f2ab342cecc828cea9a42932dbc08bacbcf86fc6ced9b2",
+      "bytes": 84033472
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveM4Operations/restoration-record/source-poses.csv": {
+      "sha256": "31ee242ff04981f04313f8614395b93778b4a71a0d035343c32805b31562edb6",
+      "bytes": 48435366
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveM4Operations/restoration-record/states.csv": {
+      "sha256": "7560100592ef811a71b21ecfab3b0a79eb1e6b55d065b67fe09187b71f7e4897",
+      "bytes": 1439555
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveM4Operations/restoration-record/audit.json": {
+      "sha256": "12759f01e14d50b313b1180766d12b3d7ef4fc7b96fcc4f38e392ccb1021bf86",
+      "bytes": 6544
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveM4Operations/restoration-record/triangle-intersections.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "active_host_matches": "d56ecf6"
+  },
+  "original_assets_checked": 1252,
+  "original_assets_changed": 0,
+  "note": "The fixed audit-60 output path was regenerated. Prior manifest hashes for its CSV files describe the preceding run, not these files. Historical JSON reports/screenshots and 30/120Hz captures retained."
+}
