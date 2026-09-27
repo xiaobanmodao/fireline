@@ -1,0 +1,7 @@
+{
+  "frames": 391,
+  "position_error_cm_max": 2.4308390061448187e-05,
+  "rotation_error_degrees_max": 3.1154602551613734e-05,
+  "scale_error_max": 4.909196604785393e-09,
+  "scope": "C++ live adaptation versus prior Python registration on the same recorded source poses"
+}

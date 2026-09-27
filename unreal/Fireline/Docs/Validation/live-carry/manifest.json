@@ -1,0 +1,135 @@
+{
+  "scope": "local derived Ryan/DJ live M4 forward candidate; public repo excludes asset and animation binaries",
+  "files": {
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/calibration.json": {
+      "bytes": 128778,
+      "sha256": "dabf6d199112390353de293b38832cfa8b76e34960186d493fb866f75436a39a"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/clearance-fit.json": {
+      "bytes": 1423,
+      "sha256": "fa0838f9d261c9842845ae42cb2f8c0a0906ef1e627393c93ece17cc4b9738a1"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/calibration-60/poses.csv": {
+      "bytes": 13217291,
+      "sha256": "3b4487bb1018d45807a725be7118e8a8057e239bbd60852029734e808289545f"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-30/poses.csv": {
+      "bytes": 6611460,
+      "sha256": "c19524f5e54cd2e1d9bb8db79a314a4489f2c5dff931cbb62c04b2684be0da7b"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-30/states.csv": {
+      "bytes": 66998,
+      "sha256": "7e054df8f55bb1faf6ce23b506357371866987081c52309100caf20aa4e0c261"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-30/audit.json": {
+      "bytes": 1386,
+      "sha256": "8a1dbca45bfd59a5582cae4cd6ed5d24234d5eb508bc4b0c29cac5d2cbb6dac7"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/poses.csv": {
+      "bytes": 13217080,
+      "sha256": "28fa92abd6e1e88dcbb4532df704c3c64eff83720ac11382ab15ed3ff4c157fe"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/states.csv": {
+      "bytes": 133736,
+      "sha256": "0f1a3361a82726f319674254b0e4a20baa2d352062528be601bac91c06d36ffe"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/audit.json": {
+      "bytes": 1386,
+      "sha256": "cc7df9d8d290a840142eac13604574f50295534f4eba6274335a5c18f006a2a3"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-120/poses.csv": {
+      "bytes": 26470829,
+      "sha256": "04f5ef9db3378e00584171c488759f7a068d86e9d534414d70ed24d12fdd0c3d"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-120/states.csv": {
+      "bytes": 267551,
+      "sha256": "eed86c5707015bfae1ae99845d2e0bfc6f503abf3c368db5df5cafb13830cf19"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-120/audit.json": {
+      "bytes": 1390,
+      "sha256": "e438a3a90f9260116253f1631caa2caa0e3b622b6efcb38954ca97559f6d6dc3"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-00.png": {
+      "bytes": 999877,
+      "sha256": "eef3d1a6e1fd16bf23042df7479c26eb8495160b867802962d6e66f223780e90"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-01.png": {
+      "bytes": 982012,
+      "sha256": "d1cae2d2ce78bd03c1b0c0b4b0656f964f33dec6fe18fd5ef137851a12e307fa"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-02.png": {
+      "bytes": 954564,
+      "sha256": "0dba20301a55b8535e8ed37f4b38faa2c853d159c0e48cdec1470b4c52d34c70"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-03.png": {
+      "bytes": 1004617,
+      "sha256": "b99b9374c71a4a7ec244324ed640751ae1ef0f49a4e222dd99a12e8b37096971"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-04.png": {
+      "bytes": 1026621,
+      "sha256": "4a0e662457dbfd5d6fb2a9a78f17395855da02f74dededf79dc6dca90d197900"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-05.png": {
+      "bytes": 971438,
+      "sha256": "b19622a45f3e60956bf29ca722ade91e359dc4914b1c7ae20439edd10d7a072b"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-06.png": {
+      "bytes": 990986,
+      "sha256": "d409126fee8306245c58014e0e222866dfb9f5d3cc9c5fe2f3c2e1f46386db44"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-07.png": {
+      "bytes": 1007675,
+      "sha256": "3a52dec6645ebf9025e7c8c5c03294c7ef15c9b4b5df84a6d5ab2fd839b0f9a9"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-08.png": {
+      "bytes": 1045566,
+      "sha256": "703d66fabc11305f690c79fb749b81c0b1f5038f82278c3a4dc199445d7ab0ca"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-09.png": {
+      "bytes": 982808,
+      "sha256": "914f1c1b26e991990e07afd3a4b310ab9ee3b27ab04f1acb8742fb4926696f0e"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-10.png": {
+      "bytes": 997995,
+      "sha256": "27b9d773a42d5a10d1139651890732db364904a64ba85f152f0fc67f6b1d7270"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-11.png": {
+      "bytes": 1013057,
+      "sha256": "72426382d2ff51cc78029a028e3818ad4f94fd99c2d1393cb977bc88bed30b01"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-12.png": {
+      "bytes": 1035909,
+      "sha256": "55266132563e9ea02d506bf228eb4d1e82c621d98e8bc1e05ce19feaf699b5c9"
+    },
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveCarry/audit-60/shot-13.png": {
+      "bytes": 945867,
+      "sha256": "056fd6dd375ae82150b5ee95551c660074c05d52c14d7945bb1240d3ea694ce2"
+    },
+    "scripts/live_carry_host/FirelineLiveStudy.cpp": {
+      "bytes": 736,
+      "sha256": "46984c815ea9eecb46178abd0e6f905c588f698db82bb51d915d492b36ffd3b7"
+    },
+    "scripts/live_carry_host/LiveCarryStudy.cpp": {
+      "bytes": 15987,
+      "sha256": "27f5cbf339d20b8fe7c1a79e32bfb9ca662f3c873041408ddfecaaf976804f33"
+    },
+    "scripts/live_carry_host/LiveCarryRetarget.h": {
+      "bytes": 1408,
+      "sha256": "e093cf01d485cdf40b06f044d49aeb8cb7a6dbfd89dab3d2d9506b8982ad7c64"
+    },
+    "scripts/live_carry_host/LiveCarryStudy.h": {
+      "bytes": 2068,
+      "sha256": "019c944e7c3b8d2af6f6903075f7e4177ddd7edb39502172c4720ba67b1593b3"
+    },
+    "scripts/live_carry_host/LiveCarryRetarget.cpp": {
+      "bytes": 15736,
+      "sha256": "dda6ee2d91989e7dd215aeb8e83fc4e36ca0c0d2c900f91ea8762ed90f17ecde"
+    }
+  },
+  "fireline_original_assets": {
+    "checked": 1252,
+    "changed": 0
+  },
+  "baseline_changed": false,
+  "visual_acceptance": false
+}

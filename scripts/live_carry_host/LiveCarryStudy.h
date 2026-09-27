@@ -1,0 +1,68 @@
+#pragma once
+#include "Range/RangeGame.h"
+#include "Components/PoseableMeshComponent.h"
+#include "LiveCarryRetarget.h"
+#include "LiveCarryStudy.generated.h"
+
+UCLASS()
+class ULiveCarryMesh : public UPoseableMeshComponent
+{
+    GENERATED_BODY()
+public:
+    void ApplyFrame(const TArray<FTransform>& Local,const TArray<FName>& Names);
+};
+
+// Inherits the existing Fireline capsule and CharacterMovement constructor.
+// Deliberately bypasses weapon/action presentation in this scoped locomotion
+// test so there is only one writer of the displayed full-body pose.
+UCLASS()
+class ALiveCarryPawn : public ARangeCharacter
+{
+    GENERATED_BODY()
+public:
+    ALiveCarryPawn();
+    virtual void BeginPlay() override;
+    virtual void Tick(float Dt) override;
+    virtual void SetupPlayerInputComponent(UInputComponent* Input) override;
+    UPROPERTY() TObjectPtr<ULiveCarryMesh> StudyBody;
+    UPROPERTY() TObjectPtr<ULiveCarryMesh> StudyGun;
+    UPROPERTY() TObjectPtr<class ACameraActor> StudyCamera;
+    bool ForwardRequested=false,Ready=false,Audit=false;
+    float OrbitYaw=0,OrbitPitch=8,OrbitDistance=510;
+    void ForwardDown();
+    void ForwardUp();
+    void OrbitX(float Value);
+    void OrbitY(float Value);
+    void Front(){OrbitYaw=0;}
+    void Right(){OrbitYaw=90;}
+    void Back(){OrbitYaw=180;}
+    void Left(){OrbitYaw=270;}
+    void ResetStudy();
+    void UpdateCamera();
+};
+
+UCLASS()
+class ALiveCarryHUD : public AHUD
+{
+    GENERATED_BODY()
+public:
+    virtual void DrawHUD() override;
+};
+
+class FLiveCarryStudy
+{
+    TWeakObjectPtr<class AAlsCharacter> Source;
+    TWeakObjectPtr<ALiveCarryPawn> Pawn;
+    FLiveCarryRetarget Retarget;
+    TArray<FName> SourceNames;
+    TArray<FTransform> LastLocal,LastComponent;
+    double Start=-1,WarmStart=-1;
+    FVector PawnOrigin,SourceOrigin;
+    int32 Frame=0,Failures=0,Shot=0,FPS=60;
+    bool Finished=false,Audit=false,Parity=false;
+    FString Folder,PoseRows,StateRows;
+    void Record(float Dt,double T);
+public:
+    void Before(class UWorld* World,float Dt);
+    void After(class UWorld* World,float Dt);
+};
