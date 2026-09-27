@@ -1,0 +1,59 @@
+{
+  "frames": 8305,
+  "fps": 120,
+  "source": "same live ALS graph output, not a separate authored clip",
+  "feet": {
+    "L": {
+      "source_target_horizontal_error_cm_max": 9.506982281273228e-08,
+      "target_locked_ankle_speed_max": 66.43389785788673,
+      "source_scaled_locked_ankle_speed_max": 66.33165477927466,
+      "knees": {
+        "target": {
+          "reliable_plane_step_degrees_max": 6.3836183950653576,
+          "reliable_plane_flips_over_90": 0,
+          "minimum_bend_radius_cm": 3.01793329727064
+        },
+        "source": {
+          "reliable_plane_step_degrees_max": 6.311455562398767,
+          "reliable_plane_flips_over_90": 0,
+          "minimum_bend_radius_cm": 5.835580119495495
+        }
+      }
+    },
+    "R": {
+      "source_target_horizontal_error_cm_max": 1.0536527430259395e-07,
+      "target_locked_ankle_speed_max": 105.8426145929716,
+      "source_scaled_locked_ankle_speed_max": 116.5814947962873,
+      "knees": {
+        "target": {
+          "reliable_plane_step_degrees_max": 6.829541474137334,
+          "reliable_plane_flips_over_90": 0,
+          "minimum_bend_radius_cm": 2.6577928107373334
+        },
+        "source": {
+          "reliable_plane_step_degrees_max": 6.854489500385371,
+          "reliable_plane_flips_over_90": 0,
+          "minimum_bend_radius_cm": 5.834796050671236
+        }
+      }
+    }
+  },
+  "turns": {
+    "19": {
+      "final_facing_error_deg": 0.2898665900000026,
+      "time_seconds": 4.791666919999997
+    },
+    "20": {
+      "final_facing_error_deg": 0.2528670499999919,
+      "time_seconds": 4.791666919999997
+    },
+    "21": {
+      "final_facing_error_deg": 1.0347106600000018,
+      "time_seconds": 4.791666920000004
+    },
+    "22": {
+      "final_facing_error_deg": 0.2549339400000008,
+      "time_seconds": 4.791666920000004
+    }
+  }
+}

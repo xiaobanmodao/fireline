@@ -1,0 +1,49 @@
+{
+  "frames": 661,
+  "fps": 60,
+  "sample_step": 1,
+  "failed_poses": 0,
+  "max_speed_cm_s": 201.46476746,
+  "single_capsule_backward_step_cm_min": 0.0,
+  "visual_to_capsule_xy_offset_cm_max": 0.0,
+  "limb_length_error_cm_max": 4.589679747368791e-08,
+  "receiver_relative_grip_error_cm_max": 8.870896305097298e-08,
+  "sole_height_cm_min": [
+    0.020009352273504977,
+    0.020005484576260057
+  ],
+  "lowest_sole_height_cm_max": 0.5898882950665958,
+  "wrist_bend_deg_range": [
+    [
+      19.397131056375517,
+      14.739254501251189
+    ],
+    [
+      30.806185836883117,
+      30.989899640846346
+    ]
+  ],
+  "vertex_chest_intrusion_cm_max": [
+    0.0,
+    0.0
+  ],
+  "joint_step_cm_max": {
+    "LowerArm_L": 1.4610961097520214,
+    "LowerArm_R": 1.6839558480268375,
+    "DJ_wrist_L": 1.7135540685704729,
+    "DJ_wrist_R": 1.4176626801332792,
+    "LowerLeg_L": 4.874765263375948,
+    "LowerLeg_R": 6.58785513109622
+  },
+  "minimum_reach_margin_cm": 0.68349542,
+  "visual_acceptance": false,
+  "scope": "flat floor, forward M4, sustained/short input and interrupted stops; no aim/reload/sideways/air/slide or universal art acceptance",
+  "skinned_sole_correction_cm_max": 2.01538086,
+  "fully_locked_ankle_xy_speed_cm_s_max": 8.484000754571563,
+  "surface_vertex_clearance_cm_min": [
+    1.1144997205390474,
+    0.9618804019654519
+  ],
+  "triangle_clipping_frames": 661,
+  "intersecting_torso_triangles": 0
+}

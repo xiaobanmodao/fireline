@@ -1,0 +1,55 @@
+{
+  "native_checks": [
+    {
+      "fps": 30,
+      "frames": 2077,
+      "pose_failures": 0,
+      "bone_error_max_cm": 5.560746529909011e-08,
+      "grip_error_max_cm": 9.151494121778633e-08,
+      "wrist_max_deg": 37.01060216553604,
+      "planted_sole_max_cm": 0.03856836079249493,
+      "trajectory_body_offset_max_cm": 0.71379045,
+      "torso_triangle_intersections": null
+    },
+    {
+      "fps": 60,
+      "frames": 4153,
+      "pose_failures": 0,
+      "bone_error_max_cm": 5.268282876613739e-08,
+      "grip_error_max_cm": 9.677238460158587e-08,
+      "wrist_max_deg": 36.69193402180671,
+      "planted_sole_max_cm": 0.022462380785870373,
+      "trajectory_body_offset_max_cm": 0.04026378,
+      "torso_triangle_intersections": 0
+    },
+    {
+      "fps": 120,
+      "frames": 8305,
+      "pose_failures": 0,
+      "bone_error_max_cm": 6.235756089267852e-08,
+      "grip_error_max_cm": 9.828986596664984e-08,
+      "wrist_max_deg": 36.72612212562202,
+      "planted_sole_max_cm": 0.024137017202937927,
+      "trajectory_body_offset_max_cm": 0.02399604,
+      "torso_triangle_intersections": null
+    }
+  ],
+  "original_assets_checked": 1252,
+  "original_assets_changed": 0,
+  "original_als_files_checked": 726,
+  "original_als_files_changed": 0,
+  "desktop_entry": "/Users/hht/Desktop/火力对决/测试版·M4多方向走跑.app",
+  "interactive_launch_verified": true,
+  "interactive_window": "LiveCarryProject (64-bit Development SF_METAL_SM6)",
+  "interactive_keys_observed": [
+    "2 side view",
+    "A short taps",
+    "S short tap"
+  ],
+  "visual_acceptance": false,
+  "limitations": [
+    "study only, no first-person or default-game migration",
+    "not zero foot slip or all animation/art acceptance",
+    "no wall/slope, aim, fire, reload, crouch, jump, slide or other weapons"
+  ]
+}

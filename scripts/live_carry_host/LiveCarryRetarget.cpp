@@ -21,6 +21,7 @@ bool FLiveCarryRetarget::Load(const FString& File)
     for(const auto& Item:SR->Values){FName N(*Item.Key);SourceIndex.Add(N,SourceNames.Num());SourceNames.Add(N);SourceBind.Add(Read(Item.Value->AsObject()));}
     LegScale=Root->GetNumberField(TEXT("leg_scale"));Amplitude=Root->GetNumberField(TEXT("amplitude"));
     LiveRightPoleDelta=Root->GetNumberField(TEXT("live_right_pole_delta"));
+    const auto Jog=Root->GetObjectField(TEXT("jog_registration"));JogTranslation=Vec(Jog->GetArrayField(TEXT("chest_translation_cm")));for(int I=0;I<2;++I)JogPole[I]=Jog->GetArrayField(TEXT("elbow_plane_radians"))[I]->AsNumber();
     for(int I=0;I<2;++I)for(const auto& V:Root->GetObjectField(TEXT("sole_points"))->GetArrayField(I==0?TEXT("L"):TEXT("R")))
     {
         TArray<FSoleInfluence> Point;
@@ -84,7 +85,24 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
     for(int I=0;I<Names.Num();++I){if(Names[I].ToString().StartsWith(TEXT("M4_")))P[I]=Hold[I].GetRelativeTransform(Hold[Index(TEXT("DJ_wrist_R"))])*P[Index(TEXT("DJ_wrist_R"))];if(Names[I]!=TEXT("RyanRig")&&Names[I]!=TEXT("Root"))P[I].AddToTranslation(FVector(0,0,FloorShift));}
     // Weapon raw coordinates aren't used by the registration; the common hold
     // assembly below reconstructs every M4 part from the same transform.
-    MinReachMargin=1.e6;
+    MinReachMargin=1.e6;TrajectoryReachOffset=0;
+    if(CompensateReach)
+    {
+        // Different hip spread/segment ratios can put a mapped swing ankle a
+        // few millimetres beyond the target leg's reach. Preserve its authored
+        // horizontal path and bring the entire pelvis/body down by the exact
+        // feasibility deficit before solving either leg; never stretch a bone.
+        for(const FString Side:{FString(TEXT("L")),FString(TEXT("R"))})
+        {
+            const int U=Index(TEXT("UpperLeg_")+Side),E=Index(TEXT("LowerLeg_")+Side),F=Index(TEXT("Foot_")+Side);
+            const FVector Target=Bind[U].GetTranslation()+(SP(TEXT("foot_")+Side.ToLower()).GetTranslation()-SB(TEXT("thigh_")+Side.ToLower()).GetTranslation())*LegScale+FVector(0,0,FloorShift);
+            const FVector Hip=P[U].GetTranslation();const double Reach=(Bind[E].GetTranslation()-Bind[U].GetTranslation()).Size()+(Bind[F].GetTranslation()-Bind[E].GetTranslation()).Size()-.15;
+            const double XY=FVector::DistSquared2D(Hip,Target);if(XY>=Reach*Reach)return false;
+            TrajectoryReachOffset=FMath::Max(TrajectoryReachOffset,Hip.Z-Target.Z-FMath::Sqrt(Reach*Reach-XY));
+        }
+        if(TrajectoryReachOffset>2)return false;
+        for(int I=0;I<P.Num();++I)if(Names[I]!=TEXT("RyanRig")&&Names[I]!=TEXT("Root"))P[I].AddToTranslation(FVector(0,0,-TrajectoryReachOffset));
+    }
     for(const FString Side:{FString(TEXT("L")),FString(TEXT("R"))})
     {
         const FString Low=Side.ToLower();const int U=Index(TEXT("UpperLeg_")+Side),E=Index(TEXT("LowerLeg_")+Side),F=Index(TEXT("Foot_")+Side);
@@ -98,20 +116,31 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
     FQuat Q,Chest;FVector C;Assembly(P,Q,C,Chest);
     Q=(Chest*FitRotation*FQuat::Slerp(AssemblyZero,Q,Amplitude)).GetNormalized();C=P[Index(TEXT("Chest"))].GetTranslation()+Chest.RotateVector(CenterZero+(C-CenterZero)*Amplitude+FitTranslation);
     auto Transfer=[&](int I){return FTransform((Q*Hold[I].GetRotation()).GetNormalized(),C+Q.RotateVector(Hold[I].GetTranslation()-HoldMid),Hold[I].GetScale3D());};
+    const FVector JogDelta=Chest.RotateVector(JogTranslation*JogBlend);
     int SideIndex=0;
     for(const FString Side:{FString(TEXT("L")),FString(TEXT("R"))})
     {
-        const int U=Index(TEXT("UpperArm_")+Side),E=Index(TEXT("LowerArm_")+Side),W=Index(TEXT("DJ_wrist_")+Side);const FVector Shoulder=P[U].GetTranslation(),Elbow=P[E].GetTranslation();const FTransform Target=Transfer(W);
+        const int U=Index(TEXT("UpperArm_")+Side),E=Index(TEXT("LowerArm_")+Side),W=Index(TEXT("DJ_wrist_")+Side);const FVector Shoulder=P[U].GetTranslation(),Elbow=P[E].GetTranslation();FTransform Target=Transfer(W);
         const double A=(Bind[E].GetTranslation()-Bind[U].GetTranslation()).Size(),B=(Bind[W].GetTranslation()-Bind[E].GetTranslation()).Size();FVector NE;
-        const double Pole=PoleAngles[SideIndex]+(LiveClearance&&SideIndex==1?LiveRightPoleDelta:0);++SideIndex;
+        const double Pole=PoleAngles[SideIndex]+(LiveClearance&&SideIndex==1?LiveRightPoleDelta:0);
         if(!TwoBone(Shoulder,Elbow,Target.GetTranslation(),A,B,Pole,NE))return false;
+        FQuat UpperRotation=(Between(Elbow-Shoulder,NE-Shoulder)*P[U].GetRotation()).GetNormalized();
+        if(JogBlend>0)
+        {
+            // Solve the common contact registration using the already registered
+            // source elbow as guide; output the chain once, with unchanged bind.
+            const FVector BaselineElbow=NE;Target.AddToTranslation(JogDelta);
+            if(!TwoBone(Shoulder,BaselineElbow,Target.GetTranslation(),A,B,JogPole[SideIndex]*JogBlend,NE))return false;
+            UpperRotation=(Between(BaselineElbow-Shoulder,NE-Shoulder)*UpperRotation).GetNormalized();
+        }
+        ++SideIndex;
         const FQuat Hand=Target.GetRotation()*Bind[W].GetRotation().Inverse();const FVector Natural=Hand.RotateVector((Bind[W].GetTranslation()-Bind[E].GetTranslation()).GetSafeNormal());const FQuat DQ=Between(Natural,Target.GetTranslation()-NE)*Hand;
-        P[U].SetRotation((Between(Elbow-Shoulder,NE-Shoulder)*P[U].GetRotation()).GetNormalized());
+        P[U].SetRotation(UpperRotation);
         for(int I:{E,Index(TEXT("DJ_forearm_")+Side)})P[I]=FTransform((DQ*Bind[I].GetRotation()).GetNormalized(),NE+DQ.RotateVector(Bind[I].GetTranslation()-Bind[E].GetTranslation()),Bind[I].GetScale3D());
-        for(int I=0;I<Names.Num();++I)if(IsBelow(I,W))P[I]=Transfer(I);
+        for(int I=0;I<Names.Num();++I)if(IsBelow(I,W)){P[I]=Transfer(I);P[I].AddToTranslation(JogDelta);}
         MinReachMargin=FMath::Min(MinReachMargin,A+B-(Target.GetTranslation()-Shoulder).Size());
     }
-    for(int I=0;I<Names.Num();++I)if(Names[I].ToString().StartsWith(TEXT("M4_")))P[I]=Transfer(I);
+    for(int I=0;I<Names.Num();++I)if(Names[I].ToString().StartsWith(TEXT("M4_"))){P[I]=Transfer(I);P[I].AddToTranslation(JogDelta);}
     Local.SetNum(P.Num());for(int I=0;I<P.Num();++I){P[I].NormalizeRotation();Local[I]=Parents[I]>=0?P[I].GetRelativeTransform(P[Parents[I]]):P[I];if(Local[I].ContainsNaN())return false;}
     return true;
 }
@@ -122,6 +151,7 @@ bool FLiveCarryRetarget::PlaceSoles(double LeftLock,double RightLock,TArray<FTra
     // curves, then solve only the target leg against its actual skinned sole.
     // Swing keeps its authored path except for preventing ground penetration.
     MaxSoleCorrection=0;
+    if(!InReachPass)PelvisReachOffset=0;
     for(int Side=0;Side<2;++Side)
     {
         const FString S=Side==0?TEXT("L"):TEXT("R");const int U=TargetIndex.FindChecked(FName(*(TEXT("UpperLeg_")+S))),E=TargetIndex.FindChecked(FName(*(TEXT("LowerLeg_")+S))),F=TargetIndex.FindChecked(FName(*(TEXT("Foot_")+S)));
@@ -150,6 +180,24 @@ bool FLiveCarryRetarget::PlaceSoles(double LeftLock,double RightLock,TArray<FTra
             if(!Solve(High,Trial))return false;
         }
         MaxSoleCorrection=FMath::Max(MaxSoleCorrection,FMath::Abs(Trial[F].GetTranslation().Z-Ankle.Z));P=MoveTemp(Trial);
+    }
+    if(CompensateReach&&!InReachPass)
+    {
+        double Offset=0;
+        for(int Side=0;Side<2;++Side)if((Side==0?LeftLock:RightLock)>.999)
+        {
+            double Sole=1.e9;for(const auto& Point:SolePoints[Side]){double Z=0;for(const auto& Inf:Point)Z+=P[Inf.Bone].TransformPosition(Inf.Local).Z*Inf.Weight;Sole=FMath::Min(Sole,Z);}
+            Offset=FMath::Max(Offset,Sole+.68);
+        }
+        if(Offset>.02)
+        {
+            // A planted target boot cannot reach the floor near extension.
+            // Move the full pelvis/body chain down by the measured deficit,
+            // then re-place both feet at unchanged limb lengths. Never stretch.
+            if(Offset>1)return false;
+            PelvisReachOffset=Offset;for(int I=0;I<P.Num();++I)if(Names[I]!=TEXT("RyanRig")&&Names[I]!=TEXT("Root"))P[I].AddToTranslation(FVector(0,0,-Offset));
+            const double Previous=MaxSoleCorrection;InReachPass=true;const bool Valid=PlaceSoles(LeftLock,RightLock,Local,P);InReachPass=false;MaxSoleCorrection=FMath::Max(Previous,MaxSoleCorrection);return Valid;
+        }
     }
     for(int I=0;I<P.Num();++I)Local[I]=Parents[I]>=0?P[I].GetRelativeTransform(P[Parents[I]]):P[I];
     return true;

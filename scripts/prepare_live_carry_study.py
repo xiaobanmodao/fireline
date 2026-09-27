@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,csv,gzip,hashlib,json,shutil,subprocess,plistlib
 ROOT=Path(__file__).resolve().parents[1]
 ENGINE=Path('/Users/Shared/Epic Games/UE_5.8')
-p=argparse.ArgumentParser();p.add_argument('--build',action='store_true');p.add_argument('--install',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--build',action='store_true');p.add_argument('--install',action='store_true');p.add_argument('--directional',action='store_true');a=p.parse_args()
 research=ROOT/'unreal/Fireline/Saved/MatureMotionResearch';old=research/'ReferenceProject';project=research/'LiveCarryProject';source=research/'ALS-Refactored-b754d6f0f2bb03741d301f8fb88077ebfe561e17'
 assert old.is_dir() and source.is_dir(),'Prepare the pinned source/proportion review first'
 for d in ['Source/FirelineLiveStudy','Plugins','Content','Config','Saved/LiveCarry']:(project/d).mkdir(parents=True,exist_ok=True)
@@ -17,7 +17,7 @@ for f in (ROOT/'scripts/live_carry_host').iterdir():shutil.copyfile(f,module/f.n
 public class FirelineLiveStudy : ModuleRules {
  public FirelineLiveStudy(ReadOnlyTargetRules Target) : base(Target) {
  PCHUsage=PCHUsageMode.UseExplicitOrSharedPCHs;
- PublicDependencyModuleNames.AddRange(new string[]{"Core","CoreUObject","Engine","Fireline","ALS","GameplayTags","InputCore","UMG","EnhancedInput","Json"});
+ PublicDependencyModuleNames.AddRange(new string[]{"Core","CoreUObject","Engine","Fireline","ALS","GameplayTags","InputCore","UMG","EnhancedInput","Json","AnimGraphRuntime"});
  }
 }
 ''')
@@ -63,21 +63,28 @@ assert hashlib.sha256((d/'target.json').read_bytes()).hexdigest()==clearance_fit
 for filename,expected in clearance_fit['target_surface_sha256'].items():
  assert hashlib.sha256((d/filename).read_bytes()).hexdigest()==expected,'Derived surface changed; revalidate clearance first: '+filename
 calibration['live_right_pole_delta']=clearance_fit['right_elbow_pole_delta_radians']
+jog_fit=json.loads((ROOT/'unreal/Fireline/Docs/Validation/live-directional/jog-fit.json').read_text())
+assert jog_fit['target_reference_sha256']==clearance_fit['target_reference_sha256']
+calibration['jog_registration']=jog_fit
 (project/'Saved/LiveCarry/calibration.json').write_text(json.dumps(calibration))
 for n in ['source.bin','source-bones.txt']:shutil.copyfile(r/n,project/'Saved/LiveCarry'/n)
-if a.build:subprocess.run([str(ENGINE/'Engine/Build/BatchFiles/Mac/Build.sh'),'FirelineLiveStudyEditor','Mac','Development',str(uproject),'-MaxParallelActions=2','-WaitMutex'],check=True)
+if a.build:subprocess.run([str(ENGINE/'Engine/Build/BatchFiles/Mac/Build.sh'),'FirelineLiveStudyEditor','Mac','Development',str(uproject),'-MaxParallelActions=2','-WaitMutex','-NoHotReloadFromIDE'],check=True)
 if a.install:
- app=Path.home()/'UnrealBuilds/Fireline/Launchers/FirelineLiveCarryStudy.app';contents=app/'Contents'
+ app=Path.home()/'UnrealBuilds/Fireline/Launchers'/('FirelineDirectionalStudy.app' if a.directional else 'FirelineLiveCarryStudy.app');contents=app/'Contents'
  for n in ['MacOS','Resources']:(contents/n).mkdir(parents=True,exist_ok=True)
  settings={'Candidate':'Input-driven M4 forward start-stop; derived Ryan/DJ; live original ALS graph; isolated study', 'Editor':str(ENGINE/'Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor'),'Arguments':[str(uproject),'/ALS/ALSExtras/Levels/L_Als_Playground','-game','-windowed','-ResX=1280','-ResY=800','-nosound','-ExecCmds=t.MaxFPS 60,sg.ShadowQuality 0,sg.GlobalIlluminationQuality 0,sg.ReflectionQuality 0']}
  info={'CFBundleExecutable':'FirelineStudyLauncher','CFBundleIdentifier':'local.fireline.live-carry-study','CFBundleName':'测试版·M4实时起停','CFBundlePackageType':'APPL','CFBundleVersion':'1','LSUIElement':True,'NSHighResolutionCapable':True}
+ if a.directional:
+  settings['Candidate']='M4 eight-direction walk/jog and native ALS turns; isolated derived Ryan/DJ study'
+  settings['Arguments'].append('-LiveCarryDirectional')
+  info.update(CFBundleIdentifier='local.fireline.directional-study',CFBundleName='测试版·M4多方向走跑')
  for n,v in [('Info.plist',info),('Resources/Study.plist',settings)]:
   with (contents/n).open('wb') as f:plistlib.dump(v,f)
  text=(ROOT/'scripts/LatestStudyLauncher.m').read_text().replace('Bringing World /Game/Fireline/Maps/FirelineRange.FirelineRange up for play','LIVE_CARRY_READY').replace('[log containsString:@"Failed to enter /Game/"]','([log containsString:@"Failed to enter /ALS/"] || [log containsString:@"LIVE_CARRY_INIT_FAILED"])')
  launcher=project/'Saved/LiveCarry/Launcher.m';launcher.write_text(text)
  subprocess.run(['xcrun','clang','-fobjc-arc','-framework','Cocoa',str(launcher),'-o',str(contents/'MacOS/FirelineStudyLauncher')],check=True)
  subprocess.run(['codesign','--force','--sign','-',str(app)],check=True)
- link=Path.home()/'Desktop/火力对决/测试版·M4实时起停.app'
+ link=Path.home()/'Desktop/火力对决'/('测试版·M4多方向走跑.app' if a.directional else '测试版·M4实时起停.app')
  if not link.exists():link.symlink_to(app,target_is_directory=True)
  assert link.resolve()==app.resolve();print(link)
 print(uproject)

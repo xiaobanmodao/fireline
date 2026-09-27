@@ -12,6 +12,8 @@ class FLiveCarryRetarget
     FQuat AssemblyZero;
     FVector CenterZero,HoldMid,HoldSpan,FitTranslation;
     FQuat FitRotation;
+    FVector JogTranslation=FVector::ZeroVector;
+    double JogPole[2]{};
     double PoleAngles[2]{},FloorShift=0,Amplitude=.55,LiveRightPoleDelta=0;
     struct FSoleInfluence { int32 Bone; double Weight; FVector Local; };
     TArray<TArray<FSoleInfluence>> SolePoints[2];
@@ -22,6 +24,11 @@ public:
     TArray<FName> Names;
     double LegScale=1,MinReachMargin=0;
     double MaxSoleCorrection=0;
+    double JogBlend=0,PelvisReachOffset=0,TrajectoryReachOffset=0;
+    bool CompensateReach=false;
+private:
+    bool InReachPass=false;
+public:
     bool Load(const FString& File);
     bool Evaluate(const TArray<FTransform>& Source,const TArray<FName>& SourceOrder,TArray<FTransform>& Local,TArray<FTransform>& Component,bool LiveClearance);
     bool PlaceSoles(double LeftLock,double RightLock,TArray<FTransform>& Local,TArray<FTransform>& Component);

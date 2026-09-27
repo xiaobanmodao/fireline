@@ -1,0 +1,220 @@
+{
+  "frames": 3541,
+  "fps": 60,
+  "failed_poses": 0,
+  "max_speed_cm_s": 431.71020508,
+  "single_capsule_backward_step_cm_min": -7.195170460000099,
+  "visual_to_capsule_xy_offset_cm_max": 0.0,
+  "limb_length_error_cm_max": 5.3372090746961476e-08,
+  "receiver_relative_grip_error_cm_max": 8.837943476867085e-08,
+  "sole_height_cm_min": [
+    0.019999545844649247,
+    0.020000707192898814
+  ],
+  "lowest_sole_height_cm_max": 5.859412468141131,
+  "wrist_bend_deg_range": [
+    [
+      17.184682482172043,
+      14.582383231587244
+    ],
+    [
+      33.24584798158747,
+      33.1901071638954
+    ]
+  ],
+  "vertex_chest_intrusion_cm_max": [
+    1.6213834079463076,
+    4.376545762672784
+  ],
+  "joint_step_cm_max": {
+    "LowerArm_L": 4.796476574826216,
+    "LowerArm_R": 4.67623937780871,
+    "DJ_wrist_L": 4.729547348047892,
+    "DJ_wrist_R": 4.658390138950159,
+    "LowerLeg_L": 11.330924002761892,
+    "LowerLeg_R": 8.944865445505261
+  },
+  "minimum_reach_margin_cm": 0.36043221,
+  "visual_acceptance": false,
+  "scope": "M4 flat-floor eight-direction walk/jog, reversal, speed change, directional boundaries and native turn-in-place; no action/air/slope acceptance",
+  "skinned_sole_correction_cm_max": 9.69604492,
+  "fully_locked_ankle_xy_speed_cm_s_max": null,
+  "surface_vertex_clearance_cm_min": [
+    -1.6213834079463076,
+    -4.376545762672784
+  ],
+  "triangle_clipping_frames": 3541,
+  "intersecting_torso_triangles": 253700,
+  "cases": {
+    "0": {
+      "frames": 204,
+      "failures": 0.0,
+      "sole_min_cm": 0.02000966614388744,
+      "lowest_sole_max_cm": 1.1403462830958095,
+      "penetration_max_cm": 0.0
+    },
+    "1": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02000681987174391,
+      "lowest_sole_max_cm": 1.2097236670014069,
+      "penetration_max_cm": 0.0
+    },
+    "2": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.019999545844649247,
+      "lowest_sole_max_cm": 0.49745560874354267,
+      "penetration_max_cm": 0.0
+    },
+    "3": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02001058176904913,
+      "lowest_sole_max_cm": 0.9855587605600625,
+      "penetration_max_cm": 0.0
+    },
+    "4": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020010085573203162,
+      "lowest_sole_max_cm": 0.9711979673239405,
+      "penetration_max_cm": 0.0
+    },
+    "5": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020031282006902074,
+      "lowest_sole_max_cm": 1.4145224677726742,
+      "penetration_max_cm": 0.0
+    },
+    "6": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020002026643490267,
+      "lowest_sole_max_cm": 0.30470798428395474,
+      "penetration_max_cm": 0.0
+    },
+    "7": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020003317829202172,
+      "lowest_sole_max_cm": 1.25800541969542,
+      "penetration_max_cm": 0.0
+    },
+    "8": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02000244839633969,
+      "lowest_sole_max_cm": 4.362270036934951,
+      "penetration_max_cm": 4.2348986978722465
+    },
+    "9": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02004078217393035,
+      "lowest_sole_max_cm": 4.461692413739672,
+      "penetration_max_cm": 4.376545762672784
+    },
+    "10": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020052961278695935,
+      "lowest_sole_max_cm": 5.859412468141131,
+      "penetration_max_cm": 2.6654529206302335
+    },
+    "11": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020037155917583482,
+      "lowest_sole_max_cm": 3.289738733932244,
+      "penetration_max_cm": 2.2988217406074254
+    },
+    "12": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020044678625896317,
+      "lowest_sole_max_cm": 2.3550090230838037,
+      "penetration_max_cm": 2.111132345006048
+    },
+    "13": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02005078108792835,
+      "lowest_sole_max_cm": 2.6508317221833813,
+      "penetration_max_cm": 2.5105489168927733
+    },
+    "14": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003775957973608,
+      "lowest_sole_max_cm": 5.746865378357303,
+      "penetration_max_cm": 2.3964669361409854
+    },
+    "15": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.0200540550964059,
+      "lowest_sole_max_cm": 4.459113504085628,
+      "penetration_max_cm": 3.9496686887573773
+    },
+    "16": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020023571343604996,
+      "lowest_sole_max_cm": 4.38482910827349,
+      "penetration_max_cm": 4.026733061294106
+    },
+    "17": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003815816890364,
+      "lowest_sole_max_cm": 1.3245236977298511,
+      "penetration_max_cm": 1.7408886279528843
+    },
+    "18": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020038537842790416,
+      "lowest_sole_max_cm": 0.22361169604137954,
+      "penetration_max_cm": 0.0
+    },
+    "19": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003893243084298,
+      "lowest_sole_max_cm": 0.02079517210223203,
+      "penetration_max_cm": 0.0
+    },
+    "20": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02004035397941728,
+      "lowest_sole_max_cm": 0.020789260971882606,
+      "penetration_max_cm": 0.0
+    },
+    "21": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020037508736480025,
+      "lowest_sole_max_cm": 0.020673611059465302,
+      "penetration_max_cm": 0.0
+    },
+    "22": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02004321780131446,
+      "lowest_sole_max_cm": 0.021096140994283363,
+      "penetration_max_cm": 0.0
+    },
+    "23": {
+      "frames": 169,
+      "failures": 0.0,
+      "sole_min_cm": 0.02004950065504596,
+      "lowest_sole_max_cm": 4.812245086142685,
+      "penetration_max_cm": 3.3623214119141807
+    }
+  },
+  "actor_source_yaw_error_deg_max": 1.0000007932831068e-08,
+  "speed_step_cm_max": 7.195170468452674
+}

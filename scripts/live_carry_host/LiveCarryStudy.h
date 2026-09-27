@@ -28,15 +28,23 @@ public:
     UPROPERTY() TObjectPtr<ULiveCarryMesh> StudyGun;
     UPROPERTY() TObjectPtr<class ACameraActor> StudyCamera;
     bool ForwardRequested=false,Ready=false,Audit=false;
+    bool Directional=false,JogRequested=false;
+    float FacingYaw=0,LegScale=1;
+    FVector MoveRequested=FVector::ZeroVector;
+    int Scenario=0;
     float OrbitYaw=0,OrbitPitch=8,OrbitDistance=510;
     void ForwardDown();
     void ForwardUp();
+    void LeftDown();
+    void RightDown();
+    void BackDown();
+    void RequestTap(const FVector& Direction);
     void OrbitX(float Value);
     void OrbitY(float Value);
-    void Front(){OrbitYaw=0;}
-    void Right(){OrbitYaw=90;}
-    void Back(){OrbitYaw=180;}
-    void Left(){OrbitYaw=270;}
+    void Front(){OrbitYaw=0+(Directional?GetActorRotation().Yaw:0);}
+    void Right(){OrbitYaw=90+(Directional?GetActorRotation().Yaw:0);}
+    void Back(){OrbitYaw=180+(Directional?GetActorRotation().Yaw:0);}
+    void Left(){OrbitYaw=270+(Directional?GetActorRotation().Yaw:0);}
     void ResetStudy();
     void UpdateCamera();
 };
@@ -60,8 +68,12 @@ class FLiveCarryStudy
     FVector PawnOrigin,SourceOrigin;
     int32 Frame=0,Failures=0,Shot=0,FPS=60;
     bool Finished=false,Audit=false,Parity=false;
-    FString Folder,PoseRows,StateRows;
+    bool Directional=false;
+    FString Folder,PoseRows,StateRows,SourceRows;
     void Record(float Dt,double T);
+    void DirectionalInput(class UWorld* World,float Dt,double Time);
+    double DirectionalJogWeight();
+    void DirectionalSource(class AAlsCharacter* Character,ALiveCarryPawn* Player,float Dt);
 public:
     void Before(class UWorld* World,float Dt);
     void After(class UWorld* World,float Dt);

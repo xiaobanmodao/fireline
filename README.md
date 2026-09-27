@@ -6,7 +6,7 @@ UE 5.8 桌面 FPS。当前开发基线：**手柄阶段重建基线** `gamepad-r
 
 ## 范围
 
-最新独立动作候选：桌面「火力对决／**测试版·M4实时起停.app**」。W前走、松开停步，鼠标环绕，1–4观察方向，R回到起点。使用当前比例模型与实时完整动作图，只覆盖M4平地前向起停；已完成30/60/120Hz姿态检查，等待视觉评价。不是默认游戏更新。见 [验证记录](unreal/Fireline/Docs/Validation/live-carry/README.md) 与 [后续顺序](unreal/Fireline/Docs/NEXT_DEVELOPMENT.md)。
+最新独立动作候选：桌面「火力对决／**测试版·M4多方向走跑.app**」。WASD移动、Shift慢跑、Q/E改变朝向，鼠标环绕，1–4观察方向，R回到起点。原ALS完整图驱动八方向与转身，保留当前比例模型和M4双手接触；仅M4平地无操作测试，等待视觉评价。不是默认游戏更新。前向起停入口保留。见 [验证记录](unreal/Fireline/Docs/Validation/live-directional/README.md) 与 [后续顺序](unreal/Fireline/Docs/NEXT_DEVELOPMENT.md)。
 
 - 保留原片四方向起停、侧步／足底与枪托修正、既有 M4/MP7/爪刀和手柄输入。
 - 固定配置在 `baseline.json`。MatchedGround、CombatGround、SourceBody、SideJog、Pivot 均关闭。
