@@ -9,3 +9,5 @@ Use the fixed flags in baseline.json. MatchedGround/CombatGround/SourceBody/Side
 Keep changes small, evidence-based and separately committed. After two failed approaches reassess. Actual visual playback is required; numeric tests are not art acceptance. Paid actions are not authorized. Subagents only GPT-6 Sol medium, high for complex bounded work; initially at most one. Do not publish third-party binaries in this public repository. Content is separately held locally and hash-manifested. Formal 0.1.10 and historical work remain in the old project; never overwrite/delete them.
 
 Every playable delivery needs the exact .app entry, how to launch and what to test. Never describe a launcher pointing at mutable shared source as a frozen historical version.
+
+2026-09-27 CarryBase: baseline.json enables FirelineCarryBaseStudy to preserve evaluated root/pelvis/legs under ContactCarry and attach the complete upper branch and common weapon/hand anchor together. See Docs/Validation/carry-layer-ownership. Scoped layer ownership fix, not universal posture acceptance. Stage 6 is the existing adapted Contact clip, NOT raw donor. Preserve source assets and rejected flags.

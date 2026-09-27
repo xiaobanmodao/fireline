@@ -25,6 +25,10 @@ struct FRangeContactCarry
  FVector Forward=FVector::YAxisVector,Right=-FVector::XAxisVector;
  TArray<UAnimSequence*> Clips;
  TArray<FTransform> Bind,Native;
+ // Read-only diagnostic taps; no additional animation evaluation.
+ bool TraceEnabled=false,PreserveLocomotionBase=false;
+ TArray<int32> TraceIndices;
+ TArray<FTransform> ClipTrace,RegisteredTrace,TargetTrace;
  TArray<int32> Parents;
  int Torso=-1,Chest=-1,Neck=-1,Head=-1,RightWrist=-1;
  struct FArm {int Upper,Elbow,Helper,Wrist,Middle;};

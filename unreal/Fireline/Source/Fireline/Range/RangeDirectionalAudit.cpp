@@ -47,7 +47,7 @@ void ARangeCharacter::StartDirectionalAudit()
   const bool GaitStudy=KneeStudy||FParse::Param(FCommandLine::Get(),TEXT("FirelineGaitContinuityStudy"));
   const bool LegStudy=GaitStudy||FParse::Param(FCommandLine::Get(),TEXT("FirelineLegDirectionStudy"));
   const bool BodyStudy=LegStudy||FParse::Param(FCommandLine::Get(),TEXT("FirelineBodyCoordinationStudy"));
-  const int GroupLimit=FParse::Param(FCommandLine::Get(),TEXT("FirelineCombatPostureAudit"))?40:FParse::Param(FCommandLine::Get(),TEXT("FirelineWalkHoldAudit"))?56:FParse::Param(FCommandLine::Get(),TEXT("FirelineRunFireAudit"))?52:FParse::Param(FCommandLine::Get(),TEXT("FirelineReadyAudit"))?44:FParse::Param(FCommandLine::Get(),TEXT("FirelineArmedMovementAudit"))?40:Boundary?48:Trace?24:20;
+  const int GroupLimit=FParse::Param(FCommandLine::Get(),TEXT("FirelineCarryLoopAudit"))?3:FParse::Param(FCommandLine::Get(),TEXT("FirelineCombatPostureAudit"))?40:FParse::Param(FCommandLine::Get(),TEXT("FirelineWalkHoldAudit"))?56:FParse::Param(FCommandLine::Get(),TEXT("FirelineRunFireAudit"))?52:FParse::Param(FCommandLine::Get(),TEXT("FirelineReadyAudit"))?44:FParse::Param(FCommandLine::Get(),TEXT("FirelineArmedMovementAudit"))?40:Boundary?48:Trace?24:20;
   const bool ContactStudy=FParse::Param(FCommandLine::Get(),TEXT("FirelineContactPhaseStudy"));
   const bool StrideStudy=FParse::Param(FCommandLine::Get(),TEXT("FirelineStrideCoverageStudy"));
   check(!Boundary||(Trace&&(StrideStudy||BodyStudy)));
@@ -75,6 +75,7 @@ void ARangeCharacter::StartDirectionalAudit()
    int Stage=0;for(const auto* Poses:{&T.Ground,&T.Mobility,&T.Layered,&T.Final})
    {for(int I=0;I<Poses->Num();++I)Write(Stage,RangePoseTrace::Bones[I],(*Poses)[I]);++Stage;}
    for(FName Bone:RangePoseTrace::Bones)Write(4,Bone,GetMesh()->GetSocketTransform(Bone,RTS_Component));
+   Stage=5;for(const auto* Poses:{&T.BodySolved,&T.ContactClip,&T.ContactRegistered,&T.ContactTargets}){for(int I=0;I<Poses->Num();++I)Write(Stage,RangePoseTrace::Bones[I],(*Poses)[I]);++Stage;}
    const FVector Metrics=Anim->GetBodyPoseAuditMetrics();
    for(const TCHAR* Bone:{TEXT("UpperArm_L"),TEXT("LowerArm_L"),TEXT("DJ_wrist_L"),TEXT("DJ_middle_01_L"),TEXT("UpperArm_R"),TEXT("LowerArm_R"),TEXT("DJ_wrist_R"),TEXT("DJ_middle_01_R"),bMP7?TEXT("MP7_rearsight"):TEXT("M4_rearsight"),bMP7?TEXT("MP7_frontsight"):TEXT("M4_frontsight")})
    {

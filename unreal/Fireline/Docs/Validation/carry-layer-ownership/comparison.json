@@ -1,0 +1,71 @@
+{
+  "before": {
+    "carry_lower_body_change_max_cm": 111.83912697922226,
+    "render_trace_position_error_max_cm": 1.0000000003174137e-05,
+    "contact_error_max_cm": 0.0,
+    "wrist_constraint_angle_max_deg": 32.352473,
+    "forearm_length_solver_error_max_cm": 0.0,
+    "rendered_segment_length_ranges_cm": {
+      "upper_L": [
+        29.262430064781018,
+        29.26245132556738
+      ],
+      "forearm_L": [
+        29.355250569995146,
+        29.35527258159937
+      ],
+      "upper_R": [
+        29.26243026650042,
+        29.262451427074588
+      ],
+      "forearm_R": [
+        28.132896794231836,
+        28.132917493580365
+      ]
+    },
+    "evaluated_frames": 358
+  },
+  "after": {
+    "carry_lower_body_change_max_cm": 1.0000000003174137e-05,
+    "render_trace_position_error_max_cm": 1.000000000139778e-05,
+    "contact_error_max_cm": 0.0,
+    "wrist_constraint_angle_max_deg": 32.35594,
+    "forearm_length_solver_error_max_cm": 0.0,
+    "rendered_segment_length_ranges_cm": {
+      "upper_L": [
+        29.26242706007997,
+        29.262451479457425
+      ],
+      "forearm_L": [
+        29.35525270947774,
+        29.355274488447556
+      ],
+      "upper_R": [
+        29.26242892844168,
+        29.26245024486843
+      ],
+      "forearm_R": [
+        28.132895983225758,
+        28.132917738922853
+      ]
+    },
+    "evaluated_frames": 358
+  },
+  "stage_names": {
+    "0": "ground blend including authored transitions",
+    "1": "mobility",
+    "2": "upper action layers",
+    "3": "final pose after foot solve",
+    "4": "rendered skeletal component",
+    "5": "body solve",
+    "6": "existing Contact clip blend before runtime registration (NOT raw donor)",
+    "7": "carry registration onto body",
+    "8": "hand/weapon targets before final elbow solve"
+  },
+  "notes": [
+    "Distances are skeletal component centimetres; surface collision is not measured.",
+    "Joint lengths do not by themselves establish anatomy or art acceptance."
+  ],
+  "matched_view_frames": 358,
+  "first_person_component_feedback_max_delta": 0.0
+}

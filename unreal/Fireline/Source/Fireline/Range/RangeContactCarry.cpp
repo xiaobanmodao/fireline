@@ -1,4 +1,5 @@
 #include "RangeContactCarry.h"
+#include "RangeAnimInstance.h"
 #include "RangeStockContact.h"
 #include "Animation/AnimSequence.h"
 #include "Animation/AnimationPoseData.h"
@@ -40,6 +41,9 @@ void FRangeContactCarry::Initialize(USkeletalMeshComponent* Mesh,const TArray<UA
  const auto& R=Mesh->GetSkeletalMeshAsset()->GetRefSkeleton();Bind=R.GetRefBonePose();Native=Hold;
  if(Native.Num()!=Bind.Num())return;
  for(int I=0;I<Bind.Num();++I){Parents.Add(R.GetParentIndex(I));if(Parents[I]>=0)Bind[I]*=Bind[Parents[I]];}
+ PreserveLocomotionBase=FParse::Param(FCommandLine::Get(),TEXT("FirelineCarryBaseStudy"));
+ TraceEnabled=FParse::Param(FCommandLine::Get(),TEXT("FirelineFullBodyTrace"));
+ TraceIndices.Reset();if(TraceEnabled)for(FName Name:RangePoseTrace::Bones)TraceIndices.Add(R.FindBoneIndex(Name));
  Rear=R.FindBoneIndex(TEXT("M4_rearsight"));Front=R.FindBoneIndex(TEXT("M4_frontsight"));SightUp=R.FindBoneIndex(TEXT("M4_sightup"));
  Torso=R.FindBoneIndex(TEXT("Torso"));Chest=R.FindBoneIndex(TEXT("Chest"));Neck=R.FindBoneIndex(TEXT("Neck"));Head=R.FindBoneIndex(TEXT("Head"));RightWrist=R.FindBoneIndex(TEXT("DJ_wrist_R"));
  for(int I=0;I<2;++I){const TCHAR* S=I?TEXT("R"):TEXT("L");auto Id=[&](const TCHAR* N){return R.FindBoneIndex(*FString::Printf(TEXT("%s_%s"),N,S));};Arms[I]={Id(TEXT("UpperArm")),Id(TEXT("LowerArm")),Id(TEXT("DJ_forearm")),Id(TEXT("DJ_wrist")),Id(TEXT("DJ_middle_01"))};}
@@ -49,6 +53,8 @@ void FRangeContactCarry::Initialize(USkeletalMeshComponent* Mesh,const TArray<UA
 void FRangeContactCarry::Apply(FPoseContext& Output)
 {
  Cycle=FTransform::Identity;Metrics=FVector::ZeroVector;
+ ClipTrace.Reset();RegisteredTrace.Reset();TargetTrace.Reset();
+ auto Trace=[&](const TArray<FTransform>& P,TArray<FTransform>& Out){if(TraceEnabled)for(int I:TraceIndices)Out.Add(P.IsValidIndex(I)?P[I]:FTransform::Identity);};
  if(!Enabled||Clock.Weight<.0001f){PoleValid[0]=PoleValid[1]=false;return;}
  FPoseContext Idle(Output),Walk(Output),Jog(Output),BaseWalk(Output),BaseJog(Output),Original(Output);
  auto Sample=[](UAnimSequence* Clip,double Time,FPoseContext& P){P.ResetToRefPose();FAnimationPoseData Data(P);Clip->GetAnimationPose(Data,FAnimExtractContext(Time,false));};
@@ -66,7 +72,7 @@ void FRangeContactCarry::Apply(FPoseContext& Output)
  // keyed variation. Keep the original common hand/gun frame for weapon aim;
  // the fixed-length arms below then meet that frame from the revised shoulders.
  for(FCompactPoseBoneIndex I:Original.Pose.ForEachBoneIndex())Original.Pose[I]=Mix(Original.Pose[I],Mix(Walk.Pose[I],Jog.Pose[I],Moving>.0001f?Clock.Weights[2]/Moving:0.f),Moving);
- TArray<FTransform> OriginalC;World(Original,Parents,OriginalC);
+ TArray<FTransform> OriginalC;World(Original,Parents,OriginalC);Trace(OriginalC,ClipTrace);
  const auto& Bones=Output.Pose.GetBoneContainer();
  auto RegisterSpine=[&](FPoseContext& Pose,const FPoseContext& Baseline,float TorsoAmount,float ChestAmount)
  {
@@ -103,10 +109,26 @@ void FRangeContactCarry::Apply(FPoseContext& Output)
    else C[I]=Donor[I].GetRelativeTransform(Donor[Parents[I]])*C[Parents[I]];
   }
  }
+ // The carry layer owns the torso/arms, not the locomotion root or legs.
+ // Register its complete upper-body branch onto the evaluated pelvis without
+ // inheriting a second pelvis yaw. The torso attachment keeps its authored local
+ // offset; both hands and the weapon receive the SAME translation below.
+ FVector BaseShift=FVector::ZeroVector;
+ if(PreserveLocomotionBase)
+ {
+  const int Parent=Parents[Torso];
+  const FVector LocalAttachment=C[Torso].GetRelativeTransform(C[Parent]).GetLocation();
+  BaseShift=B[Parent].TransformPosition(LocalAttachment)-C[Torso].GetLocation();
+  for(int I=0;I<C.Num();++I)
+   if(Child(I,Torso,Parents))C[I].AddToTranslation(BaseShift);
+   else C[I]=B[I];
+ }
+ Trace(C,RegisteredTrace);
  const FVector OriginalPivot=OriginalC[Torso].GetLocation();
  FTransform OriginalAnchor=OriginalC[RightWrist];
  OriginalAnchor.SetLocation(OriginalPivot+PitchQ.RotateVector(OriginalAnchor.GetLocation()-OriginalPivot));
  OriginalAnchor.SetRotation((PitchQ*OriginalAnchor.GetRotation()).GetNormalized());
+ OriginalAnchor.AddToTranslation(BaseShift);
  if(CompactIdleSupport)
  {
   // The donor idle holds the support wrist almost a full arm-length from its
@@ -139,6 +161,7 @@ void FRangeContactCarry::Apply(FPoseContext& Output)
  for(int I:Contacts)P[I]=Mix(B[I].GetRelativeTransform(B[RightWrist]),C[I].GetRelativeTransform(C[RightWrist]),Clock.Weight)*Anchor;
  // Shared translation for reach: no stretching and no separate hand offsets.
  for(int Pass=0;Pass<8;++Pass)for(const auto& A:Arms){const double Max=(Bind[A.Elbow].GetLocation()-Bind[A.Upper].GetLocation()).Size()+(Bind[A.Wrist].GetLocation()-Bind[A.Elbow].GetLocation()).Size()-.02;const FVector D=P[A.Wrist].GetLocation()-P[A.Upper].GetLocation();if(D.Size()>Max)for(int I:Contacts)P[I].AddToTranslation(D.GetSafeNormal()*(Max-D.Size()));}
+ Trace(P,TargetTrace);
  for(int ArmIndex=0;ArmIndex<2;++ArmIndex)
  {
   const auto& A=Arms[ArmIndex];

@@ -15,7 +15,7 @@ struct FRangeBlendSampleTrace
 };
 struct FRangeLocomotionTrace
 {
- TArray<FTransform> Ground,Mobility,Layered,Final;
+ TArray<FTransform> Ground,Mobility,Layered,Final,BodySolved,ContactClip,ContactRegistered,ContactTargets;
  TArray<FRangeBlendSampleTrace> Samples;
  FVector Weights=FVector::ZeroVector;
  float DirectionalWeight=0,ContactWeight=0;

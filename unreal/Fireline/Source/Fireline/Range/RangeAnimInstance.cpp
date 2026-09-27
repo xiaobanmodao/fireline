@@ -84,7 +84,7 @@ struct FRangeAnimProxy : FAnimInstanceProxy
  FRangeGroundInertial GroundInertial;
  bool SourceBodyStudy=false;
  bool GroundInput=false;
- bool TraceEnabled=false;TArray<FTransform> FinalTrace;
+ bool TraceEnabled=false;TArray<FTransform> FinalTrace,BodySolvedTrace;
  // The opt-in body owns its auxiliary bones; accepted view meshes bypass this pass.
  struct FElbowBinding
  {
@@ -130,7 +130,7 @@ struct FRangeAnimProxy : FAnimInstanceProxy
    }
   }
   BodyPose.StrafeRoll=CMUSideStepStudy?GroundProbe.SideRoll*BodyPose.StrafeRollWeight:0.f;
-  if(BodyPose.Enabled){BodyPose.SourceBodyLean=PostureProbe.BodyLean;BodyPose.SourceSpineLow=PostureProbe.SpineLow;BodyPose.SourceSpineHigh=PostureProbe.SpineHigh;BodyPose.Apply(Output);ContactCarry.Apply(Output);Feet.GaitWeight=0;for(const auto& S:DirectionalMovement.Samples())if(S.Animation&&(S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/CMUSideStep/ContactFix/"))||(S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/SourceBody/"))||S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/CombatGround/")))||S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/MatchedGround/"))||S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/AuthoredGround/"))))Feet.GaitWeight+=S.TotalWeight;Feet.GaitWeight=DirectionalWeight*(Feet.GaitWeight*(1-Transition.Weight)+Transition.Weight);Feet.AuthoredKneeWeight=(FParse::Param(FCommandLine::Get(),TEXT("FirelineCombatGroundStudy"))||FParse::Param(FCommandLine::Get(),TEXT("FirelineMatchedGroundStudy")))?DirectionalWeight:Transition.Weight;Feet.KeepStationaryPlant=Transition.Weight>.05f;Feet.Plant[0]=GroundProbe.Plant[0];Feet.Plant[1]=GroundProbe.Plant[1];Feet.Apply(Output);if(TraceEnabled)CaptureRangePose(Output,FinalTrace);return true;}
+  if(BodyPose.Enabled){BodyPose.SourceBodyLean=PostureProbe.BodyLean;BodyPose.SourceSpineLow=PostureProbe.SpineLow;BodyPose.SourceSpineHigh=PostureProbe.SpineHigh;BodyPose.Apply(Output);if(TraceEnabled)CaptureRangePose(Output,BodySolvedTrace);ContactCarry.Apply(Output);Feet.GaitWeight=0;for(const auto& S:DirectionalMovement.Samples())if(S.Animation&&(S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/CMUSideStep/ContactFix/"))||(S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/SourceBody/"))||S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/CombatGround/")))||S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/MatchedGround/"))||S.Animation->GetPathName().StartsWith(TEXT("/Game/Fireline/LocomotionStudy/AuthoredGround/"))))Feet.GaitWeight+=S.TotalWeight;Feet.GaitWeight=DirectionalWeight*(Feet.GaitWeight*(1-Transition.Weight)+Transition.Weight);Feet.AuthoredKneeWeight=(FParse::Param(FCommandLine::Get(),TEXT("FirelineCombatGroundStudy"))||FParse::Param(FCommandLine::Get(),TEXT("FirelineMatchedGroundStudy")))?DirectionalWeight:Transition.Weight;Feet.KeepStationaryPlant=Transition.Weight>.05f;Feet.Plant[0]=GroundProbe.Plant[0];Feet.Plant[1]=GroundProbe.Plant[1];Feet.Apply(Output);if(TraceEnabled)CaptureRangePose(Output,FinalTrace);return true;}
   if(Elbows.IsEmpty()){if(TraceEnabled)CaptureRangePose(Output,FinalTrace);return true;}
   FCSPose<FCompactPose> CS;CS.InitPose(Output.Pose);
   const FBoneContainer& Bones=Output.Pose.GetBoneContainer();
@@ -574,7 +574,7 @@ FRangeLocomotionTrace URangeAnimInstance::GetLocomotionTrace()
  const auto& P=GetProxyOnGameThread<FRangeAnimProxy>();FRangeLocomotionTrace T;
  T.FootPlant=FVector(P.Feet.Plant[0],P.Feet.Plant[1],0);T.FootLocked=FVector(P.Feet.Feet[0].Locked,P.Feet.Feet[1].Locked,0);
  T.ContactWeight=P.ContactCarry.Enabled?P.ContactCarry.Clock.Weight:0;T.ContactMetrics=P.ContactCarry.Metrics;
- T.Ground=P.GroundProbe.Pose;T.Mobility=P.MobilityProbe.Pose;T.Layered=P.LayerProbe.Pose;T.Final=P.FinalTrace;
+ T.Ground=P.GroundProbe.Pose;T.Mobility=P.MobilityProbe.Pose;T.Layered=P.LayerProbe.Pose;T.Final=P.FinalTrace;T.BodySolved=P.BodySolvedTrace;T.ContactClip=P.ContactCarry.ClipTrace;T.ContactRegistered=P.ContactCarry.RegisteredTrace;T.ContactTargets=P.ContactCarry.TargetTrace;
  T.Weights=FVector(P.AirWeight,P.SlideWeight,P.LandWeight);T.DirectionalWeight=P.DirectionalWeight;
  if(P.TraceEnabled&&P.Transition.Enabled&&P.Transition.Weight>0) {FRangeBlendSampleTrace S;S.Clip=P.Transition.Clips[P.Transition.Clip]->GetPathName();S.Time=P.Transition.Time;S.Weight=P.Transition.Weight;T.Samples.Add(S);}
  if(P.TraceEnabled)for(const auto& S:P.DirectionalMovement.Samples())if(S.Animation&&S.TotalWeight>0.0001f)

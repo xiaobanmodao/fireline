@@ -1,4 +1,4 @@
-"""Build a separate Mac launcher for this frozen project directory."""
+"""Build a separate Mac launcher for this independent development project."""
 from pathlib import Path
 import json,plistlib,subprocess
 r=Path(__file__).resolve().parents[1];b=json.loads((r/'baseline.json').read_text())

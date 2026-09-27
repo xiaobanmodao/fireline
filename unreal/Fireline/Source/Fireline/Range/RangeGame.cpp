@@ -269,7 +269,7 @@ void ARangeCharacter::Tick(float Dt)
  {
   const float T=GetGameTimeSinceCreation()-2.f;
   const int Group=int(T/2.f);const float Local=FMath::Fmod(T,2.f);
-  float Angle=(Group%8)*45.f;
+  float Angle=FParse::Param(FCommandLine::Get(),TEXT("FirelineCarryLoopAudit"))?0.f:(Group%8)*45.f;
   if(Group==16||Group==18)Angle=(int(Local/.3f)%2)?-90:90;
   if(Group==17||Group==19)Angle=(int(Local/.3f)%2)?180:0;
   if(T>=0&&Group<20&&Local>.25f&&Local<1.45f)AddMovementInput(FRotator(0,Angle,0).Vector(),Group<8?.4f:1.f);
