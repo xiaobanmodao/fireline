@@ -30,6 +30,8 @@ UE 5.8 桌面 FPS。当前开发基线：**手柄阶段重建基线** `gamepad-r
 
 ## 版本规则
 
+2026-09-27：[成熟动作系统完整对照](unreal/Fireline/Docs/Research/mature-animation-systems/README.md)。用户再次否决当前动作观感；新增下载ALS完整工程、读取原片／曲线／动画图并对照Lyra与当前双重手臂重建。仅研究，游戏运行时未改；桌面「参考·ALS原版动作.app」是独立原版观察入口。
+
 2026-09-27：[FPS人物体态研究](unreal/Fireline/Docs/Research/fps-posture/README.md)包含制作组资料、21段原始动画的重新测量、当前求解层风险与建议。仅研究，未更换动作或启用后续实验。
 
 每次修改围绕一个明确问题；先记录现象再实施。编译、功能回归、实际画面分别记录。通过后提交并标记版本；未验收动作不得更换默认基线。费用为零；不启用付费服务。所有模型来源及第三方权利见 asset-lock.json 和 Docs/Attribution，仓库不授予第三方素材额外许可。

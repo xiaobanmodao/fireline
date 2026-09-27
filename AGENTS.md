@@ -1,5 +1,7 @@
 Latest user instruction (2026-09-27): do not use subagents. Main agent performs this work directly.
 
+2026-09-27 latest visual rejection: user still finds actions weird; requested comprehensive mature-source study. No new runtime repair this turn. Downloaded pinned ALS Refactored b754d6f (127 sequences / 3000 sampled poses, 22 animation graphs + layer interface), extracted 7 Lyra clips / 427 poses and exact contact curves. See Docs/Research/mature-animation-systems. Current BodyPose and ContactCarry substantially rewrite arms in sequence; continuity checks are not source fidelity. Preserve native assets and selected providers; do not revive failed elbow variants or replace characters. The separate Desktop ALS reference app runs original source graphs, not a new Fireline candidate.
+
 # Active baseline
 
 User explicitly chose the gamepad-adaptation stage as the new development baseline on 2026-09-27. Read README.md, baseline.json, unreal/Fireline/Docs/BASELINE_VALIDATION.md and asset-lock.json before edits. This is a reconstructed baseline, NOT an exact historical snapshot.
