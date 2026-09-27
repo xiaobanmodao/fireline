@@ -1,0 +1,19 @@
+{
+  "paired_samples": 6122,
+  "max_wrist_position_change_cm": 0.0,
+  "max_shoulder_position_change_cm": 0.0,
+  "before": {
+    "shoulder_y": "22.791",
+    "elbow_y": "14.432",
+    "wrist_angle": "19.265",
+    "upper_cm": "27.507",
+    "forearm_cm": "26.445"
+  },
+  "after": {
+    "shoulder_y": "22.791",
+    "elbow_y": "24.266",
+    "wrist_angle": "20.296",
+    "upper_cm": "27.507",
+    "forearm_cm": "26.445"
+  }
+}

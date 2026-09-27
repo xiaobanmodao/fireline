@@ -1,3 +1,5 @@
+Latest user instruction (2026-09-27): do not use subagents. Main agent performs this work directly.
+
 # Active baseline
 
 User explicitly chose the gamepad-adaptation stage as the new development baseline on 2026-09-27. Read README.md, baseline.json, unreal/Fireline/Docs/BASELINE_VALIDATION.md and asset-lock.json before edits. This is a reconstructed baseline, NOT an exact historical snapshot.

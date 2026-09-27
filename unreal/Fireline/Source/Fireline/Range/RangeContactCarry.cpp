@@ -162,6 +162,27 @@ void FRangeContactCarry::Apply(FPoseContext& Output)
   const FVector Desired=PreserveGroundSpine&&A.Middle>=0?(P[A.Middle].GetLocation()-T).GetSafeNormal():ForearmDesired;
   FVector Elbow=Center+Pole*Radius;double Bend=FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(Desired.Dot((T-Elbow).GetSafeNormal()),-1.,1.)));
   if(Bend>30&&Radius>.0001){const FVector Perp=FVector::VectorPlaneProject(Desired,Axis);const double M=Perp.Size();if(M>.0001){const double Min=FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp((Desired.Dot(T-Center)+Radius*M)/L2,-1.,1.)));const double Target=FMath::Max(32.,Min+.05);const double V=FMath::Clamp((Desired.Dot(T-Center)-L2*FMath::Cos(FMath::DegreesToRadians(Target)))/(Radius*M),-1.,1.);const FVector Dir=Perp/M,Tangent=FVector::VectorPlaneProject(Pole,Dir).GetSafeNormal();if(!Tangent.IsNearlyZero()){const FVector NewPole=Dir*V+Tangent*FMath::Sqrt(1-V*V);const FQuat Adjust=FQuat::Slerp(FQuat::Identity,FQuat::FindBetweenNormals(Pole,NewPole),FMath::SmoothStep(30.,35.,Bend));Elbow=Center+Adjust.RotateVector(Pole)*Radius;}}}
+  if(StockContact&&ArmIndex==1&&Radius>.0001)
+  {
+   // ContactCarry is the final arm solve. Its old down-pole could undo the
+   // earlier body's clearance and tuck the firing elbow inside the rib cage.
+   // Search the SAME fixed-length circle outside the shoulder's side plane.
+   // Hands, rifle, shoulder root and source bind are not moved.
+   const FQuat ChestFrame=(P[Chest].GetRotation()*Bind[Chest].GetRotation().Inverse()).GetNormalized();
+   const FVector Out=ChestFrame.RotateVector(Right).GetSafeNormal();
+   const FVector BasePole=(Elbow-Center).GetSafeNormal();
+   auto Score=[&](double Angle)
+   {
+    const FVector E=Center+FQuat(Axis,Angle).RotateVector(BasePole)*Radius;
+    const double Inside=FMath::Max(0.,-(E-S).Dot(Out));
+    const double Wrist=FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(Desired.Dot((T-E).GetSafeNormal()),-1.,1.)));
+    return (E-Elbow).SizeSquared()+1000000.*(Inside*Inside+FMath::Square(FMath::Max(0.,Wrist-35.)));
+   };
+   double BestAngle=0,Best=Score(0);
+   for(int I=-72;I<=72;++I){const double Angle=PI*I/72.;const double Value=Score(Angle);if(Value<Best){Best=Value;BestAngle=Angle;}}
+   for(double Step:{.02,.005,.001})for(double Sign:{-1.,1.}){const double Angle=BestAngle+Sign*Step;const double Value=Score(Angle);if(Value<Best){Best=Value;BestAngle=Angle;}}
+   Elbow=Center+FQuat(Axis,BestAngle).RotateVector(BasePole)*Radius;
+  }
   // The feasible elbow circle has two sides. During idle-to-gait blending a
   // source pole can cross that side boundary in one frame. Follow the nearest
   // continuous arc rather than teleporting the elbow across the arm.
