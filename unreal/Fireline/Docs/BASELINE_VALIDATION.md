@@ -26,3 +26,7 @@
 ## 后续：M4 持枪层归属修正
 
 2026-09-27 启用 FirelineCarryBaseStudy，保留既有下半身起停，完整上身共同接回骨盆。构建、33 项武器检查与24组动作追踪完成；实际开发版及前后截图已检查。范围、证据和限制见 [持枪层归属记录](Validation/carry-layer-ownership/README.md)，不是全部动作视觉验收。
+
+## 后续：动作全链诊断与MP7连续性
+
+FirelineContinuousContactStudy只对MP7第三人称适配修正延续历史，同时让MP7切出／检视自然结束使用既有恢复路径。M4保持原求解。33项M4回归、MP7操作／接触回归通过；原资源1252项校验不变。实验失败和约65°极端腕角等未完成问题见 [完整记录](Validation/source-arm-continuity/README.md)，不作为整套动作已合格的声明。

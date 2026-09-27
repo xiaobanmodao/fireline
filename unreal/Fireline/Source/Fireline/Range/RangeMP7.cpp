@@ -79,7 +79,16 @@ void ARangeCharacter::UpdateMP7(float Dt)
  {
   MP7ActionTime+=Dt;
   if(MP7ActionTime>=(MP7Action==1?50.f/60.f:168.f/60.f))
-  {MP7Action=0;MP7ActionTime=0;MP7ActionBlend=0;}
+  {
+   if(FParse::Param(FCommandLine::Get(),TEXT("FirelineContinuousContactStudy")))
+   {
+    // Preserve the final authored pose and use the same existing recovery
+    // as an input interruption. An abrupt index/weight reset teleports arms.
+    MP7ActionTime=MP7Action==1?50.f/60.f:168.f/60.f;
+    bMP7ActionReturning=true;
+   }
+   else {MP7Action=0;MP7ActionTime=0;MP7ActionBlend=0;}
+  }
  }
  // RMB held during the locked part becomes ADS as soon as the weapon is ready.
  if(MP7Action==1)if(auto* PC=Cast<APlayerController>(Controller))bAimHeld|=PC->IsInputKeyDown(EKeys::RightMouseButton);
@@ -146,10 +155,16 @@ void ARangeCharacter::StartMP7Audit()
    auto Error=[&](float Time)
    {
     Reference->PlayAnimation(Clips[Clip],false);Reference->SetPosition(Time,false);Reference->TickAnimation(0,false);Reference->RefreshBoneTransforms();
-    const FTransform ABase=Actual->GetSocketTransform(TEXT("Torso"),RTS_Component),RBase=Reference->GetSocketTransform(TEXT("Torso"),RTS_Component);float Max=0;
+    // Full-body presentation deliberately retargets elbows and the shared
+    // assembly; comparing them to FP torso-local coordinates is invalid.
+    // FP retains its exact clip check. TP checks the authored hand/mechanical
+    // contacts in receiver space, measured back in component centimetres.
+    const FName Frame=bThirdPerson?TEXT("MP7_body"):TEXT("Torso");
+    const FTransform ABase=Actual->GetSocketTransform(Frame,RTS_Component),RBase=Reference->GetSocketTransform(Frame,RTS_Component);float Max=0;
     for(const TCHAR* Name:{TEXT("LowerArm_L"),TEXT("LowerArm_R"),TEXT("DJ_wrist_L"),TEXT("DJ_wrist_R"),TEXT("MP7_body"),TEXT("MP7_mag")})
     {
-     const FVector A=ABase.InverseTransformPosition(Actual->GetSocketTransform(Name,RTS_Component).GetLocation()),B=RBase.InverseTransformPosition(Reference->GetSocketTransform(Name,RTS_Component).GetLocation());Max=FMath::Max(Max,FVector::Distance(A,B));
+     if(bThirdPerson&&(FString(Name)==TEXT("LowerArm_L")||FString(Name)==TEXT("LowerArm_R")))continue;
+     const FVector A=ABase.InverseTransformPosition(Actual->GetSocketTransform(Name,RTS_Component).GetLocation()),B=RBase.InverseTransformPosition(Reference->GetSocketTransform(Name,RTS_Component).GetLocation());Max=FMath::Max(Max,bThirdPerson?ABase.TransformVector(A-B).Size():FVector::Distance(A,B));
     }
     return Max;
    };
@@ -168,7 +183,7 @@ void ARangeCharacter::StartMP7Audit()
   }
   State->Rows+=FString::Printf(TEXT("%.3f,%d,%d,%d,%d,%.3f,%.3f,%d,%.3f,%.3f,%.3f,%.3f\n"),State->SampleAt,WeaponSlot(),bThirdPerson,bReloading,MP7Action,MP7ActionTime,AimAlpha,Ammo,Below[0],Below[1],Wrist[0],Wrist[1]);
  });
- Later(35,[State,Output,Check]{Check(TEXT("evaluated arms and mechanics match clips including draw"),State->PoseSamples>100&&State->DrawSamples>0&&State->PoseFailures==0);UE_LOG(LogTemp,Display,TEXT("MP7_POSE samples=%d draw=%d failures=%d"),State->PoseSamples,State->DrawSamples,State->PoseFailures);FFileHelper::SaveStringToFile(State->Rows,*(Output/TEXT("samples.csv")));FFileHelper::SaveStringToFile(State->Checks,*(Output/TEXT("checks.txt")));UE_LOG(LogTemp,Display,TEXT("MP7_AUDIT failures=%d"),State->Failures);FPlatformMisc::RequestExit(false);});
+ Later(35,[State,Output,Check]{Check(TEXT("FP matches source clips; TP preserves receiver-space hand and mechanical contacts"),State->PoseSamples>100&&State->DrawSamples>0&&State->PoseFailures==0);UE_LOG(LogTemp,Display,TEXT("MP7_POSE samples=%d draw=%d failures=%d"),State->PoseSamples,State->DrawSamples,State->PoseFailures);FFileHelper::SaveStringToFile(State->Rows,*(Output/TEXT("samples.csv")));FFileHelper::SaveStringToFile(State->Checks,*(Output/TEXT("checks.txt")));UE_LOG(LogTemp,Display,TEXT("MP7_AUDIT failures=%d"),State->Failures);FPlatformMisc::RequestExit(false);});
 }
 
 void URangeAssetTools::PrepareMP7()

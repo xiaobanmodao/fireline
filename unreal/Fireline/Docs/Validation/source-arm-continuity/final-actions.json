@@ -1,0 +1,58 @@
+{
+  "SourceArmActionsBefore": {
+    "wrist_angle": {
+      "max": 65.204,
+      "case": "mp7-ads-down-89",
+      "time": "44.8000"
+    },
+    "clavicle_gap_cm": {
+      "max": 0.0,
+      "case": "warmup",
+      "time": "1.0000"
+    },
+    "source_contact_cm": {
+      "max": 0.0,
+      "case": "warmup",
+      "time": "1.0000"
+    },
+    "forearm_alias_cm": {
+      "max": 0.0,
+      "case": "warmup",
+      "time": "1.0000"
+    },
+    "elbow_body_penetration_cm": {
+      "max": 0.1255,
+      "case": "mp7-ads-down-89",
+      "time": "44.8000"
+    },
+    "samples": 6122
+  },
+  "MP7CorrectionActions": {
+    "wrist_angle": {
+      "max": 65.173,
+      "case": "mp7-ads-down-89",
+      "time": "44.9000"
+    },
+    "clavicle_gap_cm": {
+      "max": 0.0,
+      "case": "warmup",
+      "time": "1.0000"
+    },
+    "source_contact_cm": {
+      "max": 0.0,
+      "case": "warmup",
+      "time": "1.0000"
+    },
+    "forearm_alias_cm": {
+      "max": 0.0,
+      "case": "warmup",
+      "time": "1.0000"
+    },
+    "elbow_body_penetration_cm": {
+      "max": 0.0889,
+      "case": "mp7-ads-down-89",
+      "time": "44.9167"
+    },
+    "samples": 6122
+  }
+}

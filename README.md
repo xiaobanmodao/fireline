@@ -26,6 +26,8 @@ UE 5.8 桌面 FPS。当前开发基线：**手柄阶段重建基线** `gamepad-r
 
 2026-09-27：[M4 持枪层修正](unreal/Fireline/Docs/Validation/carry-layer-ownership/README.md)保留下半身起停结果，修复 ContactCarry 全身覆盖；开发入口已更新。可用 `python3 scripts/run.py --audit carry` 重跑短循环，使用本地原生截图对照页检查。
 
+2026-09-27：[全动作诊断与接触连续性](unreal/Fireline/Docs/Validation/source-arm-continuity/README.md)：保留 MP7 适配修正的连续性与动作结束恢复，失败的肘部改写已撤回；整套第三人称体态仍未完成。开发入口已启用该有限修正。
+
 ## 版本规则
 
 2026-09-27：[FPS人物体态研究](unreal/Fireline/Docs/Research/fps-posture/README.md)包含制作组资料、21段原始动画的重新测量、当前求解层风险与建议。仅研究，未更换动作或启用后续实验。

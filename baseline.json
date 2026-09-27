@@ -10,7 +10,8 @@
     "FirelineContactCarryStudy",
     "FirelineLocomotionContactFixStudy",
     "FirelineAuthoredGroundStudy",
-    "FirelineCarryBaseStudy"
+    "FirelineCarryBaseStudy",
+    "FirelineContinuousContactStudy"
   ],
   "excluded_experiments": [
     "FirelineMatchedGroundStudy",

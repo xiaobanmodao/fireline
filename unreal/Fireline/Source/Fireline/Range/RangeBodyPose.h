@@ -9,6 +9,7 @@ class UAnimSequence;
 struct FRangeBodyPose
 {
  bool Enabled=false,MP7=false,Audit=false,StockContact=false;
+ bool ContinuousContact=false;
  float StockWeight=0;
  float Aim=0,Pitch=0,Yaw=0,Weight=1,Reload=0;
  float SourceBodyWeight=0;
@@ -23,6 +24,7 @@ struct FRangeBodyPose
  mutable FVector PreviousElbowChest[2];
  mutable bool HasContactHistory=false;
  mutable FVector PreviousContactChest=FVector::ZeroVector;
+ mutable FVector PreviousFitChest=FVector::ZeroVector;
  // Cross-weapon state contains chest-space physical points, never old bind indices.
  mutable bool HasTransferHistory=false,PendingWeaponTransfer=false,WeaponTransferActive=false;
  mutable FVector PreviousWristChest[2];

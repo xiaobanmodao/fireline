@@ -15,6 +15,7 @@ namespace
 void FRangeBodyPose::Initialize(USkeletalMeshComponent* Mesh,UAnimSequence* Hold,bool IsMP7)
 {
  Audit=FParse::Param(FCommandLine::Get(),TEXT("FirelineBodyPoseDiagnosisAudit"))||FParse::Param(FCommandLine::Get(),TEXT("FirelineFullBodyTrace"));StockContact=FParse::Param(FCommandLine::Get(),TEXT("FirelineLocomotionContactFixStudy"));Enabled=false;HasFit=false;HasElbowHistory=false;HasContactHistory=false;HasTransferHistory=false;PendingWeaponTransfer=false;WeaponTransferActive=false;WeaponTransferTime=0;FitKey.Reset();if(!Hold)return;MP7=IsMP7;
+ ContinuousContact=IsMP7&&FParse::Param(FCommandLine::Get(),TEXT("FirelineContinuousContactStudy"));
  const auto& Ref=Mesh->GetSkeletalMeshAsset()->GetRefSkeleton();Bind=Ref.GetRefBonePose();Parents.Reset();Names.Reset();
  for(int I=0;I<Bind.Num();++I){Parents.Add(Ref.GetParentIndex(I));Names.Add(Ref.GetBoneName(I));if(I>0)Bind[I]=Bind[I]*Bind[Parents[I]];}
  auto Id=[&](const TCHAR* N){return Ref.FindBoneIndex(N);};
@@ -41,11 +42,12 @@ void FRangeBodyPose::Initialize(USkeletalMeshComponent* Mesh,UAnimSequence* Hold
 void FRangeBodyPose::Apply(FPoseContext& Output) const
 {
  if(!Enabled||Weight<.001f)return;
+ const bool ContinueCorrection=ContinuousContact;
  const float PosePitch=Pitch*(1.f-.8f*Reload);
  // Mesh changes issue a zero-time pose refresh before the first visible tick.
  // It still needs a feasible initialization, not an immovable old elbow with
  // a new gun grip. Do not advance the authored transfer clock on that refresh.
- const float SolveDelta=SourceBodyConstraints&&FrameDeltaSeconds<=UE_SMALL_NUMBER?1.f/60.f:FrameDeltaSeconds;
+ const float SolveDelta=(SourceBodyConstraints||ContinueCorrection)&&FrameDeltaSeconds<=UE_SMALL_NUMBER?1.f/60.f:FrameDeltaSeconds;
  const auto& Container=Output.Pose.GetBoneContainer();TArray<int32> Compact;Compact.Init(-1,Names.Num());
  TArray<FTransform> Original;Original.SetNum(Names.Num());
  FCSPose<FCompactPose> CS;CS.InitPose(Output.Pose);
@@ -341,7 +343,7 @@ void FRangeBodyPose::Apply(FPoseContext& Output) const
    // frame-to-frame motion of the WHOLE contact assembly during this study;
    // otherwise the stateless coarse search can hop by tens of centimeters.
    // Scale by dt so the continuation is not tied to a 60 Hz renderer.
-   if(CoherentGroundFit&&HasFit)
+   if((CoherentGroundFit||ContinueCorrection)&&HasFit)
    {
     const double TimeScale=(1./60.)/FMath::Clamp(double(SolveDelta),1./240.,1./20.);
     Cost+=40.*TimeScale*TimeScale*(Shift-FitShift).SizeSquared();
@@ -371,8 +373,11 @@ void FRangeBodyPose::Apply(FPoseContext& Output) const
    // Continue from the last actual contact position, not last frame's offset
    // in a changing action frame. Bound the local search so it cannot teleport
    // between equally feasible elbow/stock minima.
-   const bool ContinueContact=SourceBodyConstraints&&HasContactHistory;
-   const FVector PriorShift=ContinueContact?P[Chest].TransformPosition(PreviousContactChest)-P[Arm[1].Wrist].GetLocation():FVector::ZeroVector;
+   const bool ContinueContact=(SourceBodyConstraints||ContinueCorrection)&&HasContactHistory;
+   // Continue only the correction for this path. Limiting the absolute
+   // wrist position would delay the authored magazine/charging motion and
+   // create new wrist errors during otherwise valid reload keyframes.
+   const FVector PriorShift=ContinueCorrection&&HasContactHistory?P[Chest].TransformVector(PreviousFitChest):ContinueContact?P[Chest].TransformPosition(PreviousContactChest)-P[Arm[1].Wrist].GetLocation():FVector::ZeroVector;
    const double Travel=360.*FMath::Clamp(double(SolveDelta),1./240.,1./20.);
    auto Bounded=[&](const FVector& V){return ContinueContact?PriorShift+(V-PriorShift).GetClampedToMaxSize(Travel):V;};
    FVector Shift=ContinueContact?PriorShift:HasFit?FitShift:FVector::ZeroVector;double Best=FitCost(Shift);
@@ -419,9 +424,9 @@ void FRangeBodyPose::Apply(FPoseContext& Output) const
  PreviousSprintCarry=SprintCarry;
  // A zero-time mesh refresh solves a display pose, not another animation frame.
  // Retain the previous physical history until an actual update has elapsed.
- const bool CommitHistory=!SourceBodyConstraints||FrameDeltaSeconds>UE_SMALL_NUMBER||!HasElbowHistory;
+ const bool CommitHistory=!(SourceBodyConstraints||ContinueCorrection)||FrameDeltaSeconds>UE_SMALL_NUMBER||(ContinueCorrection?!HasContactHistory:!HasElbowHistory);
  if(SourceBodyConstraints&&CommitHistory){for(int I=0;I<2;++I)PreviousWristChest[I]=P[Chest].InverseTransformPosition(P[Arm[I].Wrist].GetLocation());HasTransferHistory=true;}
- if(SourceBodyConstraints&&CommitHistory){PreviousContactChest=P[Chest].InverseTransformPosition(P[Arm[1].Wrist].GetLocation());HasContactHistory=true;}
+ if((SourceBodyConstraints||ContinueCorrection)&&CommitHistory){PreviousContactChest=P[Chest].InverseTransformPosition(P[Arm[1].Wrist].GetLocation());PreviousFitChest=P[Chest].InverseTransformVector(FitShift);HasContactHistory=true;}
  if(StableCarryElbows&&CommitHistory){for(int I=0;I<2;++I)PreviousElbowChest[I]=P[Chest].InverseTransformPosition(P[Arm[I].Lower].GetLocation());HasElbowHistory=true;}
  if(Audit){
   AuditMetrics=FVector(0,0,BIG_NUMBER);

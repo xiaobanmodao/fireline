@@ -1,0 +1,101 @@
+{
+  "note": "Original installed Epic component-space positions with retarget disabled. Ranges are measurements, not target pose requirements; additive interpretation and action event matching must be checked before adapting.",
+  "clips": [
+    {
+      "path": "/Game/Characters/Mannequins/Anims/Rifle/MM_Rifle_Reload",
+      "duration": 2.200000047683716,
+      "sha256": "ac1e17d2acb7e3cea6e4c9ca967400dc3052d5ec6514e155b33d8e4701e80784",
+      "samples": 134,
+      "elbow_interior_degrees": {
+        "l": [
+          73.21060023165191,
+          162.13107197605476
+        ],
+        "r": [
+          53.10779131628344,
+          73.750126556421
+        ]
+      }
+    },
+    {
+      "path": "/Game/Characters/Mannequins/Anims/Rifle/MM_Rifle_Equip",
+      "duration": 1.6666666269302368,
+      "sha256": "136b19498b8bac4119dde48236d22127e8463c0becff775069e0b6399b7939d6",
+      "samples": 101,
+      "elbow_interior_degrees": {
+        "l": [
+          39.123070419125725,
+          126.0192698693486
+        ],
+        "r": [
+          59.58770993490935,
+          130.06043825526393
+        ]
+      }
+    },
+    {
+      "path": "/Game/Characters/Heroes/Mannequin/Animations/Locomotion/Rifle/MM_Rifle_Idle_ADS",
+      "duration": 3.4000000953674316,
+      "sha256": "0d0ee274047377ebead65e52949b922b7960138b2e22b93eceead6025dfae6f4",
+      "samples": 206,
+      "elbow_interior_degrees": {
+        "l": [
+          143.02076369535604,
+          144.182487823678
+        ],
+        "r": [
+          61.55713754849536,
+          61.83774912336748
+        ]
+      }
+    },
+    {
+      "path": "/Game/Characters/Mannequins/Anims/Rifle/Jump/MM_Rifle_Jump_Start",
+      "duration": 0.23333333432674408,
+      "sha256": "925f27182be45054a1bbb5d458cb53d38773b356dd61e18b82fa9a72880dc8e7",
+      "samples": 16,
+      "elbow_interior_degrees": {
+        "l": [
+          85.91389475733958,
+          117.25572658660057
+        ],
+        "r": [
+          46.785426860989446,
+          71.2213303065788
+        ]
+      }
+    },
+    {
+      "path": "/Game/Characters/Mannequins/Anims/Rifle/Jump/MM_Rifle_Jump_Apex",
+      "duration": 0.6666666865348816,
+      "sha256": "39acbd6bcfc5ec2795ee2497bb353fbe954766bda545c3318c3cd6ee5f1ee008",
+      "samples": 42,
+      "elbow_interior_degrees": {
+        "l": [
+          109.55586978308504,
+          128.82627282948096
+        ],
+        "r": [
+          61.97103914568593,
+          74.04376205061725
+        ]
+      }
+    },
+    {
+      "path": "/Game/Characters/Mannequins/Anims/Rifle/Jump/MM_Rifle_Jump_Fall_Land",
+      "duration": 0.4000000059604645,
+      "sha256": "ce74e83b9b88fa3722951c1c6b2cc36ae7159b8141f5347e5b47d760cee41c42",
+      "samples": 26,
+      "elbow_interior_degrees": {
+        "l": [
+          89.1374208850526,
+          122.19010625968521
+        ],
+        "r": [
+          50.5823751089253,
+          66.61538609927507
+        ]
+      }
+    }
+  ]
+}
