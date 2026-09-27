@@ -10,4 +10,8 @@ class UMotionResearchLibrary : public UBlueprintFunctionLibrary
 public:
     UFUNCTION(BlueprintCallable)
     static void FinishReferenceCompilation();
+    UFUNCTION(BlueprintCallable)
+    static bool ExportMeshReference(class USkeletalMesh* Mesh, const FString& File);
+    UFUNCTION(BlueprintCallable)
+    static bool ExportMeshGeometry(class USkeletalMesh* Mesh, const FString& FileBase);
 };

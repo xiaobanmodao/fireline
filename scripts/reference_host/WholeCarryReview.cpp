@@ -51,19 +51,21 @@ AWholeCarryReview::AWholeCarryReview()
 }
 bool AWholeCarryReview::Initialize(AAlsCharacter* Source)
 {
-    const FString Directory=FPaths::ProjectSavedDir()/TEXT("WholeCarryReview");
+    Proportions=FParse::Param(FCommandLine::Get(),TEXT("BodyProportionReview"));
+    const FString Directory=FPaths::ProjectSavedDir()/(Proportions?TEXT("BodyProportionReview"):TEXT("WholeCarryReview"));ReviewDirectory=Directory;
     const TCHAR* Labels[]={TEXT("source"),TEXT("retarget"),TEXT("contact")};
     Clips.SetNum(3);
     for(int I=0;I<3;++I)if(!Clips[I].Load(Directory,Labels[I]))return false;
     auto* Body=LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/Fireline/Hands/SK_RyanAction.SK_RyanAction"));
     auto* Gun=LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/Fireline/Hands/SK_M4Action.SK_M4Action"));
-    if(!Body||!Gun){UE_LOG(LogTemp,Error,TEXT("Missing target mesh"));return false;}
+    auto* RevisedBody=Proportions?LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/BodyProportionStudy/SK_RyanProportion.SK_RyanProportion")):Body;
+    if(!Body||!Gun||!RevisedBody){UE_LOG(LogTemp,Error,TEXT("Missing target mesh"));return false;}
     FAssetCompilingManager::Get().FinishAllCompilation();
     Source->SetOverlayMode(AlsOverlayModeTags::Rifle);
     for(int I=0;I<3;++I)
     {
         auto* M=NewObject<UWholeCarryMesh>(this);AddInstanceComponent(M);M->SetupAttachment(GetRootComponent());
-        M->SetSkinnedAssetAndUpdate(I?Body:Source->GetMesh()->GetSkeletalMeshAsset());
+        M->SetSkinnedAssetAndUpdate(I?(I==2?RevisedBody:Body):Source->GetMesh()->GetSkeletalMeshAsset());
         M->SetCollisionEnabled(ECollisionEnabled::NoCollision);M->BoundsScale=3;M->RegisterComponent();Bodies.Add(M);
         const auto& Ref=CastChecked<USkeletalMesh>(M->GetSkinnedAsset())->GetRefSkeleton();
         if(Ref.GetNum()!=Clips[I].Names.Num()){UE_LOG(LogTemp,Error,TEXT("BONE_COUNT %d mesh=%d clip=%d"),I,Ref.GetNum(),Clips[I].Names.Num());return false;}
@@ -95,11 +97,12 @@ bool AWholeCarryReview::Initialize(AAlsCharacter* Source)
     // the mesh, bind pose, materials or any source asset.
     if(Capture || FParse::Param(FCommandLine::Get(),TEXT("WholeCarryCapture")))
     {
-        const auto& LOD=Body->GetResourceForRendering()->LODRenderData[0];
+        auto* AuditBody=RevisedBody;
+        const auto& LOD=AuditBody->GetResourceForRendering()->LODRenderData[0];
         FString Verts=TEXT("vertex,x,y,z\n"),Weights=TEXT("vertex,bone,weight\n");
         for(uint32 V=0;V<LOD.GetNumVertices();++V){const auto P=LOD.StaticVertexBuffers.PositionVertexBuffer.VertexPosition(V);Verts+=FString::Printf(TEXT("%u,%.9f,%.9f,%.9f\n"),V,P.X,P.Y,P.Z);}
         for(const auto& Section:LOD.RenderSections)for(uint32 V=Section.BaseVertexIndex;V<Section.BaseVertexIndex+Section.NumVertices;++V)
-            for(uint32 J=0;J<LOD.SkinWeightVertexBuffer.GetMaxBoneInfluences();++J){const auto W=LOD.SkinWeightVertexBuffer.GetBoneWeight(V,J);if(W){const auto B=Section.BoneMap[LOD.SkinWeightVertexBuffer.GetBoneIndex(V,J)];Weights+=FString::Printf(TEXT("%u,%s,%u\n"),V,*Body->GetRefSkeleton().GetBoneName(B).ToString(),W);}}
+            for(uint32 J=0;J<LOD.SkinWeightVertexBuffer.GetMaxBoneInfluences();++J){const auto W=LOD.SkinWeightVertexBuffer.GetBoneWeight(V,J);if(W){const auto B=Section.BoneMap[LOD.SkinWeightVertexBuffer.GetBoneIndex(V,J)];Weights+=FString::Printf(TEXT("%u,%s,%u\n"),V,*AuditBody->GetRefSkeleton().GetBoneName(B).ToString(),W);}}
         FFileHelper::SaveStringToFile(Verts,*(Directory/TEXT("native-bind-vertices.csv")));FFileHelper::SaveStringToFile(Weights,*(Directory/TEXT("native-skin-weights.csv")));
     }
     TArray<uint8> Bytes;
@@ -116,7 +119,7 @@ bool AWholeCarryReview::Initialize(AAlsCharacter* Source)
     // Polling only IsInputKeyDown loses those events at a capped frame rate.
     PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;EnableInput(PC);
     InputComponent->Priority=1000;
-    const FKey ReviewKeys[]={EKeys::SpaceBar,EKeys::Z,EKeys::Tab,EKeys::R,EKeys::One,EKeys::Two,EKeys::Three,EKeys::Four,EKeys::Left,EKeys::Right};
+    const FKey ReviewKeys[]={EKeys::SpaceBar,EKeys::Z,EKeys::Tab,EKeys::R,EKeys::One,EKeys::Two,EKeys::Three,EKeys::Four,EKeys::Five,EKeys::Left,EKeys::Right};
     for(const FKey Key:ReviewKeys){FInputKeyBinding Binding(FInputChord(Key),IE_Pressed);Binding.bConsumeInput=true;Binding.KeyDelegate.GetDelegateForManualSet().BindLambda([this,Key]{PendingKeys.Add(Key);});InputComponent->KeyBindings.Add(Binding);}
     FAssetCompilingManager::Get().FinishAllCompilation();
     Capture=FParse::Param(FCommandLine::Get(),TEXT("WholeCarryCapture"));
@@ -134,6 +137,7 @@ void AWholeCarryReview::Tick(float Delta)
     if(Pressed(PC,EKeys::SpaceBar))Paused=!Paused;
     if(Pressed(PC,EKeys::Z))Slow=!Slow;
     if(Pressed(PC,EKeys::Tab))Comparison=!Comparison;
+    if(Pressed(PC,EKeys::Five)){Closeup=!Closeup;Comparison=false;}
     if(Pressed(PC,EKeys::R)){Clock=0;Paused=false;}
     const FKey Views[]={EKeys::One,EKeys::Two,EKeys::Three,EKeys::Four};
     for(int I=0;I<4;++I)if(Pressed(PC,Views[I]))View=I;
@@ -142,7 +146,7 @@ void AWholeCarryReview::Tick(float Delta)
     if(!Paused)Clock+=FMath::Min(Delta,.05f)*(Slow?.25f:1.f);
     const double Duration=(Clips[0].Frames.Num()-1)/60.;if(Clock>=Duration){Clock=Duration;Paused=true;}Time=Clock;
     // Deterministic multi-angle inspection, independent of user's mouse input.
-    if(Capture){const float Times[]={.15f,.60f,.85f,2.70f,3.05f,4.60f,5.0f};Comparison=ShotIndex<4;View=ShotIndex%4;Time=Times[FMath::Min(ShotIndex/4,6)];}
+    if(Capture){const float Times[]={.15f,.60f,.85f,2.70f,3.05f,4.60f,5.0f};Comparison=ShotIndex<4;Closeup=Proportions&&ShotIndex>=28;View=ShotIndex%4;Time=Times[(ShotIndex/4)%7];}
     const double FrameTime=Time*60;const int A=FMath::FloorToInt(FrameTime),B=FMath::Min(A+1,Clips[0].Frames.Num()-1);const float Alpha=FrameTime-A;
     Speed=FMath::Lerp(Speeds[A],Speeds[B],Alpha);
     const FVector Base(-1500,-1500,0),Move=FMath::Lerp(Travel[A],Travel[B],Alpha);
@@ -163,18 +167,18 @@ void AWholeCarryReview::Tick(float Delta)
         }
     }
     if(SourceGun)SourceGun->SetVisibility(Comparison);
-    const float Distance=Comparison?730:480;
-    const FVector Focus=Base+Move*LegScale+FVector(0,0,100);const FVector Eye=Focus+Dirs[View]*Distance;
+    const float Distance=Comparison?730:(Closeup?245:480);
+    const FVector Focus=Base+Move*LegScale+FVector(0,0,Closeup?148:100);const FVector Eye=Focus+Dirs[View]*Distance;
     Camera->SetActorLocationAndRotation(Eye,(Focus-Eye).Rotation());
     if(Capture)
     {
         static float Wait=0;Wait+=Delta;
-        if(Wait>.8f && ShotIndex<28){Wait=0;FString Rows=TEXT("time,bone,x,y,z,qx,qy,qz,qw,sx,sy,sz\n");
+        if(Wait>.8f && ShotIndex<(Proportions?56:28)){Wait=0;FString Rows=TEXT("time,bone,x,y,z,qx,qy,qz,qw,sx,sy,sz\n");
             Bodies[2]->RefreshBoneTransforms();const auto& Transforms=Bodies[2]->GetComponentSpaceTransforms();
             for(int N=0;N<Transforms.Num();++N){const auto& T=Transforms[N];const auto P=T.GetLocation(),Scale=T.GetScale3D();const auto Q=T.GetRotation();Rows+=FString::Printf(TEXT("%.6f,%s,%.9f,%.9f,%.9f,%.9f,%.9f,%.9f,%.9f,%.9f,%.9f,%.9f\n"),Time,*Clips[2].Names[N].ToString(),P.X,P.Y,P.Z,Q.X,Q.Y,Q.Z,Q.W,Scale.X,Scale.Y,Scale.Z);}
-            FFileHelper::SaveStringToFile(Rows,*(FPaths::ProjectSavedDir()/FString::Printf(TEXT("WholeCarryReview/pose-%02d.csv"),ShotIndex)));
-            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("WholeCarryReview/shot-%02d.png"),ShotIndex),true,false);++ShotIndex;}
-        if(ShotIndex>=28 && Wait>.35f){UE_LOG(LogTemp,Display,TEXT("WHOLE_CARRY_VISUAL_CAPTURE_COMPLETE"));FPlatformMisc::RequestExit(false);}
+            FFileHelper::SaveStringToFile(Rows,*(ReviewDirectory/FString::Printf(TEXT("pose-%02d.csv"),ShotIndex)));
+            FScreenshotRequest::RequestScreenshot(ReviewDirectory/FString::Printf(TEXT("shot-%02d.png"),ShotIndex),true,false);++ShotIndex;}
+        if(ShotIndex>=(Proportions?56:28) && Wait>.35f){UE_LOG(LogTemp,Display,TEXT("WHOLE_CARRY_VISUAL_CAPTURE_COMPLETE"));FPlatformMisc::RequestExit(false);}
     }
 }
 void AWholeCarryReviewHUD::DrawHUD()
@@ -182,10 +186,10 @@ void AWholeCarryReviewHUD::DrawHUD()
     Super::DrawHUD();if(!Canvas)return;
     TActorIterator<AWholeCarryReview> It(GetWorld()); AWholeCarryReview* R=It?*It:nullptr;if(!R)return;
     DrawRect(FLinearColor(0.015,.025,.04,.86),0,0,Canvas->ClipX,88);
-    DrawText(TEXT("M4 / WHOLE-BODY MOTION STUDY"),FLinearColor::White,22,12,GEngine->GetMediumFont(),1.1f);
-    DrawText(TEXT("SPACE pause   Z slow   1/2/3/4 views   TAB compare/focus   arrows frame   R restart"),FLinearColor(.65,.85,1),22,40,GEngine->GetSmallFont(),1.f);
+    DrawText(R->Proportions?TEXT("M4 / RYAN BODY PROPORTION REVIEW"):TEXT("M4 / WHOLE-BODY MOTION STUDY"),FLinearColor::White,22,12,GEngine->GetMediumFont(),1.1f);
+    DrawText(TEXT("SPACE pause   Z slow   1/2/3/4 views   5 upper body   TAB compare/focus   arrows frame   R restart"),FLinearColor(.65,.85,1),22,40,GEngine->GetSmallFont(),1.f);
     DrawText(FString::Printf(TEXT("%.2fs   source %.0f cm/s   %s   %s"),R->Time,R->Speed,R->Paused?TEXT("PAUSED"):TEXT("PLAYING"),R->Slow?TEXT("0.25x"):TEXT("1x")),FLinearColor::White,22,63,GEngine->GetSmallFont(),1.f);
-    const TCHAR* Labels[]={TEXT("SOURCE / original ALS graph"),TEXT("RETARGET / before grip fitting"),TEXT("CONTACT / reduced carry motion")};
+    const TCHAR* Labels[]={TEXT("SOURCE / original ALS graph"),R->Proportions?TEXT("BEFORE / previous proportions"):TEXT("RETARGET / before grip fitting"),R->Proportions?TEXT("AFTER / fitted proportions + joined cuffs"):TEXT("CONTACT / reduced carry motion")};
     if(R->Comparison)for(int I=0;I<3;++I)DrawText(Labels[I],FLinearColor::White,Canvas->ClipX*(.10f+.33f*I),Canvas->ClipY-45,GEngine->GetSmallFont(),1.f);
     else DrawText(Labels[2],FLinearColor::White,22,Canvas->ClipY-45,GEngine->GetSmallFont(),1.f);
 }

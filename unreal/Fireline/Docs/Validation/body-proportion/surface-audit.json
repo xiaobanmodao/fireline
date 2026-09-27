@@ -1,0 +1,18 @@
+{
+  "frames": 391,
+  "torso_test": "actual deformed Chest/Torso convex hull; triangle half-space clipping",
+  "forearm_glove_and_distal_upperarm_faces": 7936,
+  "weapon_faces": 10702,
+  "minimum_vertex_separation_cm": {
+    "arms": 0.892323070433477,
+    "gun": 0.9614585858794769
+  },
+  "intersecting_triangles": 0,
+  "max_broadphase_suspects_per_frame": 2,
+  "welded_components": 1,
+  "boundary_edges": 0,
+  "nonmanifold_edges": 0,
+  "native_hand_surface_translation_error_cm_max": 3.702042258538321e-05,
+  "visual_acceptance": false,
+  "excluded": "proximal upper arm within 9cm of shoulder is an attached anatomical junction; this is not a universal self-intersection or all-animation audit"
+}

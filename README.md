@@ -30,6 +30,8 @@ UE 5.8 桌面 FPS。当前开发基线：**手柄阶段重建基线** `gamepad-r
 
 2026-09-27：[M4完整身体动作对照](unreal/Fireline/Docs/Validation/whole-carry-review/README.md)。桌面「测试版·M4全身动作对照.app」回放原版ALS完整图与Ryan/DJ适配候选，支持慢放和四向观察；仅待机/前走/停下，未接入默认游戏，等待视觉评价。
 
+2026-09-27：[角色比例与袖口连接修订](unreal/Fireline/Docs/Validation/body-proportion/README.md)。上一版被用户指出胸部过大与穿模；桌面「测试版·角色比例修正.app」对照原版ALS、修改前、修改后。缩小胸肩并同步移动骨骼，保持原DJ手形，闭合袖口连接；仅独立M4携枪片段，尚未更新默认游戏。
+
 ## 版本规则
 
 2026-09-27：[成熟动作系统完整对照](unreal/Fireline/Docs/Research/mature-animation-systems/README.md)。用户再次否决当前动作观感；新增下载ALS完整工程、读取原片／曲线／动画图并对照Lyra与当前双重手臂重建。仅研究，游戏运行时未改；桌面「参考·ALS原版动作.app」是独立原版观察入口。

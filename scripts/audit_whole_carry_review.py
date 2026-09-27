@@ -1,6 +1,6 @@
 """Check isolated review geometry/data; this does not grant visual acceptance."""
 from pathlib import Path
-import csv, gzip, json
+import csv, gzip, json, argparse
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
@@ -13,7 +13,10 @@ def rows(path):
         return list(csv.DictReader(stream))
 
 def main():
-    target = json.loads((DATA / 'WholeCarrySource/target.json').read_text())
+    parser=argparse.ArgumentParser();parser.add_argument('--proportions',action='store_true');args=parser.parse_args()
+    global OUT
+    if args.proportions:OUT=DATA/'BodyProportionReview'
+    target = json.loads((DATA / ('BodyProportionStudy/target.json' if args.proportions else 'WholeCarrySource/target.json')).read_text())
     bind, hold = target['reference'], target['hold']
     poses = json.loads(gzip.decompress((OUT / 'poses.json.gz').read_bytes()))['contact']
     vertices = np.array([[float(row[k]) for k in ['x', 'y', 'z']]
@@ -35,12 +38,19 @@ def main():
         b = bind[bone]
         local = R.from_quat(b['q']).inv().apply(vertices[ids] - b['p']) / b['s']
         skin[bone] = ids, weights, local
-    sole_heights = []
+    sole_heights = [];intrusions=[]
+    from scipy.spatial import ConvexHull
+    torso=np.isin(dominant,["Chest","Torso"])
+    distal=np.array([isinstance(n,str) and (n.startswith("DJ_") or n.startswith("LowerArm_")) for n in dominant])
     for pose in poses:
         skinned = np.zeros_like(vertices)
         for bone, (ids, weights, local) in skin.items():
             p = pose[bone]
             skinned[ids] += (R.from_quat(p['q']).apply(local * p['s']) + p['p']) * weights[:, None]
+        if args.proportions:
+            hull=ConvexHull(skinned[torso]).equations
+            distances=(np.einsum('ij,kj->ik',skinned[distal],hull[:,:3],optimize=False)+hull[:,3]).max(axis=1)
+            intrusions.append({'frame':len(intrusions),'deepest_cm':float(max(0,-distances.min())),'inside_vertex_count':int((distances<-.01).sum())})
         # Actual native viewer scene registration from measured boot sole bounds.
         sole_heights.append([float(skinned[dominant == 'Foot_' + s, 2].min() + .70) for s in ['L', 'R']])
     soles = np.array(sole_heights)
@@ -86,14 +96,16 @@ def main():
         'sole_world_height_cm': {s: {'min': float(soles[:, i].min()), 'max': float(soles[:, i].max())}
                                  for i, s in enumerate(['L', 'R'])},
         'lowest_sole_height_cm_max': float(soles.min(axis=1).max()),
+        'chest_convex_envelope_screen':{'max_depth_cm':max((r['deepest_cm'] for r in intrusions),default=0),'frames_with_inside_vertices':sum(r['inside_vertex_count']>0 for r in intrusions)},
         'visual_acceptance': False,
         'limits': ['M4 recorded idle-walk-stop only; not live game input',
                    'No triangle-intersection guarantee or all-state art acceptance',
                    'Constant grip registration differs substantially from raw source carry'],
     }
     (OUT / 'audit.json').write_text(json.dumps(report, indent=2))
+    if args.proportions:(OUT/'chest-envelope-screen.json').write_text(json.dumps(intrusions))
     print(json.dumps(report, indent=2))
-    assert len(parity) == 28, 'Complete final native capture before delivery'
+    assert len(parity) == (56 if args.proportions else 28), 'Complete final native capture before delivery'
     assert max(parity) < .001
     assert max(lengths.values()) < .001
     assert max(grip_error) < .001

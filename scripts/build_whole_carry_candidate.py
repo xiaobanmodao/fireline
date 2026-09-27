@@ -39,9 +39,12 @@ def descendant(n,p,parents):
     return False
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--amplitude',type=float,default=.55);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--amplitude',type=float,default=.55);parser.add_argument('--proportions',action='store_true');args=parser.parse_args()
+    global OUT
+    if args.proportions:OUT=DATA.parent/'BodyProportionReview'
     assert 0<=args.amplitude<=1
-    target=json.loads((DATA/'target.json').read_text());names=target['names'];parents=target['parents']
+    target_path=(DATA.parent/'BodyProportionStudy/target.json') if args.proportions else DATA/'target.json'
+    target=json.loads(target_path.read_text());names=target['names'];parents=target['parents']
     B={n:transform(v) for n,v in target['reference'].items()};H={n:transform(v) for n,v in target['hold'].items()}
     srcrows=read_rows(DATA/'bind.csv');SN=[r['bone'] for r in srcrows];SP={r['bone']:r['parent'] if r['parent']!='None' else None for r in srcrows};SB={r['bone']:row_tr(r) for r in srcrows}
     frames={}
@@ -161,7 +164,7 @@ def main():
             rows.append(max(0,bend-25)/3);rows.append(max(0,2-margin)*3)
             # Source guide is the moving elbow plane, not a universal down pole.
             local_elbow=chest.inv().apply(NE-P['Chest'][0]);local_wrist=chest.inv().apply(T[0]-P['Chest'][0])
-            def inside(V):return max(0,1-np.sqrt((V[0]/23)**2+(V[1]/16)**2))
+            def inside(V):return max(0,1-np.sqrt((V[0]/(20 if args.proportions else 23))**2+(V[1]/(15 if args.proportions else 16))**2))
             rows.append(inside(local_elbow)*8);rows.append(inside(local_wrist)*8)
             arms.append({'wrist_bend':bend,'reach_margin':margin,'elbow_shift':float(np.linalg.norm(NE-E)),'wrist_shift':float(np.linalg.norm(T[0]-W))})
             if build:
@@ -175,13 +178,32 @@ def main():
                 if n.startswith('M4_'):N[n]=transfer(n)
         return rows,arms,N
     subset=cache[::12]
+    if args.proportions:
+        from body_proportion_geometry import Surface,chest_hull,signed
+        geometry=DATA.parent/'BodyProportionStudy'
+        surface=Surface(geometry/'candidate')
+        torso_surface=surface.hull_samples(lambda n:n in ['Chest','Torso'])
+        arm_surface=surface.subset(np.flatnonzero([n.startswith('LowerArm_') or n.startswith('DJ_') or (n.startswith('UpperArm_') and np.linalg.norm(v-B[n][0])>9) for n,v in zip(surface.dom,surface.v)]))
+        gun_surface=Surface(geometry/'gun')
+        clearance_hulls=[chest_hull(torso_surface,entry[0]) for entry in subset]
     def objective(x):
         rows=[]
-        for entry in subset:rows.extend(solve(x,entry)[0])
+        for i,entry in enumerate(subset):
+            residual,_,N=solve(x,entry,args.proportions);rows.extend(residual)
+            if args.proportions:
+                # Collision uses the actual skinned Ryan torso envelope and
+                # forearm/glove/weapon surface, not only two wrist endpoints.
+                for shape in [arm_surface,gun_surface]:
+                    distances=signed(shape.deform(N),clearance_hulls[i])
+                    rows.extend(np.maximum(0,1.0-distances)*5)
         rows.extend(x[:3]/.6);rows.extend(x[3:6]/20);rows.extend(x[6:]/.7)
         return rows
     bound=np.r_[np.ones(3)*.85,np.ones(3)*20,np.ones(2)*.85]
-    fit=least_squares(objective,np.zeros(8),bounds=(-bound,bound),max_nfev=100)
+    initial=np.zeros(8)
+    # Fixed seed from the first surface registration; reproducible rather than
+    # silently warm-starting from whatever report happens to be on disk.
+    if args.proportions:initial=np.array([-.4368922740665897,-.7138369328916181,.7865772428724283,4.221535434233251,7.134850714513233,-2.2891596860844734,.10811100240537985,.03197974449375853])
+    fit=least_squares(objective,initial,bounds=(-bound,bound),max_nfev=100)
     final=[];metrics=[]
     for entry in cache:
         _,m,P=solve(fit.x,entry,True);final.append(P);metrics.append(m)
@@ -197,9 +219,12 @@ def main():
                     f.write(struct.pack('<10f',*tr[0],*tr[1].as_quat(),*tr[2]))
         (OUT/(name+'-bones.txt')).write_text('\n'.join(bones))
     output('source',source,SN,SP);output('retarget',raw,names,parents);output('contact',final,names,parents)
+    if args.proportions:
+        import shutil
+        for ext in ['.bin','-bones.txt']:shutil.copyfile(DATA.parent/'WholeCarryReview'/('contact'+ext),OUT/('retarget'+ext))
     np.array([[float(s[k]) for k in ['speed','actor_x','actor_y','actor_z']] for s in states],dtype='<f4').tofile(OUT/'movement.bin')
-    summary={'frames':len(source),'fps':60,'amplitude_candidate':args.amplitude,'fit':fit.x.tolist(),'fit_converged':bool(fit.success),
-             'native_assets_modified':False,'visual_acceptance':False,'leg_scale':leg_ratio,
+    summary={'frames':len(source),'fps':60,'amplitude_candidate':args.amplitude,'fit':fit.x.tolist(),'fit_converged':bool(fit.success),'fit_initial':initial.tolist(),'fit_evaluations':int(fit.nfev),
+             'native_assets_modified':False,'derived_proportion_mesh':args.proportions,'visual_acceptance':False,'leg_scale':leg_ratio,
              'legs':{side:{k:{'min':min(m[i][k] for m in leg_metrics),'max':max(m[i][k] for m in leg_metrics)} for k in leg_metrics[0][i]} for i,side in enumerate(['L','R'])},
              'arms':{side:{k:{'min':min(m[i][k] for m in metrics),'max':max(m[i][k] for m in metrics)} for k in metrics[0][i]} for i,side in enumerate(['L','R'])}}
     (OUT/'report.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary,indent=2))

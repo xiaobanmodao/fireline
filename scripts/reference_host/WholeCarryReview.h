@@ -32,6 +32,7 @@ class AWholeCarryReview : public AActor
     TSet<FKey> PendingKeys;
     double Clock=0;
     float LegScale=1.f;
+    FString ReviewDirectory;
     int32 View=0,ShotIndex=0;
     bool Capture=false;
     bool Pressed(class APlayerController* PC,const FKey& Key);
@@ -39,7 +40,7 @@ public:
     AWholeCarryReview();
     bool Initialize(class AAlsCharacter* Source);
     virtual void Tick(float Delta) override;
-    bool Paused=false,Slow=false,Comparison=true;
+    bool Paused=false,Slow=false,Comparison=true,Proportions=false,Closeup=false;
     float Time=0,Speed=0;
 };
 UCLASS()
