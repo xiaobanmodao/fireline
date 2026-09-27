@@ -1,0 +1,44 @@
+{
+  "frames": 391,
+  "fps": 60,
+  "skinned_vertices": 9187,
+  "weight_sum_error_max": 2.220446049250313e-16,
+  "native_capture_samples": 28,
+  "native_component_position_error_cm_max": 9.347143223439365e-06,
+  "limb_length_error_cm_max_by_segment": {
+    "UpperArm_L->LowerArm_L": 2.4868995751603507e-14,
+    "LowerArm_L->DJ_wrist_L": 1.4210854715202004e-14,
+    "UpperLeg_L->LowerLeg_L": 2.1316282072803006e-14,
+    "LowerLeg_L->Foot_L": 3.552713678800501e-14,
+    "UpperArm_R->LowerArm_R": 2.1316282072803006e-14,
+    "LowerArm_R->DJ_wrist_R": 1.4210854715202004e-14,
+    "UpperLeg_R->LowerLeg_R": 2.1316282072803006e-14,
+    "LowerLeg_R->Foot_R": 4.263256414560601e-14
+  },
+  "receiver_relative_wrist_error_cm_max": 3.663130355011873e-14,
+  "joint_step_cm_max_at_60fps": {
+    "UpperArm_L": 1.1587722948919523,
+    "LowerArm_L": 1.1049974677425005,
+    "DJ_wrist_L": 1.051933051092058,
+    "UpperArm_R": 1.170524057580852,
+    "LowerArm_R": 1.2337917424442475,
+    "DJ_wrist_R": 1.1292599595552903
+  },
+  "sole_world_height_cm": {
+    "L": {
+      "min": 0.02191240316047316,
+      "max": 4.961219618243162
+    },
+    "R": {
+      "min": 0.02734154719323345,
+      "max": 5.01778087165027
+    }
+  },
+  "lowest_sole_height_cm_max": 0.5400565671118123,
+  "visual_acceptance": false,
+  "limits": [
+    "M4 recorded idle-walk-stop only; not live game input",
+    "No triangle-intersection guarantee or all-state art acceptance",
+    "Constant grip registration differs substantially from raw source carry"
+  ]
+}

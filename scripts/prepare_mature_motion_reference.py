@@ -22,6 +22,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--engine', type=Path, default=Path('/Users/Shared/Epic Games/UE_5.8'))
     p.add_argument('--lyra', type=Path, help='Optional existing official Lyra project directory')
+    p.add_argument('--fireline', action='store_true', help='Read-only content link for native-model comparison')
     p.add_argument('--build', action='store_true')
     p.add_argument('--launcher', action='store_true')
     a = p.parse_args()
@@ -60,7 +61,7 @@ def main():
 public class MotionReference : ModuleRules {
  public MotionReference(ReadOnlyTargetRules Target) : base(Target) {
   PCHUsage=PCHUsageMode.UseExplicitOrSharedPCHs;
-  PublicDependencyModuleNames.AddRange(new string[]{"Core","CoreUObject","Engine","ALS","GameplayTags"});
+  PublicDependencyModuleNames.AddRange(new string[]{"Core","CoreUObject","Engine","ALS","GameplayTags","InputCore","UMG","EnhancedInput"});
  }
 }
 ''')
@@ -88,6 +89,13 @@ GlobalDefaultGameMode=/ALS/ALSExtras/Core/B_Als_GameMode.B_Als_GameMode_C
             if not link.exists():
                 link.symlink_to(target, target_is_directory=True)
             assert link.resolve() == target
+    if a.fireline:
+        (project / 'Content').mkdir(exist_ok=True)
+        target = ROOT / 'unreal/Fireline/Content/Fireline'
+        link = project / 'Content/Fireline'
+        if not link.exists():
+            link.symlink_to(target, target_is_directory=True)
+        assert link.resolve() == target.resolve()
     if a.build:
         subprocess.run([str(a.engine / 'Engine/Build/BatchFiles/Mac/Build.sh'),
                         'MotionReferenceEditor', 'Mac', 'Development', str(uproject),
