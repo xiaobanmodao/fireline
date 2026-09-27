@@ -1,15 +1,26 @@
 {
-  "snapshot": "unreal/Fireline/SourceAssets/BodyProportionStudy/ba7589acc53a",
+  "snapshot": "unreal/Fireline/SourceAssets/BodyProportionStudy/54251bac1b00",
+  "previous_snapshot": "unreal/Fireline/SourceAssets/BodyProportionStudy/ba7589acc53a",
   "files": {
     "native.fbx": "fbdab1e5500557dd6d00fc6f0eb96b005e8a1e86a49ea518e0c9c05e83e95b87",
     "source.fbx": "a1ad2486d5b86edccafda6595cd877a9dbb2a290b3cb73ffefeaf1c29e7f5fe0",
-    "candidate.fbx": "ba7589acc53a39809def5ec61952a5f273d570d32055c636a92bd9083ea5f8db",
-    "candidate.blend": "9b936fc78a2d706ef5a553b6943beaab9996631f1db7e5cd583a501052be96d2",
-    "construction.json": "0e77a14f79134136af904b14cbc9357b298a4a0cb7dddd6b9a4f02b0d44ef49d",
+    "candidate.fbx": "54251bac1b00c89c44bac32bbe9c7ce3905d5e131a2e3bbb66f8c11038aeb56d",
+    "candidate.blend": "df2c89c19aad89420ba4684bbcc1cb6e1459766e4b50b7b1aa43e9a4bd6ffad3",
+    "construction.json": "8f8f39ca201af7f193d64aa3d19ce9421d603980c002c8f03cec916fbfc4fe79",
     "target.json": "59499615dad711af6ae0f1decdd4e581723b43f85238886b8b31fabcbf8987cd",
     "native-bind.csv": "9492c1f097c7809ea2611a54ecbc063687c2b2096d37975e6f698acbc0f3f417",
-    "candidate-bind.csv": "43003b2bec447221da9ef65b12ad3f358e2711988cdc964c49ec0c2bdc05ceea"
+    "candidate-bind.csv": "43003b2bec447221da9ef65b12ad3f358e2711988cdc964c49ec0c2bdc05ceea",
+    "lower-preservation.json": "4fffb5f97945e077d7514c9ebe4d514bef3adf01c5ecdb9997a2f6e126722a72",
+    "lower-reference-measurements.json": "43958f078296a09c116e642c4bde640baacff8920d95bd8e94168d0e0bd955d2",
+    "lower-authoring-comparison.json": "9e59b5f23f8c3ff53d38096c010269df0bd040e0732c0b34044bd7b889e97d77",
+    "contact.bin": "a83c3498a4e0457cca21a145645a7955d09e630b67889dfc1528dcfacad8b9a9",
+    "contact-bones.txt": "a4889cb03d2722f236402291c901fdd248763f10a67fbb6b54a7f6735a50fcc6",
+    "report.json": "147ecd9c1eee45e2804a3f4d53b3a6094dffe450a0aa7d1f5d09312429b2ca36",
+    "surface-audit.json": "ce6b32ab0fee38109432076cbeacafb35af3feeb9fb18ebcccdc2020c526ad32",
+    "audit.json": "d4f2086a4416f379162259aae1b05c28f24d9f4d56c39c0926ce6d477e42a05a",
+    "SK_RyanProportion.uasset": "dd1c2cb6eb56675bb35a32eea298cb190963a9e4c737d45b071eb51c288f9780",
+    "SK_RyanProportion_Skeleton.uasset": "a4e74a3416b9f4cb759aa871a3ec19cc3c474e98adcd06a54d57aca35d0af684"
   },
   "selected_original_assets_modified": false,
-  "scope": "isolated derived Ryan/DJ body and one M4 source replay; not default game"
+  "scope": "isolated lower contour revision; same native bind, weights and M4 replay; not default game"
 }

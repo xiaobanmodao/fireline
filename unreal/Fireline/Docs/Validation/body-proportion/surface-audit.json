@@ -4,7 +4,7 @@
   "forearm_glove_and_distal_upperarm_faces": 7936,
   "weapon_faces": 10702,
   "minimum_vertex_separation_cm": {
-    "arms": 0.892323070433477,
+    "arms": 0.8937585345107664,
     "gun": 0.9614585858794769
   },
   "intersecting_triangles": 0,

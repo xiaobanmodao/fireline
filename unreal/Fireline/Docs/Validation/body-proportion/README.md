@@ -21,7 +21,18 @@
 4. **端点正确不足以排除穿模。** 原只限制肘/腕中心的胸廓近似无法约束护甲厚度和枪托。派生版本以实际蒙皮胸廓表面构建保守凸包，拟合时加入完整前臂、手套、远端上臂及枪械表面间隙。双手、手指、整枪保持公共刚体接触关系，只调整整个携枪组件和可行肘平面。
 5. **重导入平滑过度。** 合并渲染裂缝后重新保留Ryan的硬棱面；DJ手部保持平滑。没有通过加细分统一风格。
 
-DJ手指/手掌表面保持原形。新旧绑定空间中消除每侧统一平移后，原手部顶点最近点最大误差约0.000037cm。新模型蒙皮仍使用原权重；仅新连接面的边缘共享现有顶点/权重。原下半身几何、既有脚步适配和模型高度保留。
+DJ手指/手掌表面保持原形。新旧绑定空间中消除每侧统一平移后，原手部顶点最近点最大误差约0.000037cm。新模型蒙皮仍使用原权重；仅新连接面的边缘共享现有顶点/权重。首轮保留了下半身几何，本轮按用户新增要求作以下小幅调整，既有脚步适配和模型高度继续保留。
+
+## 下半身小幅修订（同日追加）
+
+对照已有ALS与Ryan导出网格，发现主要外扩在髋甲和大腿前后厚度；原靴子相对身高已经小于参考，不能整条腿和靴子一起缩小。本次只改轮廓，未再求解动作。
+
+- 髋部截面总宽约51.68→48.54cm，收窄约6%；臀髋/大腿前后厚度最多收减8%，中段胫甲厚度最多收减4%。实测大腿截面厚度30.30→28.28cm，小腿20.68→20.00cm。截面通过原网格边与水平面相交测量，不用缺少顶点的高度区间冒充截面；这些值是小幅造型修订，不是ALS人体尺寸的逐项复制。
+- 到膝盖和踝口逐渐归零，保留两处关节开口和靴底形状，不缩短腿、不改变髋/膝/踝关节位置。原有骨盆/大腿权重延伸到腰部，腰部接缝随之连续收整，最大变化约0.55cm；不把接缝上方硬切成另一圈。
+- 与上轮派生模型比较，131根骨骼绑定矩阵完全一致，4682个建模顶点/9360个三角面及权重保持；顶点高度全部不变。最大局部位移约1.74cm。原动作/持枪二进制及391帧姿态哈希不变，避免为体形微调再拟合整套手臂。
+- 重导入后硬边渲染顶点9864→9936，这是法线接缝拆点数量变化；建模拓扑/面数未增加。检查采用原建模索引和实际渲染空间对应，不能按UE渲染顶点ID直接比较新旧数据。
+
+新增数据：`lower-preservation.json`、`lower-reference-measurements.json`。后者的骨骼主权重包围盒只用于判断参考差异；Ryan侧髋甲权重属于UpperLeg，不能拿Pelvis组包围盒当成整个骨盆宽度。
 
 ## 验证与边界
 
@@ -30,20 +41,23 @@ DJ手指/手掌表面保持原形。新旧绑定空间中消除每侧统一平�
 - 391帧，60Hz：固定上下肢长度、双腕相对机匣位置、实际靴底高度检查。
 - 391帧实际表面：7,936个手套/前臂/远端上臂三角面及10,702个枪械三角面对胸廓保守凸包做半空间裁剪，交叠三角面为0；最低顶点间隙手臂约0.89cm、枪约0.96cm。
 - 肩关节9cm内属于连接区域，未作为分离物体参与胸廓穿插测试。该检查不等于全人物所有部位互相不交叠，也不覆盖换弹、瞄准、冲刺、侧移、MP7、近战等未移植状态。
-- 7个关键时刻 × 4个方向 × 全身/近景，共56组原生骨骼输出及截图；已查看正面、侧面和背面关键帧。实际桌面入口启动到ReferenceProject并记录READY；本轮自动控制被应用切换中断，不能把新近景快捷键记为人工操作验收。
+- 7个关键时刻 × 4个方向 × 全身/近景，共56组原生骨骼输出及截图重新生成；已查看正面、侧面和背面关键帧。另从实际桌面入口启动ReferenceProject，实际操作Tab、1/2、Z、R验证单人观察、视角切换、慢放和正常速度重播。上轮未独立核验的5近景键不因此记为已核验。
+- 本轮391帧靴底最低点与调整前一致：左右约0.022/0.027cm，无新增穿地；膝盖周边网格及其骨骼未变。闭合检查仍为一个连通网格、零开放边/非流形边。小幅造型变化仍需用户判断，不宣称所有关节或未覆盖动作通过。
 - 原1252个Fireline资源哈希未变；原ALS源文件不修改。第一人称和正式版本不改。
 
 本次是比例、连接和M4录制携枪片段的可观察修正版；用户视觉验收尚未发生。不得用数值通过宣称所有动作完美或默认游戏已全面修复。上一版WholeCarry已被用户否决，旧报告中有限观察不能推翻用户指出的缺陷。
 
 ## 本机资源与复现
 
-独立宿主：`unreal/Fireline/Saved/MatureMotionResearch/ReferenceProject`。派生UE资源只在该宿主 `/Game/BodyProportionStudy`，绝不写入映射的 `/Game/Fireline`。原导出、Blender修订、FBX、派生UE资源和回放数据另存于 `unreal/Fireline/SourceAssets/BodyProportionStudy/ba7589acc53a`，本机保留，不分发到公开Git。
+独立宿主：`unreal/Fireline/Saved/MatureMotionResearch/ReferenceProject`。派生UE资源只在该宿主 `/Game/BodyProportionStudy`，绝不写入映射的 `/Game/Fireline`。原导出、Blender修订、FBX、派生UE资源和回放数据另存于 `unreal/Fireline/SourceAssets/BodyProportionStudy/54251bac1b00`；首轮上半身快照 `ba7589acc53a` 保留。本机资源不分发到公开Git。桌面入口使用当前候选资源，不把它说成冻结版本。
 
 1. `python3 scripts/prepare_mature_motion_reference.py --build --fireline` 构建独立宿主。
 2. UE Python运行 `export_body_proportion_reference.py`，导出原网格和参考网格；FBX材质导出需 `-AllowCommandletRendering -RenderOffScreen`，不可用NullRHI。下一步脚本会从FBX自动创建Blender测量数据与源副本。
 3. Blender运行 `build_body_proportion_mesh.py`。UE Python运行 `import_body_proportion_mesh.py`，仅保存独立派生网格和Skeleton并导出实际渲染/绑定数据。
-4. 本机 `Saved/AnimationPython/bin/python scripts/build_whole_carry_candidate.py --proportions`。携枪初值固定为第一次表面注册结果，避免依赖任意上一次输出；当前0.55摆动幅度仍是候选参数。
+4. 首次肩部绑定迁移运行本机 `Saved/AnimationPython/bin/python scripts/build_whole_carry_candidate.py --proportions`。携枪初值固定为第一次表面注册结果，避免依赖任意上一次输出；当前0.55摆动幅度仍是候选参数。**本轮下半身微调不重新运行该拟合**：确认新旧131骨绑定一致后，复用原contact/movement/poses等8个动作文件，哈希见lower-preservation，继续做新几何表面与实机检查。
 5. `scripts/audit_body_proportion_surface.py`做全片实际三角面检查。启动独立宿主 `-game -WholeCarryReview -BodyProportionReview -WholeCarryCapture` 获取56组原生记录，再运行 `scripts/audit_whole_carry_review.py --proportions`。
 6. `python3 scripts/install_whole_carry_review.py --proportions`安装桌面入口。没有该参数时仍安装旧演示，不会覆盖它。
 
 本地日志记录过导出NullRHI断言、导入未持久化新Skeleton的启动失败；已分别以渲染导出和显式保存派生Skeleton修复。最终实际启动必须通过后才交付。
+
+后续开发见 [当前模型之后的开发顺序](../../NEXT_DEVELOPMENT.md)。第一步是独立、可操作的M4前向起停测试，不是直接用本回放替换全部游戏动作。

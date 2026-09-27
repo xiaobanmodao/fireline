@@ -1,0 +1,29 @@
+{
+  "mesh_bind_all_131_bones_max_delta": 0.0,
+  "authoring_triangle_count": 9360,
+  "authoring_topology_and_weights_unchanged": true,
+  "boot_knee_chest_authoring_max_delta_cm": 0.0,
+  "boot_knee_chest_render_nearest_error_cm": 0.0,
+  "largest_lower_vertex_change_cm": 1.7360122209233215,
+  "all_vertices_vertical_change_cm": 0.0,
+  "protected_rest_z_bands_cm": [
+    "below 12",
+    "53..64",
+    "above 126"
+  ],
+  "waist_transition_note": "Original pelvis/thigh skin weights reach 123.6cm; those waist vertices blend the lower contour adjustment (max .55cm), not part of the protected chest region.",
+  "render_vertices_before": 9864,
+  "render_vertices_after": 9936,
+  "render_split_note": "Flat-normal render seams change IDs/counts; authoring topology/weights compared by index, protected runtime geometry compared spatially.",
+  "motion_files_unchanged": {
+    "retarget.bin": "ab785a5f84201e698771928ea4536d51fbe64a629f8cde004b061e0c2a9445bf",
+    "movement.bin": "95178c2a59cb9f2b5e2f94b4c93ea1ec5359f0a7c1ac34a4569d4d2b1f02a9ca",
+    "contact-bones.txt": "a4889cb03d2722f236402291c901fdd248763f10a67fbb6b54a7f6735a50fcc6",
+    "contact.bin": "a83c3498a4e0457cca21a145645a7955d09e630b67889dfc1528dcfacad8b9a9",
+    "source-bones.txt": "425693a683265926fbac85461e840e7fb1ae34249aa83190c23f500a923de3bd",
+    "poses.json.gz": "a3d95a3bdbf9b13b46cc329db90e3a5c39974fa30040bbeaeb086ab3bb7a048e",
+    "source.bin": "d6abbb5ea1aa395a10ab5baac452a715cbc95d19a937bf5c5fa1060814cbad20",
+    "retarget-bones.txt": "2871d65a26dbb0d3bc8bdb9803135d1de07c4b257a9b32dab0ec81b135e24162"
+  },
+  "scope": "geometry-only lower refinement; no new movement or animation acceptance"
+}

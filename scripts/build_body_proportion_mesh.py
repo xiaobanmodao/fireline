@@ -44,18 +44,50 @@ for n in old:
 # Body-only sectional shaping; hand geometry is a rigid translation, never a
 # nonuniform scale. Skin weights interpolate the neighboring body sections.
 mesh_inv=mesh.matrix_world.inverted();group_names={g.index:g.name for g in mesh.vertex_groups}
+def smooth_range(value,lo,hi):
+ t=max(0,min(1,(value-lo)/(hi-lo)))
+ return t*t*(3-2*t)
+def lower_sections():
+ # Compare silhouettes in the same rest space, not dominant bone groups:
+ # Ryan's lateral hip armor is weighted to the thighs rather than Pelvis.
+ points=[mesh.matrix_world@v.co for v in mesh.data.vertices]
+ result={}
+ for name,planes in [('hip',[.98,1.04,1.10]),('thigh',[.75,.85]),('shin',[.25,.40]),('boots',[.02,.04])]:
+  # Long low-poly panels need edge/plane intersections: some sections have
+  # no authored vertices at all, so a vertex-only band would be misleading.
+  selected=[]
+  for z in planes:
+   for e in mesh.data.edges:
+    a,b=[points[i] for i in e.vertices]
+    if abs(a.z-b.z)>1e-8 and min(a.z,b.z)<=z<=max(a.z,b.z):selected.append(a.lerp(b,(z-a.z)/(b.z-a.z)))
+  assert selected,name
+  result[name]={'width_cm':100*(max(p.x for p in selected)-min(p.x for p in selected)),
+                'depth_cm':100*(max(p.y for p in selected)-min(p.y for p in selected))}
+ return result
+lower_before=lower_sections()
 for v in mesh.data.vertices:
  p=mesh.matrix_world@v.co;result=Vector();total=0
  for g in v.groups:
   n=group_names[g.group];a=p.copy();center=old.get(n,Vector())
   if n=='Chest':a=Vector((p.x*.84,p.y*.74,p.z))
   elif n=='Torso':a=Vector((p.x*.91,p.y*.88,p.z))
+  elif n=='Pelvis' or n.startswith('UpperLeg_'):
+   # A small silhouette correction, not a new leg rig. Fade out above the
+   # knee so the hinge, armor opening and existing swing remain unchanged.
+   hip=smooth_range(p.z,old['LowerLeg_L'].z+.07,old['UpperLeg_L'].z)
+   thickness=smooth_range(p.z,old['LowerLeg_L'].z+.06,old['LowerLeg_L'].z+.20)
+   a=Vector((p.x*(1-.06*hip),p.y*(1-.08*thickness),p.z))
+  elif n.startswith('LowerLeg_'):
+   # Retain both knee and ankle rim geometry; reduce only the shin bulge.
+   taper=smooth_range(p.z,old['Foot_L'].z+.06,old['Foot_L'].z+.16)*(1-smooth_range(p.z,old['LowerLeg_L'].z-.15,old['LowerLeg_L'].z-.06))
+   a=Vector((p.x,center.y+(p.y-center.y)*(1-.04*taper),p.z))
   elif n.startswith('Shoulder_'):a=center+shifts[n]+Vector(((p-center).x*shoulder_scale,(p-center).y*.76,(p-center).z*.88))
   elif n.startswith('UpperArm_'):a=center+shifts[n]+Vector(((p-center).x,(p-center).y*.85,(p-center).z*.85))
   elif n.startswith('LowerArm_'):a=center+shifts[n]+Vector(((p-center).x,(p-center).y*.92,(p-center).z*.92))
   else:a=p+shifts.get(n,Vector())
   result+=a*g.weight;total+=g.weight
  if total:v.co=mesh_inv@(result/total)
+lower_after=lower_sections()
 # Translate arm bind chains together; keep each bone's axes and length.
 bpy.context.view_layer.objects.active=rig;bpy.ops.object.mode_set(mode='EDIT')
 edit_original={b.name:(b.matrix.copy(),b.length) for b in rig.data.edit_bones}
@@ -118,5 +150,5 @@ rig.animation_data_clear();rig.data.pose_position='REST'
 bpy.ops.object.select_all(action='DESELECT');rig.select_set(True);mesh.select_set(True);bpy.context.view_layer.objects.active=rig
 bpy.ops.wm.save_as_mainfile(filepath=str(D/'candidate.blend'))
 bpy.ops.export_scene.fbx(filepath=str(D/'candidate.fbx'),use_selection=True,object_types={'MESH','ARMATURE'},add_leaf_bones=False,bake_anim=False,apply_scale_options='FBX_SCALE_ALL',axis_forward='-Y',axis_up='Z',mesh_smooth_type='FACE')
-report={'source_height_m':source_height,'native_height_m':native_height,'height_changed':False,'shoulder_span_old_cm':abs(old['UpperArm_L'].x-old['UpperArm_R'].x)*100,'shoulder_span_new_cm':abs(old['UpperArm_L'].x-old['UpperArm_R'].x)*shoulder_scale*100,'shoulder_ratio_from_source':shoulder_scale,'chest_width_scale':.84,'chest_depth_scale':.74,'cuff_bridge_triangles':added,'remaining_boundary_loops':0,'original_mesh_vertices':9187,'merged_vertices':len(mesh.data.vertices),'bind_translations_cm':{n:list(d*100) for n,d in shifts.items() if d.length>0},'source_sha256':hashlib.sha256((D/'native.fbx').read_bytes()).hexdigest(),'scope':'isolated derivative; source unchanged; lower body and hand shape preserved'}
+report={'source_height_m':source_height,'native_height_m':native_height,'height_changed':False,'shoulder_span_old_cm':abs(old['UpperArm_L'].x-old['UpperArm_R'].x)*100,'shoulder_span_new_cm':abs(old['UpperArm_L'].x-old['UpperArm_R'].x)*shoulder_scale*100,'shoulder_ratio_from_source':shoulder_scale,'chest_width_scale':.84,'chest_depth_scale':.74,'lower_body':{'hip_width_scale_max':.94,'hip_thigh_depth_scale_max':.92,'shin_depth_scale_max':.96,'sections_before':lower_before,'sections_after':lower_after,'joint_positions_changed':False,'sole_and_boot_shape_changed':False,'note':'Small silhouette refinement toward reference; not a claim of exact ALS dimensions. Knee/ankle rims preserved; geometry taper blended by original weights.'},'cuff_bridge_triangles':added,'remaining_boundary_loops':0,'original_mesh_vertices':9187,'merged_vertices':len(mesh.data.vertices),'bind_translations_cm':{n:list(d*100) for n,d in shifts.items() if d.length>0},'source_sha256':hashlib.sha256((D/'native.fbx').read_bytes()).hexdigest(),'scope':'isolated derivative; source unchanged; lower silhouette refined; all leg joints, hand shape and recorded motion preserved'}
 (D/'construction.json').write_text(json.dumps(report,indent=2));print('BODY_PROPORTION_MESH',json.dumps({k:v for k,v in report.items() if k!='bind_translations_cm'}))

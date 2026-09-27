@@ -1,7 +1,7 @@
 {
   "frames": 391,
   "fps": 60,
-  "skinned_vertices": 9864,
+  "skinned_vertices": 9936,
   "weight_sum_error_max": 2.220446049250313e-16,
   "native_capture_samples": 56,
   "native_component_position_error_cm_max": 1.090511443660226e-05,

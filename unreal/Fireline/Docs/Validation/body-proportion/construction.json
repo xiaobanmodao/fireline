@@ -7,6 +7,50 @@
   "shoulder_ratio_from_source": 0.791229854193596,
   "chest_width_scale": 0.84,
   "chest_depth_scale": 0.74,
+  "lower_body": {
+    "hip_width_scale_max": 0.94,
+    "hip_thigh_depth_scale_max": 0.92,
+    "shin_depth_scale_max": 0.96,
+    "sections_before": {
+      "hip": {
+        "width_cm": 51.681482791900635,
+        "depth_cm": 29.735147953033447
+      },
+      "thigh": {
+        "width_cm": 51.881301403045654,
+        "depth_cm": 30.304376780986786
+      },
+      "shin": {
+        "width_cm": 43.87058615684509,
+        "depth_cm": 20.684701204299927
+      },
+      "boots": {
+        "width_cm": 40.8901184797287,
+        "depth_cm": 25.60916319489479
+      }
+    },
+    "sections_after": {
+      "hip": {
+        "width_cm": 48.536357283592224,
+        "depth_cm": 27.280543744564056
+      },
+      "thigh": {
+        "width_cm": 49.722158908843994,
+        "depth_cm": 28.281229734420776
+      },
+      "shin": {
+        "width_cm": 43.87058615684509,
+        "depth_cm": 20.003006607294083
+      },
+      "boots": {
+        "width_cm": 40.89012145996094,
+        "depth_cm": 25.60916319489479
+      }
+    },
+    "joint_positions_changed": false,
+    "sole_and_boot_shape_changed": false,
+    "note": "Small silhouette refinement toward reference; not a claim of exact ALS dimensions. Knee/ankle rims preserved; geometry taper blended by original weights."
+  },
   "cuff_bridge_triangles": 72,
   "remaining_boundary_loops": 0,
   "original_mesh_vertices": 9187,
@@ -554,5 +598,5 @@
     ]
   },
   "source_sha256": "fbdab1e5500557dd6d00fc6f0eb96b005e8a1e86a49ea518e0c9c05e83e95b87",
-  "scope": "isolated derivative; source unchanged; lower body and hand shape preserved"
+  "scope": "isolated derivative; source unchanged; lower silhouette refined; all leg joints, hand shape and recorded motion preserved"
 }
