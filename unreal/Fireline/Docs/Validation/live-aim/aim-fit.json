@@ -1,0 +1,589 @@
+{
+  "fit": [
+    -0.030351353966267203,
+    -0.05983120634012074,
+    1.3668067802028023,
+    -8.5742584261537,
+    1.4483161268923987,
+    -5.8577485524415245,
+    -0.09969266857645792,
+    0.3467794434653682
+  ],
+  "aim_registration": [
+    -0.030351353966267203,
+    -0.05983120634012074,
+    1.3668067802028023,
+    -8.5742584261537,
+    1.4483161268923987,
+    -5.8577485524415245,
+    -0.09969266857645792,
+    0.3467794434653682
+  ],
+  "rotation_driver": "original source hand_r component-space attachment; registered once at settled Aiming",
+  "target_sha256": "59499615dad711af6ae0f1decdd4e581723b43f85238886b8b31fabcbf8987cd",
+  "source_sha256": "d949141bb76db4b072d94d21843f560d4d9df6a323d71840df661fa1db51ff43",
+  "center_constraint": "Common Ready/Aiming chest-space translation bounds [-12,-8,-6] to [6,22,10] cm; original right-hand anchor; shared weapon/hands",
+  "aim_constraint": "common weapon/hand assembly aligns sight-line/up to view at original Aiming weight; fixed length full arms solved together",
+  "scope": "Isolated third-person M4 Ready/Aiming candidate; all-frame native 30/60/120 Hz checks passed; visual acceptance pending; no reload/FP ADS/default release change.",
+  "clearance_refinement": {
+    "kind": "minimum sampled left elbow-plane displacement with exact triangle clipping",
+    "source_fit": "surface-fit.json",
+    "delta_radians": -0.07,
+    "expanded_torso_cm": 0.15,
+    "frames": 82,
+    "trials": [
+      {
+        "delta_radians": 0.0,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.0717535256607234,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.005,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.09296426126772273,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.005,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.05231145041215428,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.01,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.1159841143974952,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.01,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.03459841981663134,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.015,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.14085441275607186,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.015,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.01857563164130557,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.02,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.16761738481952357,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.02,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.005356844357837606,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.025,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.19631619125947994,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.025,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 1.231954958794241e-05,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.03,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.22699495762007316,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.03,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.06949480720583213,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.035,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.2596988083034617,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.035,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.05207560406196178,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.04,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.2944739019241975,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.04,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.03717677929574131,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.045,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.3313674680957305,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.045,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.02479086820044564,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.05,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.3704278457158922,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.05,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.014911419311439475,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.055,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.4117045228221285,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.055,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.007532986112761766,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.06,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.45524817808994955,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.06,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.0026511195728016962,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.065,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.5011107240540162,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.065,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.0002623614955747246,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": 0.07,
+        "intersections_expanded_torso": 1,
+        "max_area_cm2": 0.5493453521338494,
+        "wrist_max_deg": 40.025979215114816
+      },
+      {
+        "delta_radians": -0.07,
+        "intersections_expanded_torso": 0,
+        "max_area_cm2": 0.0,
+        "wrist_max_deg": 44.46752473453269
+      }
+    ]
+  },
+  "low_fps_clearance": {
+    "minimum_translation_cm": [
+      -0.4455453660801716,
+      0.4608966673414068,
+      0.14221858967798837
+    ],
+    "forward_only_required_cm": 1.513570213971265,
+    "margin_cm": 0.15,
+    "source": "final-30",
+    "worst_frame": 527
+  },
+  "moving_aim_pole_delta": [
+    -0.315,
+    0
+  ],
+  "moving_clearance": {
+    "driver": "original ALS PoseMoving * Aiming state weight",
+    "expanded_torso_cm": 0.15,
+    "frames": [
+      [
+        30,
+        528
+      ],
+      [
+        30,
+        527
+      ],
+      [
+        60,
+        1056
+      ],
+      [
+        60,
+        1055
+      ]
+    ],
+    "trials": [
+      {
+        "delta": -0.0,
+        "intersections": 6,
+        "wrist_max": 10.27377412478953
+      },
+      {
+        "delta": -0.005,
+        "intersections": 6,
+        "wrist_max": 10.271958864070111
+      },
+      {
+        "delta": -0.01,
+        "intersections": 6,
+        "wrist_max": 10.270282527105046
+      },
+      {
+        "delta": -0.015,
+        "intersections": 5,
+        "wrist_max": 10.268745216858823
+      },
+      {
+        "delta": -0.02,
+        "intersections": 5,
+        "wrist_max": 10.267347027810533
+      },
+      {
+        "delta": -0.025,
+        "intersections": 5,
+        "wrist_max": 10.266088045934264
+      },
+      {
+        "delta": -0.03,
+        "intersections": 5,
+        "wrist_max": 10.264968348680604
+      },
+      {
+        "delta": -0.035,
+        "intersections": 5,
+        "wrist_max": 10.263988004960856
+      },
+      {
+        "delta": -0.04,
+        "intersections": 5,
+        "wrist_max": 10.263147075132437
+      },
+      {
+        "delta": -0.045,
+        "intersections": 5,
+        "wrist_max": 10.262445610985965
+      },
+      {
+        "delta": -0.05,
+        "intersections": 5,
+        "wrist_max": 10.261883655734845
+      },
+      {
+        "delta": -0.055,
+        "intersections": 5,
+        "wrist_max": 10.261461244005655
+      },
+      {
+        "delta": -0.06,
+        "intersections": 5,
+        "wrist_max": 10.261178401831387
+      },
+      {
+        "delta": -0.065,
+        "intersections": 4,
+        "wrist_max": 10.261035146645337
+      },
+      {
+        "delta": -0.07,
+        "intersections": 4,
+        "wrist_max": 10.261031487278064
+      },
+      {
+        "delta": -0.075,
+        "intersections": 4,
+        "wrist_max": 10.261167423955122
+      },
+      {
+        "delta": -0.08,
+        "intersections": 4,
+        "wrist_max": 10.261442948297141
+      },
+      {
+        "delta": -0.085,
+        "intersections": 4,
+        "wrist_max": 10.26185804332158
+      },
+      {
+        "delta": -0.09,
+        "intersections": 4,
+        "wrist_max": 10.262412683446367
+      },
+      {
+        "delta": -0.095,
+        "intersections": 4,
+        "wrist_max": 10.263106834495211
+      },
+      {
+        "delta": -0.1,
+        "intersections": 4,
+        "wrist_max": 10.263940453704851
+      },
+      {
+        "delta": -0.105,
+        "intersections": 4,
+        "wrist_max": 10.26491348973386
+      },
+      {
+        "delta": -0.11,
+        "intersections": 4,
+        "wrist_max": 10.266025882673732
+      },
+      {
+        "delta": -0.115,
+        "intersections": 4,
+        "wrist_max": 10.267277564061429
+      },
+      {
+        "delta": -0.12,
+        "intersections": 4,
+        "wrist_max": 10.268668456893387
+      },
+      {
+        "delta": -0.125,
+        "intersections": 4,
+        "wrist_max": 10.270198475642253
+      },
+      {
+        "delta": -0.13,
+        "intersections": 4,
+        "wrist_max": 10.271867526274107
+      },
+      {
+        "delta": -0.135,
+        "intersections": 4,
+        "wrist_max": 10.273675506269019
+      },
+      {
+        "delta": -0.14,
+        "intersections": 4,
+        "wrist_max": 10.275622304641594
+      },
+      {
+        "delta": -0.145,
+        "intersections": 4,
+        "wrist_max": 10.27770780196483
+      },
+      {
+        "delta": -0.15,
+        "intersections": 4,
+        "wrist_max": 10.279931870394638
+      },
+      {
+        "delta": -0.155,
+        "intersections": 4,
+        "wrist_max": 10.282294373696546
+      },
+      {
+        "delta": -0.16,
+        "intersections": 3,
+        "wrist_max": 10.2847951672741
+      },
+      {
+        "delta": -0.165,
+        "intersections": 3,
+        "wrist_max": 10.28743409819879
+      },
+      {
+        "delta": -0.17,
+        "intersections": 2,
+        "wrist_max": 10.290211005241922
+      },
+      {
+        "delta": -0.17500000000000002,
+        "intersections": 2,
+        "wrist_max": 10.293125718907547
+      },
+      {
+        "delta": -0.18,
+        "intersections": 1,
+        "wrist_max": 10.296178061467815
+      },
+      {
+        "delta": -0.185,
+        "intersections": 1,
+        "wrist_max": 10.299367846999543
+      },
+      {
+        "delta": -0.19,
+        "intersections": 1,
+        "wrist_max": 10.302694881422125
+      },
+      {
+        "delta": -0.195,
+        "intersections": 1,
+        "wrist_max": 10.30615896253756
+      },
+      {
+        "delta": -0.2,
+        "intersections": 1,
+        "wrist_max": 10.30975988007196
+      },
+      {
+        "delta": -0.20500000000000002,
+        "intersections": 1,
+        "wrist_max": 10.313497415717862
+      },
+      {
+        "delta": -0.21,
+        "intersections": 1,
+        "wrist_max": 10.317371343179333
+      },
+      {
+        "delta": -0.215,
+        "intersections": 1,
+        "wrist_max": 10.321381428217359
+      },
+      {
+        "delta": -0.22,
+        "intersections": 1,
+        "wrist_max": 10.32552742869754
+      },
+      {
+        "delta": -0.225,
+        "intersections": 1,
+        "wrist_max": 10.329809094638723
+      },
+      {
+        "delta": -0.23,
+        "intersections": 1,
+        "wrist_max": 10.33422616826341
+      },
+      {
+        "delta": -0.23500000000000001,
+        "intersections": 1,
+        "wrist_max": 10.3387783840495
+      },
+      {
+        "delta": -0.24,
+        "intersections": 1,
+        "wrist_max": 10.343465468783036
+      },
+      {
+        "delta": -0.245,
+        "intersections": 1,
+        "wrist_max": 10.348287141613088
+      },
+      {
+        "delta": -0.25,
+        "intersections": 1,
+        "wrist_max": 10.353243114106892
+      },
+      {
+        "delta": -0.255,
+        "intersections": 1,
+        "wrist_max": 10.358333090307575
+      },
+      {
+        "delta": -0.26,
+        "intersections": 1,
+        "wrist_max": 10.36355676679197
+      },
+      {
+        "delta": -0.265,
+        "intersections": 1,
+        "wrist_max": 10.368913832730208
+      },
+      {
+        "delta": -0.27,
+        "intersections": 1,
+        "wrist_max": 10.374403969946831
+      },
+      {
+        "delta": -0.275,
+        "intersections": 1,
+        "wrist_max": 10.380026852982528
+      },
+      {
+        "delta": -0.28,
+        "intersections": 1,
+        "wrist_max": 10.38578214915719
+      },
+      {
+        "delta": -0.28500000000000003,
+        "intersections": 1,
+        "wrist_max": 10.391669518634382
+      },
+      {
+        "delta": -0.29,
+        "intersections": 1,
+        "wrist_max": 10.397688614486484
+      },
+      {
+        "delta": -0.295,
+        "intersections": 1,
+        "wrist_max": 10.403839082761559
+      },
+      {
+        "delta": -0.3,
+        "intersections": 1,
+        "wrist_max": 10.410120562550173
+      },
+      {
+        "delta": -0.305,
+        "intersections": 1,
+        "wrist_max": 10.416532686054444
+      },
+      {
+        "delta": -0.31,
+        "intersections": 1,
+        "wrist_max": 10.423075078657364
+      },
+      {
+        "delta": -0.315,
+        "intersections": 0,
+        "wrist_max": 10.429747358993133
+      }
+    ]
+  },
+  "initial_sampled_fit": {
+    "converged": false,
+    "evaluations": 18,
+    "frames": 82,
+    "wrist_max_deg": [
+      42.42873296383263,
+      40.02864241357555
+    ],
+    "reach_min_cm": [
+      1.0099339654421442,
+      27.099509743118023
+    ],
+    "torso_penetration_cm": 0,
+    "aim_axis_error_deg": [
+      0.0,
+      1.2074182697257333e-06
+    ]
+  },
+  "runtime_extra_elbow_arc_wrist_limit_deg": 44.5
+}

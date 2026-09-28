@@ -54,7 +54,8 @@ void FLiveCarryStudy::DirectionalSource(AAlsCharacter* S,ALiveCarryPawn* P,float
     auto* View=FindFProperty<FStructProperty>(S->GetClass(),TEXT("ReplicatedViewRotation"));
     check(Accel&&View);
     *Accel->ContainerPtrToValuePtr<FVector>(S->GetCharacterMovement())=P->GetCharacterMovement()->GetCurrentAcceleration()/Retarget.LegScale;
-    *View->ContainerPtrToValuePtr<FRotator>(S)=FRotator(0,P->FacingYaw,0);
+    *View->ContainerPtrToValuePtr<FRotator>(S)=FRotator(P->AimStudy?P->AimPitch:0,P->FacingYaw,0);
+    if(P->AimStudy)S->SetDesiredAiming(P->AimRequested);
     // This scalar normally updates during source movement physics. That tick is
     // deliberately disabled; reproduce its speed-range mapping for rotation speed.
     auto* Movement=CastChecked<UAlsCharacterMovementComponent>(S->GetCharacterMovement());
@@ -89,9 +90,9 @@ double FLiveCarryStudy::DirectionalJogWeight()
                 if(auto* StateProperty=FindFProperty<FStructProperty>(Source->GetMesh()->GetAnimInstance()->GetClass(),TEXT("PoseState")))
                 {
                     const auto* State=StateProperty->ContainerPtrToValuePtr<FAlsPoseState>(Source->GetMesh()->GetAnimInstance());
-                    checkf(FMath::Abs(Node->Alpha-State->GaitRunningAmount)<.001,TEXT("Pinned Rifle node does not follow source RunningAmount"));
+                    if(!AimStudy)checkf(FMath::Abs(Node->Alpha-State->GaitRunningAmount)<.001,TEXT("Pinned Rifle node does not follow source RunningAmount"));
                 }
-                return FMath::Clamp(double(Node->AlphaScaleBias.ApplyTo(Node->AlphaScaleBiasClamp.InterpolatedResult)),0.,1.);
+                return FMath::Clamp(double(Node->AlphaScaleBias.ApplyTo(Node->AlphaScaleBiasClamp.InterpolatedResult)),0.,1.)*(AimStudy?RelaxedWeight:1.);
             }
         }
     UE_LOG(LogTemp,Fatal,TEXT("Pinned ALS Rifle jog blend node missing; stop rather than guess its weight"));return 0;

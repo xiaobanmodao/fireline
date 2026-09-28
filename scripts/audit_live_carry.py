@@ -6,7 +6,9 @@ from scipy.spatial.transform import Rotation as R
 from scipy.spatial import ConvexHull
 from body_proportion_geometry import Surface
 ROOT=Path(__file__).resolve().parents[1];BASE=ROOT/'unreal/Fireline/Saved/MatureMotionResearch';REF=BASE/'ReferenceProject/Saved'
-p=argparse.ArgumentParser();p.add_argument('--fps',type=int,default=60);p.add_argument('--parity',action='store_true');p.add_argument('--directional',action='store_true');p.add_argument('--diagnose',action='store_true');p.add_argument('--sample-step',type=int,default=1);a=p.parse_args();D=BASE/'LiveCarryProject/Saved'/('LiveDirectional' if a.directional else 'LiveCarry')/f'{"parity" if a.parity else "audit"}-{a.fps}'
+p=argparse.ArgumentParser();p.add_argument('--directory',type=Path);p.add_argument('--aim',action='store_true');p.add_argument('--fps',type=int,default=60);p.add_argument('--parity',action='store_true');p.add_argument('--directional',action='store_true');p.add_argument('--diagnose',action='store_true');p.add_argument('--sample-step',type=int,default=1);a=p.parse_args();D=BASE/'LiveCarryProject/Saved'/('LiveDirectional' if a.directional else 'LiveCarry')/f'{"parity" if a.parity else "audit"}-{a.fps}'
+if a.directory:D=a.directory
+if a.aim:a.directional=True
 poses={}
 with (D/'poses.csv').open(encoding='utf-8-sig') as f:
  for row in csv.DictReader(f):poses.setdefault(int(row['frame']),{})[row['bone']]={'p':[float(row[k]) for k in ['x','y','z']],'q':[float(row[k]) for k in ['qx','qy','qz','qw']],'s':[float(row[k]) for k in ['sx','sy','sz']]}
@@ -42,9 +44,9 @@ for i,P in poses.items():
  depths=[]
  for part,(vertices,tris,mask) in enumerate([(V,armtris,armmask),(gun.deform(P),gun.tris,np.ones(len(gun.v),bool))]):
   dots=np.einsum('ij,kj->ik',vertices,h[:,:3],optimize=False)+h[:,3];dist=dots[mask].max(axis=1);depths.append(float(max(0,-dist.min())));separation[part]=min(separation[part],float(dist.min()))
-  # At 60 Hz also reject an edge/triangle crossing the torso with all vertices
-  # outside it. Other frame rates repeat the complete native-pose checks.
-  if a.fps==60 and a.sample_step==1:
+  # Reject triangle/edge crossings even when every vertex is outside the torso.
+  # Aim transitions need this at every tested frame rate, not just 60 Hz.
+  if (a.fps==60 or a.aim) and a.sample_step==1:
    candidates=np.flatnonzero(dots[tris].min(axis=1).max(axis=1)<0)
    for face in candidates:
     poly=clipped_triangle(vertices[tris[face]],h)
@@ -67,7 +69,7 @@ step={n:float(np.linalg.norm(np.diff(np.array([p[n]['p'] for p in frames]),axis=
 result={'frames':len(frames),'fps':a.fps,'sample_step':a.sample_step,'failed_poses':int(states[-1]['failures']),'max_speed_cm_s':float(speed.max()),'single_capsule_backward_step_cm_min':float(np.diff(capsule[:,0]).min()),'visual_to_capsule_xy_offset_cm_max':float(abs(offset[:,:2]).max()),'limb_length_error_cm_max':float(max(lengths)),'receiver_relative_grip_error_cm_max':float(max(grip)),'sole_height_cm_min':soles.min(axis=0).tolist(),'lowest_sole_height_cm_max':float(soles.min(axis=1).max()),'wrist_bend_deg_range':[np.min(wrist_bends,axis=0).tolist(),np.max(wrist_bends,axis=0).tolist()],'vertex_chest_intrusion_cm_max':np.max(penetration,axis=0).tolist(),'joint_step_cm_max':step,'minimum_reach_margin_cm':min(s['reach_margin'] for s in states),'visual_acceptance':False,'scope':'flat floor, forward M4, sustained/short input and interrupted stops; no aim/reload/sideways/air/slide or universal art acceptance'}
 locks=np.array([[s.get('left_lock',0),s.get('right_lock',0)] for s in states]);foot_velocity=np.linalg.norm(np.diff(feet[:,:,:2],axis=0),axis=2)/dt[1:,None]
 locked=(locks[1:]>.99)&(locks[:-1]>.99)
-result.update({'skinned_sole_correction_cm_max':max(s.get('sole_correction',0) for s in states),'fully_locked_ankle_xy_speed_cm_s_max':float(foot_velocity[locked].max()) if locked.any() else None,'surface_vertex_clearance_cm_min':separation,'triangle_clipping_frames':len(frames) if a.fps==60 and a.sample_step==1 else 0,'intersecting_torso_triangles':len(intersections) if a.fps==60 else None})
+result.update({'skinned_sole_correction_cm_max':max(s.get('sole_correction',0) for s in states),'fully_locked_ankle_xy_speed_cm_s_max':float(foot_velocity[locked].max()) if locked.any() else None,'surface_vertex_clearance_cm_min':separation,'triangle_clipping_frames':len(frames) if (a.fps==60 or a.aim) and a.sample_step==1 else 0,'intersecting_torso_triangles':len(intersections) if a.fps==60 or a.aim else None})
 (D/('audit-sampled.json' if a.sample_step>1 else 'audit.json')).write_text(json.dumps(result,indent=2));(D/('triangle-sampled.json' if a.sample_step>1 else 'triangle-intersections.json')).write_text(json.dumps(intersections,indent=2))
 if a.directional:
  result['scope']='M4 flat-floor eight-direction walk/jog, reversal, speed change, directional boundaries and native turn-in-place; no action/air/slope acceptance'
@@ -80,6 +82,19 @@ if a.directional:
  result['planted_sole_height_cm_max']=float(soles[planted].max()) if planted.any() else None
  result['walk_lowest_sole_height_cm_max']=float(soles[np.array([s['pose_gait'] for s in states])<=1.01].min(axis=1).max())
  result['speed_step_cm_max']=float(np.linalg.norm(np.diff(capsule[:,:2],axis=0),axis=1).max())
+ (D/('audit-sampled.json' if a.sample_step>1 else 'audit.json')).write_text(json.dumps(result,indent=2))
+if a.aim:
+ aim_indices=[i for i,st in enumerate(states) if st['aiming_weight']>.999];errors=[];roll=[]
+ for i in aim_indices:
+  st=states[i];P=frames[i];f=np.array(P['M4_frontsight']['p'])-P['M4_rearsight']['p'];f/=np.linalg.norm(f);v=R.from_euler('z',st['view_yaw']-st['actor_yaw'],degrees=True).apply([0,np.cos(np.radians(st['aim_pitch'])),np.sin(np.radians(st['aim_pitch']))]);errors.append(float(np.degrees(np.arccos(np.clip(np.dot(f,v),-1,1)))))
+ result['scope']='isolated M4 third-person ALS Relaxed/Ready/Aiming, eight-direction movement, interrupted aiming, view pitch +/-30 and turning; not FP ADS, firing or reload acceptance'
+ result['case_notes']={'0':'stationary aim/release','1':'ready to relaxed','2-9':'eight-direction jog/aim-walk/jog','10':'rapid aim interruptions','11':'stationary pitch +/-30','12':'aiming strafe with turning and pitch +/-20','13':'release and settle'}
+ result['aim_axis_error_deg_max']=max(errors);result['aim_axis_error_deg_p95']=float(np.percentile(errors,95));result['aim_frames']=len(errors)
+ result['state_weight_sum_error']=max(abs(st['relaxed_weight']+st['ready_weight']+st['aiming_weight']-1) for st in states)
+ result['all_source_states_seen']=all(any(st[key]>.999 for st in states) for key in ['relaxed_weight','ready_weight','aiming_weight'])
+ result['wrist_peak_frames']={side:{'sample':int(np.argmax(np.array(wrist_bends)[:,j])),'time':states[int(np.argmax(np.array(wrist_bends)[:,j]))]['time']} for j,side in enumerate(['L','R'])}
+ result['invalid_pose_times']=[st['time'] for i,st in enumerate(states) if st['failures']>(states[i-1]['failures'] if i else 0)]
+ result['capsule_z_range_cm']=float(np.ptp(capsule[:,2]))
  (D/('audit-sampled.json' if a.sample_step>1 else 'audit.json')).write_text(json.dumps(result,indent=2))
 print(json.dumps(result,indent=2))
 if a.diagnose:sys.exit(0)
@@ -96,3 +111,7 @@ else:
 assert np.max(penetration)<.05
 assert np.max(wrist_bends)<45
 assert not intersections
+if a.aim:
+ assert result['all_source_states_seen'] and result['state_weight_sum_error']<1e-6
+ assert result['aim_axis_error_deg_max']<.1
+ assert np.ptp(capsule[:,2])<.01, 'Aim audit left the flat floor; reject coverage claim'

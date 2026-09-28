@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-28",
+  "source": "ALS Refactored b754d6f0f2bb03741d301f8fb88077ebfe561e17, original AB_Als_Rifle states and PoseMoving curve",
+  "selected_assets": "Ryan/DJ proportion derivative + selected TastyTony M4; no provider/source asset changes",
+  "runtime_flag": "-LiveCarryAimStudy",
+  "launcher": "/Users/hht/Desktop/火力对决/测试版·M4准备与瞄准.app",
+  "validation": {
+    "30": {
+      "native_frames": 1711,
+      "renderer": "NullRHI pose evaluation",
+      "all_frame_triangles": true,
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/bounded-30"
+    },
+    "60": {
+      "native_frames": 3421,
+      "renderer": "Metal SM6",
+      "all_frame_triangles": true,
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/bounded-60"
+    },
+    "120": {
+      "native_frames": 6841,
+      "renderer": "NullRHI pose evaluation",
+      "all_frame_triangles": true,
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/bounded-120"
+    }
+  },
+  "visual_acceptance": false,
+  "source_files": {
+    "scripts/live_carry_host/FirelineLiveStudy.cpp": "46984c815ea9eecb46178abd0e6f905c588f698db82bb51d915d492b36ffd3b7",
+    "scripts/live_carry_host/LiveDirectional.cpp": "fb62d076ef66318eb34a1af0cbc6315d1c5ee30321b2f75bed24112adcaf9440",
+    "scripts/live_carry_host/LiveCarryStudy.cpp": "86f591686126f1890a138944ca549ca7a8319ae6f3f2fbeebe77778af4a4918f",
+    "scripts/live_carry_host/LiveCarryRetarget.h": "3acee4b3e6d89199d2ebe194dd1d4d431ca54828128624edf2c01483a4a310ae",
+    "scripts/live_carry_host/LiveCarryStudy.h": "c3f33d9b56cd534b099afd14363e92427248b6336c4eb682803193bfafdd0b86",
+    "scripts/live_carry_host/LiveCarryRetarget.cpp": "a7585c5c4046031e083da50aa6be5fb68aad59f27d3b95c50e720cb11a79278c",
+    "scripts/live_carry_host/LiveAim.cpp": "558c0149ef062b5d9b0e348c0461cde72933986e577947d63c7b3a8bcfe2e450"
+  },
+  "fit_sha256": "fac406bfe84c09413b3a38d7da2a00d1f6cb9c4f8bd71036ac4cee9dd56a104e",
+  "launcher_verification": {
+    "opened_native_window": true,
+    "window_title": "LiveCarryProject （64-位 Development SF_METAL_SM6）",
+    "verified_ui": [
+      "character visible",
+      "side view key 2",
+      "source comparison key 5",
+      "restored target/front view"
+    ],
+    "interactive_log": "/Users/hht/Library/Logs/Fireline/StudyLaunch-A35D08ED-17B7-465D-97F1-E5E16A962378.log"
+  },
+  "native_screenshots": {
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/bounded-60/shot-00.png": "564929ad107b97793eba0d46b33b50808cdfbdd28924c02842bda989695a1433",
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/bounded-60/shot-09.png": "a379285be254b1c300e93051d689f6b0a1f2ddd50e457dec6c2b94d8505618f6",
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/bounded-60/shot-19.png": "83cf22ec7ee57afe51b2f138cc1b0f56d7144074a1bc75d16313383ea9a8676e",
+    "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/bounded-60/shot-25.png": "a86477a74b18300f1b1c3d46b70106616bbb2111a7152917803ef428707b4f40"
+  }
+}

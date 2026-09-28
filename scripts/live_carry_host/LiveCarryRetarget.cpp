@@ -37,6 +37,17 @@ bool FLiveCarryRetarget::Load(const FString& File)
     return Names.Num()==131;
 }
 bool FLiveCarryRetarget::IsBelow(int32 Bone,int32 Parent) const{for(int I=Bone;I>=0;I=Parents[I])if(I==Parent)return true;return false;}
+bool FLiveCarryRetarget::LoadAim(const FString& File)
+{
+    FString Text;TSharedPtr<FJsonObject> Root;
+    if(!FFileHelper::LoadFileToString(Text,*File)||!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root))return false;
+    const auto& Fit=Root->GetArrayField(TEXT("fit"));if(Fit.Num()!=8)return false;
+    AimRotation=RotationVector(FVector(Fit[0]->AsNumber(),Fit[1]->AsNumber(),Fit[2]->AsNumber()));ReadyTranslation=FVector(Fit[3]->AsNumber(),Fit[4]->AsNumber(),Fit[5]->AsNumber());ReadyPole[0]=Fit[6]->AsNumber();ReadyPole[1]=Fit[7]->AsNumber();
+    const auto& Aim=Root->GetArrayField(TEXT("aim_registration"));if(Aim.Num()!=8)return false;
+    AimTranslation=FVector(Aim[3]->AsNumber(),Aim[4]->AsNumber(),Aim[5]->AsNumber());AimPole[0]=Aim[6]->AsNumber();AimPole[1]=Aim[7]->AsNumber();
+    if(Root->HasField(TEXT("moving_aim_pole_delta"))){const auto& Delta=Root->GetArrayField(TEXT("moving_aim_pole_delta"));if(Delta.Num()!=2)return false;for(int Side=0;Side<2;++Side)MovingAimPoleDelta[Side]=Delta[Side]->AsNumber();}
+    return true;
+}
 bool FLiveCarryRetarget::TwoBone(const FVector& S,const FVector& E,const FVector& T,double A,double B,double Phi,FVector& Result) const
 {
     const double D=(T-S).Size();if(D<.001||D>=A+B||D<=FMath::Abs(A-B))return false;
@@ -113,6 +124,7 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
         for(int I=0;I<Names.Num();++I)if(IsBelow(I,F))P[I].AddToTranslation(Target-Ankle);
         MinReachMargin=FMath::Min(MinReachMargin,A+B-(Target-Hip).Size());
     }
+    RawMapped=P;
     FQuat Q,Chest;FVector C;Assembly(P,Q,C,Chest);
     Q=(Chest*FitRotation*FQuat::Slerp(AssemblyZero,Q,Amplitude)).GetNormalized();C=P[Index(TEXT("Chest"))].GetTranslation()+Chest.RotateVector(CenterZero+(C-CenterZero)*Amplitude+FitTranslation);
     auto Transfer=[&](int I){return FTransform((Q*Hold[I].GetRotation()).GetNormalized(),C+Q.RotateVector(Hold[I].GetTranslation()-HoldMid),Hold[I].GetScale3D());};
@@ -141,6 +153,70 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
         MinReachMargin=FMath::Min(MinReachMargin,A+B-(Target.GetTranslation()-Shoulder).Size());
     }
     for(int I=0;I<Names.Num();++I)if(Names[I].ToString().StartsWith(TEXT("M4_"))){P[I]=Transfer(I);P[I].AddToTranslation(JogDelta);}
+    if(ArmedWeight>1.e-8)
+    {
+        // The original Rifle graph owns the complete pose and state timing.
+        // Register its evaluated assembly in weapon space, then constrain the
+        // common hand/weapon assembly to the view only at actual Aiming weight.
+        // There is no independent hand offset, stretched limb or input-edge snap.
+        FQuat RawQ,RawChest;FVector RawC;Assembly(RawMapped,RawQ,RawC,RawChest);
+        RawQ=RawChest*RawQ;RawC=RawMapped[Index(TEXT("Chest"))].GetTranslation()+RawChest.RotateVector(RawC);
+        // The reference rifle is attached to hand_r. The palm/span frame used
+        // to fit two different grips is NOT its weapon orientation; using that
+        // frame let clearance fitting turn low-ready into an unwanted high-ready.
+        const FQuat ArmedQ=(SP(TEXT("hand_r")).GetRotation()*AimRotation).GetNormalized();
+        const FQuat HeldQ=P[Index(TEXT("M4_body"))].GetRotation()*Hold[Index(TEXT("M4_body"))].GetRotation().Inverse();
+        const FVector HeldC=P[Index(TEXT("M4_body"))].GetTranslation()-HeldQ.RotateVector(Hold[Index(TEXT("M4_body"))].GetTranslation()-HoldMid);
+        FQuat FinalQ=FQuat::Slerp(HeldQ,ArmedQ,ArmedWeight).GetNormalized();
+        const FVector Forward=Hold[Index(TEXT("M4_frontsight"))].GetTranslation()-Hold[Index(TEXT("M4_rearsight"))].GetTranslation();
+        const FVector Up=Hold[Index(TEXT("M4_sightup"))].GetTranslation()-Hold[Index(TEXT("M4_rearsight"))].GetTranslation();
+        const FQuat ViewQ=Frame(ViewDirection,FVector::UpVector)*Frame(Forward,Up).Inverse();
+        FinalQ=FQuat::Slerp(FinalQ,ViewQ,AimWeight).GetNormalized();
+        // Register around the evaluated source trigger hand. An unconstrained
+        // midpoint fit lowered the rifle below the shoulder to reduce wrist
+        // angles; that numerically feasible result failed visual review.
+        const int RightWrist=Index(TEXT("DJ_wrist_R"));
+        const double AimFraction=FMath::Clamp(AimWeight/ArmedWeight,0.,1.);
+        const FVector ArmedC=RawMapped[RightWrist].GetTranslation()+FinalQ.RotateVector(HoldMid-Hold[RightWrist].GetTranslation())+RawChest.RotateVector(FMath::Lerp(ReadyTranslation,AimTranslation,AimFraction));
+        const FVector FinalC=FMath::Lerp(HeldC,ArmedC,ArmedWeight);
+        auto Held=[&](int I){return FTransform((FinalQ*Hold[I].GetRotation()).GetNormalized(),FinalC+FinalQ.RotateVector(Hold[I].GetTranslation()-HoldMid),Hold[I].GetScale3D());};
+        for(int Side=0;Side<2;++Side)
+        {
+            const FString Suffix=Side==0?TEXT("L"):TEXT("R");const int U=Index(TEXT("UpperArm_")+Suffix),E=Index(TEXT("LowerArm_")+Suffix),W=Index(TEXT("DJ_wrist_")+Suffix);
+            // Static and moving Rifle poses have different elbow clearance. The
+            // original evaluated PoseMoving curve owns this registration blend.
+            const FVector Shoulder=RawMapped[U].GetTranslation(),Elbow=RawMapped[E].GetTranslation(),Guide=FMath::Lerp(P[E].GetTranslation(),Elbow,ArmedWeight);const FTransform Hand=Held(W);
+            const double A=(Bind[E].GetTranslation()-Bind[U].GetTranslation()).Size(),B=(Bind[W].GetTranslation()-Bind[E].GetTranslation()).Size();FVector NE;
+            const double BasePole=FMath::Lerp(ReadyPole[Side],AimPole[Side],AimFraction)*ArmedWeight;
+            if(!TwoBone(Shoulder,Guide,Hand.GetTranslation(),A,B,BasePole,NE))return false;
+            const FQuat HandDelta=Hand.GetRotation()*Bind[W].GetRotation().Inverse();
+            const FVector Natural=HandDelta.RotateVector((Bind[W].GetTranslation()-Bind[E].GetTranslation()).GetSafeNormal());
+            const double Extra=MovingAimPoleDelta[Side]*AimWeight*MovingWeight;
+            if(FMath::Abs(Extra)>1.e-8)
+            {
+                // The moving clearance adjustment may not spend the wrist's
+                // entire bend budget on a different directional pose. Keep the
+                // hand/gun fixed and constrain only this extra elbow arc.
+                const FVector Axis=(Hand.GetTranslation()-Shoulder).GetSafeNormal();
+                const FVector Center=Shoulder+Axis*FVector::DotProduct(NE-Shoulder,Axis),Radius=NE-Center;
+                auto Arc=[&](double Weight){return Center+FQuat(Axis,Extra*Weight).RotateVector(Radius);};
+                const double Limit=FMath::Cos(FMath::DegreesToRadians(44.5));
+                auto Feasible=[&](const FVector& E){return FVector::DotProduct(Natural,(Hand.GetTranslation()-E).GetSafeNormal())>=Limit;};
+                if(Feasible(Arc(1)))NE=Arc(1);
+                else if(Feasible(NE))
+                {
+                    double Low=0,High=1;for(int Iteration=0;Iteration<20;++Iteration){const double Mid=(Low+High)*.5;if(Feasible(Arc(Mid)))Low=Mid;else High=Mid;}
+                    NE=Arc(Low);
+                }
+            }
+            P[U].SetRotation((Between(Elbow-Shoulder,NE-Shoulder)*RawMapped[U].GetRotation()).GetNormalized());
+            const FQuat DQ=Between(Natural,Hand.GetTranslation()-NE)*HandDelta;
+            for(int I:{E,Index(TEXT("DJ_forearm_")+Suffix)})P[I]=FTransform((DQ*Bind[I].GetRotation()).GetNormalized(),NE+DQ.RotateVector(Bind[I].GetTranslation()-Bind[E].GetTranslation()),Bind[I].GetScale3D());
+            for(int I=0;I<Names.Num();++I)if(IsBelow(I,W))P[I]=Held(I);
+            MinReachMargin=FMath::Min(MinReachMargin,A+B-(Hand.GetTranslation()-Shoulder).Size());
+        }
+        for(int I=0;I<Names.Num();++I)if(Names[I].ToString().StartsWith(TEXT("M4_")))P[I]=Held(I);
+    }
     Local.SetNum(P.Num());for(int I=0;I<P.Num();++I){P[I].NormalizeRotation();Local[I]=Parents[I]>=0?P[I].GetRelativeTransform(P[Parents[I]]):P[I];if(Local[I].ContainsNaN())return false;}
     return true;
 }

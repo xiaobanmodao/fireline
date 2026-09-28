@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,csv,gzip,hashlib,json,shutil,subprocess,plistlib
 ROOT=Path(__file__).resolve().parents[1]
 ENGINE=Path('/Users/Shared/Epic Games/UE_5.8')
-p=argparse.ArgumentParser();p.add_argument('--build',action='store_true');p.add_argument('--install',action='store_true');p.add_argument('--directional',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--build',action='store_true');p.add_argument('--install',action='store_true');p.add_argument('--directional',action='store_true');p.add_argument('--aim',action='store_true');p.add_argument('--aim-fit',type=Path);a=p.parse_args()
 research=ROOT/'unreal/Fireline/Saved/MatureMotionResearch';old=research/'ReferenceProject';project=research/'LiveCarryProject';source=research/'ALS-Refactored-b754d6f0f2bb03741d301f8fb88077ebfe561e17'
 assert old.is_dir() and source.is_dir(),'Prepare the pinned source/proportion review first'
 for d in ['Source/FirelineLiveStudy','Plugins','Content','Config','Saved/LiveCarry']:(project/d).mkdir(parents=True,exist_ok=True)
@@ -68,23 +68,31 @@ assert jog_fit['target_reference_sha256']==clearance_fit['target_reference_sha25
 calibration['jog_registration']=jog_fit
 (project/'Saved/LiveCarry/calibration.json').write_text(json.dumps(calibration))
 for n in ['source.bin','source-bones.txt']:shutil.copyfile(r/n,project/'Saved/LiveCarry'/n)
+aim_fit=a.aim_fit or ROOT/'unreal/Fireline/Docs/Validation/live-aim/aim-fit.json'
+if a.aim:assert aim_fit.exists(),'Validated aim-fit.json is required for the aiming entry'
+if aim_fit.exists():
+ aim=json.loads(aim_fit.read_text());assert aim['target_sha256']==clearance_fit['target_reference_sha256'];shutil.copyfile(aim_fit,project/'Saved/LiveCarry/aim-registration.json')
 if a.build:subprocess.run([str(ENGINE/'Engine/Build/BatchFiles/Mac/Build.sh'),'FirelineLiveStudyEditor','Mac','Development',str(uproject),'-MaxParallelActions=2','-WaitMutex','-NoHotReloadFromIDE'],check=True)
 if a.install:
- app=Path.home()/'UnrealBuilds/Fireline/Launchers'/('FirelineDirectionalStudy.app' if a.directional else 'FirelineLiveCarryStudy.app');contents=app/'Contents'
+ app=Path.home()/'UnrealBuilds/Fireline/Launchers'/('FirelineAimStudy.app' if a.aim else 'FirelineDirectionalStudy.app' if a.directional else 'FirelineLiveCarryStudy.app');contents=app/'Contents'
  for n in ['MacOS','Resources']:(contents/n).mkdir(parents=True,exist_ok=True)
  settings={'Candidate':'Input-driven M4 forward start-stop; derived Ryan/DJ; live original ALS graph; isolated study', 'Editor':str(ENGINE/'Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor'),'Arguments':[str(uproject),'/ALS/ALSExtras/Levels/L_Als_Playground','-game','-windowed','-ResX=1280','-ResY=800','-nosound','-ExecCmds=t.MaxFPS 60,sg.ShadowQuality 0,sg.GlobalIlluminationQuality 0,sg.ReflectionQuality 0']}
  info={'CFBundleExecutable':'FirelineStudyLauncher','CFBundleIdentifier':'local.fireline.live-carry-study','CFBundleName':'测试版·M4实时起停','CFBundlePackageType':'APPL','CFBundleVersion':'1','LSUIElement':True,'NSHighResolutionCapable':True}
- if a.directional:
+ if a.directional or a.aim:
   settings['Candidate']='M4 eight-direction walk/jog and native ALS turns; isolated derived Ryan/DJ study'
   settings['Arguments'].append('-LiveCarryDirectional')
   info.update(CFBundleIdentifier='local.fireline.directional-study',CFBundleName='测试版·M4多方向走跑')
+ if a.aim:
+  settings['Candidate']='M4 native ALS Relaxed/Ready/Aiming and directional carry; isolated Ryan/DJ study'
+  settings['Arguments'].append('-LiveCarryAimStudy')
+  info.update(CFBundleIdentifier='local.fireline.aim-study',CFBundleName='\u6d4b\u8bd5\u7248\u00b7M4\u51c6\u5907\u4e0e\u7784\u51c6')
  for n,v in [('Info.plist',info),('Resources/Study.plist',settings)]:
   with (contents/n).open('wb') as f:plistlib.dump(v,f)
  text=(ROOT/'scripts/LatestStudyLauncher.m').read_text().replace('Bringing World /Game/Fireline/Maps/FirelineRange.FirelineRange up for play','LIVE_CARRY_READY').replace('[log containsString:@"Failed to enter /Game/"]','([log containsString:@"Failed to enter /ALS/"] || [log containsString:@"LIVE_CARRY_INIT_FAILED"])')
  launcher=project/'Saved/LiveCarry/Launcher.m';launcher.write_text(text)
  subprocess.run(['xcrun','clang','-fobjc-arc','-framework','Cocoa',str(launcher),'-o',str(contents/'MacOS/FirelineStudyLauncher')],check=True)
  subprocess.run(['codesign','--force','--sign','-',str(app)],check=True)
- link=Path.home()/'Desktop/火力对决'/('测试版·M4多方向走跑.app' if a.directional else '测试版·M4实时起停.app')
+ link=Path.home()/'Desktop/火力对决'/('测试版·M4准备与瞄准.app' if a.aim else '测试版·M4多方向走跑.app' if a.directional else '测试版·M4实时起停.app')
  if not link.exists():link.symlink_to(app,target_is_directory=True)
  assert link.resolve()==app.resolve();print(link)
 print(uproject)

@@ -29,6 +29,12 @@ public:
     UPROPERTY() TObjectPtr<class ACameraActor> StudyCamera;
     bool ForwardRequested=false,Ready=false,Audit=false;
     bool Directional=false,JogRequested=false;
+    bool AimStudy=false,AimRequested=false;
+    float AimPitch=0;
+    bool ShowSource=false;
+    FVector SourceFocus=FVector::ZeroVector;
+    void ToggleSource(){if(AimStudy)ShowSource=!ShowSource;}
+    FString RifleState;
     float FacingYaw=0,LegScale=1;
     FVector MoveRequested=FVector::ZeroVector;
     int Scenario=0;
@@ -69,6 +75,11 @@ class FLiveCarryStudy
     int32 Frame=0,Failures=0,Shot=0,FPS=60;
     bool Finished=false,Audit=false,Parity=false;
     bool Directional=false;
+    bool AimStudy=false;
+    double RelaxedWeight=1,ReadyWeight=0,AimingWeight=0;
+    FString RawRows;
+    void AimInput(class UWorld* World,float Dt,double Time);
+    void ReadRifleStates();
     FString Folder,PoseRows,StateRows,SourceRows;
     void Record(float Dt,double T);
     void DirectionalInput(class UWorld* World,float Dt,double Time);

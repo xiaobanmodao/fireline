@@ -1,0 +1,234 @@
+{
+  "frames": 4153,
+  "fps": 60,
+  "sample_step": 1,
+  "failed_poses": 0,
+  "max_speed_cm_s": 431.71020508,
+  "single_capsule_backward_step_cm_min": -7.195170460000099,
+  "visual_to_capsule_xy_offset_cm_max": 0.0,
+  "limb_length_error_cm_max": 5.417072657110111e-08,
+  "receiver_relative_grip_error_cm_max": 9.38654969670942e-08,
+  "sole_height_cm_min": [
+    0.019998453675332484,
+    0.01999845862404903
+  ],
+  "lowest_sole_height_cm_max": 7.291564143316504,
+  "wrist_bend_deg_range": [
+    [
+      17.22485113000652,
+      10.128873181768112
+    ],
+    [
+      36.66299289670496,
+      32.31987920609562
+    ]
+  ],
+  "vertex_chest_intrusion_cm_max": [
+    0.0,
+    0.0
+  ],
+  "joint_step_cm_max": {
+    "LowerArm_L": 5.057486305626281,
+    "LowerArm_R": 5.242718784336138,
+    "DJ_wrist_L": 5.227225500753458,
+    "DJ_wrist_R": 5.201724122632083,
+    "LowerLeg_L": 10.741256799922153,
+    "LowerLeg_R": 8.427027725136565
+  },
+  "minimum_reach_margin_cm": 0.15,
+  "visual_acceptance": false,
+  "scope": "M4 flat-floor eight-direction walk/jog, reversal, speed change, directional boundaries and native turn-in-place; no action/air/slope acceptance",
+  "skinned_sole_correction_cm_max": 2.8918457,
+  "fully_locked_ankle_xy_speed_cm_s_max": 105.25070176487988,
+  "surface_vertex_clearance_cm_min": [
+    0.6574567908263163,
+    0.38225820719942405
+  ],
+  "triangle_clipping_frames": 4153,
+  "intersecting_torso_triangles": 0,
+  "cases": {
+    "0": {
+      "frames": 204,
+      "failures": 0.0,
+      "sole_min_cm": 0.020002566542985822,
+      "lowest_sole_max_cm": 0.36358920645536474,
+      "penetration_max_cm": 0.0
+    },
+    "1": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020002033027691213,
+      "lowest_sole_max_cm": 0.5203449263908156,
+      "penetration_max_cm": 0.0
+    },
+    "2": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020001667623007813,
+      "lowest_sole_max_cm": 0.3967565614873779,
+      "penetration_max_cm": 0.0
+    },
+    "3": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.019999489046298558,
+      "lowest_sole_max_cm": 0.3929318652904138,
+      "penetration_max_cm": 0.0
+    },
+    "4": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020000317271274826,
+      "lowest_sole_max_cm": 0.4079835163800286,
+      "penetration_max_cm": 0.0
+    },
+    "5": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.019998453675332484,
+      "lowest_sole_max_cm": 0.47267653945772137,
+      "penetration_max_cm": 0.0
+    },
+    "6": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020012104670336872,
+      "lowest_sole_max_cm": 0.3565070527866425,
+      "penetration_max_cm": 0.0
+    },
+    "7": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.01999845862404903,
+      "lowest_sole_max_cm": 0.39979900243660216,
+      "penetration_max_cm": 0.0
+    },
+    "8": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.0200404313679845,
+      "lowest_sole_max_cm": 6.688814682753817,
+      "penetration_max_cm": 0.0
+    },
+    "9": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003660564933074,
+      "lowest_sole_max_cm": 7.291564143316504,
+      "penetration_max_cm": 0.0
+    },
+    "10": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020047464776636326,
+      "lowest_sole_max_cm": 6.073526922025166,
+      "penetration_max_cm": 0.0
+    },
+    "11": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020046639056480742,
+      "lowest_sole_max_cm": 1.8300371188706541,
+      "penetration_max_cm": 0.0
+    },
+    "12": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02004772270163413,
+      "lowest_sole_max_cm": 1.857784808361616,
+      "penetration_max_cm": 0.0
+    },
+    "13": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02004215248918939,
+      "lowest_sole_max_cm": 1.8673253684633528,
+      "penetration_max_cm": 0.0
+    },
+    "14": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020053221504312768,
+      "lowest_sole_max_cm": 5.956320305177143,
+      "penetration_max_cm": 0.0
+    },
+    "15": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003660914370231,
+      "lowest_sole_max_cm": 6.4673897829676115,
+      "penetration_max_cm": 0.0
+    },
+    "16": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020001938463889757,
+      "lowest_sole_max_cm": 5.645749510883331,
+      "penetration_max_cm": 0.0
+    },
+    "17": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.020039519108466464,
+      "lowest_sole_max_cm": 6.807708801953934,
+      "penetration_max_cm": 0.0
+    },
+    "18": {
+      "frames": 144,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003729138334287,
+      "lowest_sole_max_cm": 2.4514116068609204,
+      "penetration_max_cm": 0.0
+    },
+    "19": {
+      "frames": 288,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003752060653019,
+      "lowest_sole_max_cm": 0.02072301961565448,
+      "penetration_max_cm": 0.0
+    },
+    "20": {
+      "frames": 288,
+      "failures": 0.0,
+      "sole_min_cm": 0.020036710548454018,
+      "lowest_sole_max_cm": 0.0207540448406609,
+      "penetration_max_cm": 0.0
+    },
+    "21": {
+      "frames": 288,
+      "failures": 0.0,
+      "sole_min_cm": 0.02003961565712431,
+      "lowest_sole_max_cm": 0.020858750665308623,
+      "penetration_max_cm": 0.0
+    },
+    "22": {
+      "frames": 288,
+      "failures": 0.0,
+      "sole_min_cm": 0.020037393606722853,
+      "lowest_sole_max_cm": 0.020731948919304632,
+      "penetration_max_cm": 0.0
+    },
+    "23": {
+      "frames": 205,
+      "failures": 0.0,
+      "sole_min_cm": 0.02006356144367183,
+      "lowest_sole_max_cm": 6.302494437851263,
+      "penetration_max_cm": 0.0
+    }
+  },
+  "actor_source_yaw_error_deg_max": 1.0000007932831068e-08,
+  "pelvis_reach_offset_cm_max": 0.50388949,
+  "trajectory_reach_offset_cm_max": 0.04026628,
+  "case_notes": {
+    "0-7": "walk forward, front-left, left, back-left, back, back-right, right, front-right",
+    "8-15": "same directions jogging",
+    "16": "walk-jog-walk",
+    "17": "rapid left/right reversal",
+    "18": "direction boundary crossing",
+    "19-22": "90/180/0/-90 native stationary turn",
+    "23": "jog while changing facing"
+  },
+  "planted_sole_height_cm_max": 0.02820882195514518,
+  "walk_lowest_sole_height_cm_max": 0.5203449263908156,
+  "speed_step_cm_max": 7.195170468452674
+}

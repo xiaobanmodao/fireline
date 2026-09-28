@@ -62,21 +62,22 @@ void ALiveCarryPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindAxisKey(EKeys::MouseX,this,&ALiveCarryPawn::OrbitX);Input->BindAxisKey(EKeys::MouseY,this,&ALiveCarryPawn::OrbitY);
     Input->BindKey(EKeys::One,IE_Pressed,this,&ALiveCarryPawn::Front);Input->BindKey(EKeys::Two,IE_Pressed,this,&ALiveCarryPawn::Right);Input->BindKey(EKeys::Three,IE_Pressed,this,&ALiveCarryPawn::Back);Input->BindKey(EKeys::Four,IE_Pressed,this,&ALiveCarryPawn::Left);
     Input->BindKey(EKeys::R,IE_Pressed,this,&ALiveCarryPawn::ResetStudy);
+    Input->BindKey(EKeys::Five,IE_Pressed,this,&ALiveCarryPawn::ToggleSource);
     Input->BindKey(EKeys::A,IE_Pressed,this,&ALiveCarryPawn::LeftDown);Input->BindKey(EKeys::D,IE_Pressed,this,&ALiveCarryPawn::RightDown);Input->BindKey(EKeys::S,IE_Pressed,this,&ALiveCarryPawn::BackDown);
 }
 void ALiveCarryPawn::ForwardDown(){if(!Ready||Audit)return;if(Directional){RequestTap(FVector::ForwardVector);return;}ForwardRequested=true;AddMovementInput(FVector::ForwardVector,1);}
 void ALiveCarryPawn::ForwardUp(){if(!Audit)ForwardRequested=false;}
 void ALiveCarryPawn::OrbitX(float Value){if(Ready&&!Audit)OrbitYaw=FMath::UnwindDegrees(OrbitYaw-Value*.20f);}
 void ALiveCarryPawn::OrbitY(float Value){if(Ready&&!Audit)OrbitPitch=FMath::Clamp(OrbitPitch+Value*.15f,-15.f,45.f);}
-void ALiveCarryPawn::ResetStudy(){if(Audit)return;GetCharacterMovement()->StopMovementImmediately();SetActorLocation(Spawn,false,nullptr,ETeleportType::TeleportPhysics);ForwardRequested=false;}
-void ALiveCarryPawn::UpdateCamera(){const FVector Focus=GetActorLocation()+FVector(0,0,12);const FVector Offset=FRotator(OrbitPitch,OrbitYaw,0).Vector()*OrbitDistance;StudyCamera->SetActorLocationAndRotation(Focus+Offset,(Focus-(Focus+Offset)).Rotation());}
+void ALiveCarryPawn::ResetStudy(){if(Audit)return;GetCharacterMovement()->StopMovementImmediately();SetActorLocation(Spawn,false,nullptr,ETeleportType::TeleportPhysics);ForwardRequested=false;if(AimStudy)AimPitch=0;}
+void ALiveCarryPawn::UpdateCamera(){const FVector Focus=ShowSource?SourceFocus:GetActorLocation()+FVector(0,0,12);const FVector Offset=FRotator(OrbitPitch,OrbitYaw,0).Vector()*OrbitDistance;StudyCamera->SetActorLocationAndRotation(Focus+Offset,(Focus-(Focus+Offset)).Rotation());}
 void ALiveCarryHUD::DrawHUD()
 {
     Super::DrawHUD();auto* P=Cast<ALiveCarryPawn>(GetOwningPawn());if(!Canvas||!P)return;
     DrawRect(FLinearColor(.015,.025,.04,.88),0,0,Canvas->ClipX,90);
-    DrawText(P->Directional?TEXT("FIRELINE / M4 DIRECTIONAL MOVEMENT STUDY"):TEXT("FIRELINE / LIVE M4 START-STOP STUDY"),FLinearColor::White,22,12,nullptr,1.25f);
-    DrawText(P->Directional?TEXT("WASD move | Shift jog | Q/E turn facing | mouse orbit | 1-4 views | R reset"):TEXT("W hold: walk | release: stop | mouse: orbit | 1/2/3/4: views | R: reset position"),FLinearColor(.65,.85,1),22,43);
-    DrawText(FString::Printf(TEXT("%.0f cm/s | %s | %s"),P->GetVelocity().Size2D(),P->JogRequested?TEXT("JOG"):TEXT("WALK"),P->Directional?TEXT("M4 flat ground; aim/fire/actions not enabled"):TEXT("forward M4 only; other actions are not enabled")),FLinearColor::White,22,69);
+    DrawText(P->ShowSource?TEXT("REFERENCE / ORIGINAL ALS RIFLE GRAPH"):P->AimStudy?TEXT("FIRELINE / M4 READY-AIM STUDY"):P->Directional?TEXT("FIRELINE / M4 DIRECTIONAL MOVEMENT STUDY"):TEXT("FIRELINE / LIVE M4 START-STOP STUDY"),FLinearColor::White,22,12,nullptr,1.25f);
+    DrawText(P->AimStudy?TEXT("RMB aim | arrows pitch | WASD / Shift move | Q/E facing | mouse orbit | 1-4 views | 5 source | R reset"):P->Directional?TEXT("WASD move | Shift jog | Q/E turn facing | mouse orbit | 1-4 views | R reset"):TEXT("W hold: walk | release: stop | mouse: orbit | 1/2/3/4: views | R: reset position"),FLinearColor(.65,.85,1),22,43);
+    DrawText(FString::Printf(TEXT("%.0f cm/s | %s | %s"),P->GetVelocity().Size2D(),P->JogRequested?TEXT("JOG"):TEXT("WALK"),P->AimStudy?*FString::Printf(TEXT("%s | pitch %.0f | third-person pose study"),*P->RifleState,P->AimPitch):P->Directional?TEXT("M4 flat ground; aim/fire/actions not enabled"):TEXT("forward M4 only; other actions are not enabled")),FLinearColor::White,22,69);
 }
 void FLiveCarryStudy::Before(UWorld* W,float Dt)
 {
@@ -90,7 +91,7 @@ void FLiveCarryStudy::Before(UWorld* W,float Dt)
         S->SetActorHiddenInGame(true);
         for(TActorIterator<AAlsCharacter> It(W);It;++It)if(*It!=S){It->SetActorHiddenInGame(true);It->SetActorTickEnabled(false);It->GetCharacterMovement()->SetComponentTickEnabled(false);It->GetMesh()->SetComponentTickEnabled(false);}
         Audit=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryAudit"));Parity=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryParity"));FParse::Value(FCommandLine::Get(),TEXT("StudyFPS="),FPS);
-        Directional=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryDirectional"));
+        AimStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryAimStudy"));Directional=AimStudy||FParse::Param(FCommandLine::Get(),TEXT("LiveCarryDirectional"));
         if(Audit||Parity){FApp::SetFixedDeltaTime(1./FPS);FApp::SetUseFixedTimeStep(true);}
         return;
     }
@@ -98,6 +99,7 @@ void FLiveCarryStudy::Before(UWorld* W,float Dt)
     {
         if(W->GetTimeSeconds()-WarmStart<1.1)return;auto* S=Source.Get();auto* PC=W->GetFirstPlayerController();if(!S||!PC)return;
         if(!Retarget.Load(FPaths::ProjectSavedDir()/TEXT("LiveCarry/calibration.json"))){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED calibration"));Finished=true;FPlatformMisc::RequestExit(false);return;}
+        if(AimStudy&&!FParse::Param(FCommandLine::Get(),TEXT("LiveAimCalibrate"))&&!Retarget.LoadAim(FPaths::ProjectSavedDir()/TEXT("LiveCarry/aim-registration.json"))){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED aim registration"));Finished=true;FPlatformMisc::RequestExit(false);return;}
         S->SetActorTickEnabled(false);S->GetCharacterMovement()->SetComponentTickEnabled(false);S->SetActorEnableCollision(false);S->SetActorHiddenInGame(true);S->GetMesh()->SetComponentTickEnabled(false);
         // Normalize the real controller's acceleration/deceleration too. The
         // pinned ALS graph divides acceleration by these movement properties.
@@ -106,15 +108,21 @@ void FLiveCarryStudy::Before(UWorld* W,float Dt)
         SourceOrigin=FVector(-1500,-1500,92.15);S->SetActorLocation(SourceOrigin,false,nullptr,ETeleportType::TeleportPhysics);
         const auto& Ref=S->GetMesh()->GetSkeletalMeshAsset()->GetRefSkeleton();for(int I=0;I<Ref.GetNum();++I)SourceNames.Add(Ref.GetBoneName(I));
         Pawn=W->SpawnActor<ALiveCarryPawn>(Spawn,FRotator::ZeroRotator);if(!Pawn.IsValid()){Finished=true;return;}
-        auto* P=Pawn.Get();P->Audit=Audit||Parity;P->Directional=Directional;P->LegScale=Retarget.LegScale;P->GetCharacterMovement()->MaxWalkSpeed=175*Retarget.LegScale;PawnOrigin=P->GetActorLocation();
+        auto* P=Pawn.Get();P->Audit=Audit||Parity;P->Directional=Directional;P->AimStudy=AimStudy;P->ShowSource=AimStudy&&FParse::Param(FCommandLine::Get(),TEXT("LiveAimSourceView"));P->LegScale=Retarget.LegScale;P->GetCharacterMovement()->MaxWalkSpeed=175*Retarget.LegScale;PawnOrigin=P->GetActorLocation();
         PC->UnPossess();PC->Possess(P);if(auto* Sub=ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))Sub->ClearAllMappings();
         PC->SetViewTarget(P->StudyCamera);PC->ClientSetHUD(ALiveCarryHUD::StaticClass());UWidgetLayoutLibrary::RemoveAllWidgets(PC);PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;PC->SetControlRotation(FRotator::ZeroRotator);
         FAssetCompilingManager::Get().FinishAllCompilation();P->Ready=true;Start=W->GetTimeSeconds();Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveCarry/%s-%d"),Parity?TEXT("parity"):TEXT("audit"),FPS);IFileManager::Get().MakeDirectory(*Folder,true);
         PoseRows=TEXT("frame,time,bone,x,y,z,qx,qy,qz,qw,sx,sy,sz\n");StateRows=TEXT("frame,time,dt,input,speed,actor_x,actor_y,actor_z,body_x,body_y,body_z,source_speed,failures,reach_margin,left_lock_curve,right_lock_curve,sole_correction,left_lock,right_lock\n");
         if(Directional){Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveDirectional/audit-%d"),FPS);IFileManager::Get().MakeDirectory(*Folder,true);SourceRows=PoseRows;StateRows.RemoveAt(StateRows.Len()-1);StateRows+=TEXT(",case,request_x,request_y,jog,view_yaw,actor_yaw,source_yaw,velocity_x,velocity_y,source_gait,pose_gait,turn_yaw_speed,jog_weight,pelvis_reach_offset,trajectory_reach_offset\n");}
+        FString RunLabel;FParse::Value(FCommandLine::Get(),TEXT("StudyRun="),RunLabel);
+        if(AimStudy){Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveAim/%s-%d"),RunLabel.IsEmpty()?TEXT("audit"):*FPaths::MakeValidFileName(RunLabel),FPS);RawRows=PoseRows;StateRows.RemoveAt(StateRows.Len()-1);StateRows+=TEXT(",aim_request,aim_pitch,relaxed_weight,ready_weight,aiming_weight,moving_weight\n");}
+        else if(!RunLabel.IsEmpty())Folder=FPaths::ProjectSavedDir()/TEXT("LiveRegression")/FString::Printf(TEXT("%s-%d"),*FPaths::MakeValidFileName(RunLabel),FPS);
+        if(Audit&&IFileManager::Get().FileExists(*(Folder/TEXT("poses.csv")))){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED evidence exists; use a fresh StudyRun label"));Finished=true;FPlatformMisc::RequestExit(false);return;}
+        IFileManager::Get().MakeDirectory(*Folder,true);
         UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_READY native=%s single_physical_mover=Fireline max_speed=%.4f"),*P->StudyBody->GetSkinnedAsset()->GetPathName(),P->GetCharacterMovement()->MaxWalkSpeed);
     }
-    if(Directional){DirectionalInput(W,Dt,W->GetTimeSeconds()-Start);}
+    if(AimStudy){AimInput(W,Dt,W->GetTimeSeconds()-Start);}
+    else if(Directional){DirectionalInput(W,Dt,W->GetTimeSeconds()-Start);}
     else if(Audit){auto* P=Pawn.Get();P->ForwardRequested=WantsForward(W->GetTimeSeconds()-Start);if(P->ForwardRequested)P->AddMovementInput(FVector::ForwardVector,1);}
     else if(!Parity){auto* P=Pawn.Get();P->ForwardRequested=W->GetFirstPlayerController()->IsInputKeyDown(EKeys::W);if(P->ForwardRequested)P->AddMovementInput(FVector::ForwardVector,1);}
 }
@@ -151,9 +159,12 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
         for(int I=0;I<Count;++I){float V[10];Reader.Serialize(V,sizeof(V));CS[I]=FTransform(FQuat(V[3],V[4],V[5],V[6]).GetNormalized(),FVector(V[0],V[1],V[2]),FVector(V[7],V[8],V[9]));if(Parent[I]>=0)CS[I]*=CS[Parent[I]];}
         Input=CS;SourceNames=Order;
     }
+    if(AimStudy)ReadRifleStates();
     TArray<FTransform> Local,CS;
     Retarget.JogBlend=Directional&&!FParse::Param(FCommandLine::Get(),TEXT("LiveDirectionalCalibrate"))?DirectionalJogWeight():0.;Retarget.CompensateReach=Directional;
+    if(AimStudy&&!FParse::Param(FCommandLine::Get(),TEXT("LiveAimCalibrate"))){Retarget.ArmedWeight=1-RelaxedWeight;Retarget.AimWeight=AimingWeight;Retarget.MovingWeight=FMath::Clamp(double(SM->GetAnimInstance()->GetCurveValue(TEXT("PoseMoving"))),0.,1.);Retarget.ViewDirection=FRotator(P->AimPitch,P->FacingYaw-P->GetActorRotation().Yaw+90,0).Vector();}
     bool Valid=Retarget.Evaluate(Input,SourceNames,Local,CS,!Parity);
+    if(AimStudy&&Audit)for(int I=0;I<Retarget.RawMapped.Num();++I)RawRows+=FString::Printf(TEXT("%d,%.8f,%s,"),Frame,T,*Retarget.Names[I].ToString())+TransformRow(Retarget.RawMapped[I]);
     if(Valid&&!Parity)Valid=Retarget.PlaceSoles(SM->GetAnimInstance()->GetCurveValue(TEXT("FootLeftLock")),SM->GetAnimInstance()->GetCurveValue(TEXT("FootRightLock")),Local,CS);
     if(Valid){LastLocal=MoveTemp(Local);LastComponent=MoveTemp(CS);}else{++Failures;UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_POSE_INVALID frame=%d time=%.4f"),Frame,T);}
     if(LastLocal.Num())
@@ -163,13 +174,15 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
         const FVector Offset(0,0,-P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()-Floor+.70);
         P->StudyBody->SetRelativeLocation(Offset);P->StudyGun->SetRelativeLocation(Offset);P->StudyBody->SetVisibility(true);P->StudyGun->SetVisibility(true);
     }
+    if(AimStudy){S->SetActorHiddenInGame(!P->ShowSource);P->StudyBody->SetVisibility(!P->ShowSource);P->StudyGun->SetVisibility(!P->ShowSource);P->SourceFocus=S->GetActorLocation()+FVector(0,0,6);}
     if(Audit||Parity)Record(Dt,T);
     if(Audit)
     {
         static const double Times[]={.6,1.1,1.6,2.0,3.25,3.8,4.33,4.65,5.3,6.0,7.25,7.8,8.8,10.3};
-        const bool Capture=Directional?(Shot<24&&T>=(Shot<19?1.+Shot*2.4+1.35:Shot<23?46.6+(Shot-19)*4.8+3.8:67.15)):(Shot<UE_ARRAY_COUNT(Times)&&T>=Times[Shot]);
+        const bool Capture=AimStudy?(Shot<28&&T>=1.+(Shot/2)*4.+(Shot%2?3.4:1.8)):Directional?(Shot<24&&T>=(Shot<19?1.+Shot*2.4+1.35:Shot<23?46.6+(Shot-19)*4.8+3.8:67.15)):(Shot<UE_ARRAY_COUNT(Times)&&T>=Times[Shot]);
         if(Capture){P->OrbitYaw=(Shot%4)*90+P->GetActorRotation().Yaw;P->UpdateCamera();FScreenshotRequest::RequestScreenshot(Folder/FString::Printf(TEXT("shot-%02d.png"),Shot++),true,false);}
-        if(T>=(Directional?69.2:11.)){Finished=true;FFileHelper::SaveStringToFile(PoseRows,*(Folder/TEXT("poses.csv")));FFileHelper::SaveStringToFile(StateRows,*(Folder/TEXT("states.csv")));if(Directional)FFileHelper::SaveStringToFile(SourceRows,*(Folder/TEXT("source-poses.csv")));UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_AUDIT_COMPLETE frames=%d failures=%d"),Frame,Failures);FPlatformMisc::RequestExit(false);}
+        double Duration=AimStudy?57.:Directional?69.2:11.;FParse::Value(FCommandLine::Get(),TEXT("StudyDuration="),Duration);
+        if(T>=Duration){Finished=true;FFileHelper::SaveStringToFile(PoseRows,*(Folder/TEXT("poses.csv")));FFileHelper::SaveStringToFile(StateRows,*(Folder/TEXT("states.csv")));if(Directional)FFileHelper::SaveStringToFile(SourceRows,*(Folder/TEXT("source-poses.csv")));if(AimStudy)FFileHelper::SaveStringToFile(RawRows,*(Folder/TEXT("raw-poses.csv")));UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_AUDIT_COMPLETE frames=%d failures=%d"),Frame,Failures);FPlatformMisc::RequestExit(false);}
     }
     P->UpdateCamera();if(auto* Manager=W->GetFirstPlayerController()->PlayerCameraManager.Get())Manager->UpdateCamera(Dt);++Frame;
 }
@@ -181,4 +194,5 @@ void FLiveCarryStudy::Record(float Dt,double T)
     auto* Anim=Source->GetMesh()->GetAnimInstance();const auto* Property=FindFProperty<FStructProperty>(Anim->GetClass(),TEXT("FeetState"));const auto* Feet=Property?Property->ContainerPtrToValuePtr<FAlsFeetState>(Anim):nullptr;
     StateRows+=FString::Printf(TEXT("%d,%.8f,%.8f,%d,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f,%d,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f\n"),Frame,T,Dt,P->ForwardRequested?1:0,P->GetVelocity().Size2D(),A.X,A.Y,A.Z,B.X,B.Y,B.Z,Source->GetVelocity().Size2D(),Failures,Retarget.MinReachMargin,Anim->GetCurveValue(TEXT("FootLeftLock")),Anim->GetCurveValue(TEXT("FootRightLock")),Retarget.MaxSoleCorrection,Feet?Feet->Left.LockAmount:-1,Feet?Feet->Right.LockAmount:-1);
     if(Directional){const auto V=P->GetVelocity();StateRows.RemoveAt(StateRows.Len()-1);StateRows+=FString::Printf(TEXT(",%d,%.8f,%.8f,%d,%.8f,%.8f,%.8f,%.8f,%.8f,%d,%.8f,%.8f,%.8f,%.8f,%.8f\n"),P->Scenario,P->MoveRequested.X,P->MoveRequested.Y,P->JogRequested?1:0,P->FacingYaw,P->GetActorRotation().Yaw,Source->GetActorRotation().Yaw,V.X,V.Y,Source->GetGait()==AlsGaitTags::Walking?1:2,Anim->GetCurveValue(TEXT("PoseGait")),Anim->GetCurveValue(TEXT("RotationYawSpeed")),DirectionalJogWeight(),Retarget.PelvisReachOffset,Retarget.TrajectoryReachOffset);}
+    if(AimStudy){StateRows.RemoveAt(StateRows.Len()-1);StateRows+=FString::Printf(TEXT(",%d,%.8f,%.8f,%.8f,%.8f,%.8f\n"),P->AimRequested?1:0,P->AimPitch,RelaxedWeight,ReadyWeight,AimingWeight,Retarget.MovingWeight);}
 }
