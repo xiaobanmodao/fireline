@@ -46,6 +46,12 @@ bool FLiveCarryRetarget::LoadAim(const FString& File)
     const auto& Aim=Root->GetArrayField(TEXT("aim_registration"));if(Aim.Num()!=8)return false;
     AimTranslation=FVector(Aim[3]->AsNumber(),Aim[4]->AsNumber(),Aim[5]->AsNumber());AimPole[0]=Aim[6]->AsNumber();AimPole[1]=Aim[7]->AsNumber();
     if(Root->HasField(TEXT("moving_aim_pole_delta"))){const auto& Delta=Root->GetArrayField(TEXT("moving_aim_pole_delta"));if(Delta.Num()!=2)return false;for(int Side=0;Side<2;++Side)MovingAimPoleDelta[Side]=Delta[Side]->AsNumber();}
+    if(Root->HasField(TEXT("presentation_registration")))
+    {
+        const auto Registration=Root->GetObjectField(TEXT("presentation_registration"));
+        StockHold=Vec(Registration->GetArrayField(TEXT("stock_hold_cm")));
+        StockFromShoulder=Vec(Registration->GetArrayField(TEXT("stock_from_shoulder_chest_cm")));
+    }
     return true;
 }
 bool FLiveCarryRetarget::TwoBone(const FVector& S,const FVector& E,const FVector& T,double A,double B,double Phi,FVector& Result) const
@@ -97,6 +103,26 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
     // Weapon raw coordinates aren't used by the registration; the common hold
     // assembly below reconstructs every M4 part from the same transform.
     MinReachMargin=1.e6;TrajectoryReachOffset=0;
+    FVector FootTargets[2];int FootSide=0;
+    for(const FString Side:{FString(TEXT("L")),FString(TEXT("R"))})
+    {
+        FVector Target=Bind[Index(TEXT("UpperLeg_")+Side)].GetTranslation()+(SP(TEXT("foot_")+Side.ToLower()).GetTranslation()-SB(TEXT("thigh_")+Side.ToLower()).GetTranslation())*LegScale+FVector(0,0,FloorShift);
+        if(RefinePresentation)
+        {
+            // ALS owns contact/release timing; register its final lock in the
+            // target's world space after proportion mapping, not actor space.
+            const double Lock=FMath::Clamp(FootLock[FootSide],0.,1.);
+            if(ResetContacts||(Lock>=.999&&PreviousFootLock[FootSide]<.999))FootAnchor[FootSide]=BodyWorld.TransformPosition(Target);
+            if(Lock>0&&PreviousFootLock[FootSide]>0)
+            {
+                const FVector Locked=BodyWorld.InverseTransformPosition(FootAnchor[FootSide]);
+                Target.X=FMath::Lerp(Target.X,Locked.X,Lock);Target.Y=FMath::Lerp(Target.Y,Locked.Y,Lock);
+            }
+            PreviousFootLock[FootSide]=Lock;
+        }
+        FootTargets[FootSide++]=Target;
+    }
+    ResetContacts=false;
     if(CompensateReach)
     {
         // Different hip spread/segment ratios can put a mapped swing ankle a
@@ -106,7 +132,7 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
         for(const FString Side:{FString(TEXT("L")),FString(TEXT("R"))})
         {
             const int U=Index(TEXT("UpperLeg_")+Side),E=Index(TEXT("LowerLeg_")+Side),F=Index(TEXT("Foot_")+Side);
-            const FVector Target=Bind[U].GetTranslation()+(SP(TEXT("foot_")+Side.ToLower()).GetTranslation()-SB(TEXT("thigh_")+Side.ToLower()).GetTranslation())*LegScale+FVector(0,0,FloorShift);
+            const FVector Target=FootTargets[Side==TEXT("L")?0:1];
             const FVector Hip=P[U].GetTranslation();const double Reach=(Bind[E].GetTranslation()-Bind[U].GetTranslation()).Size()+(Bind[F].GetTranslation()-Bind[E].GetTranslation()).Size()-.15;
             const double XY=FVector::DistSquared2D(Hip,Target);if(XY>=Reach*Reach)return false;
             TrajectoryReachOffset=FMath::Max(TrajectoryReachOffset,Hip.Z-Target.Z-FMath::Sqrt(Reach*Reach-XY));
@@ -117,7 +143,7 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
     for(const FString Side:{FString(TEXT("L")),FString(TEXT("R"))})
     {
         const FString Low=Side.ToLower();const int U=Index(TEXT("UpperLeg_")+Side),E=Index(TEXT("LowerLeg_")+Side),F=Index(TEXT("Foot_")+Side);
-        const FVector Hip=P[U].GetTranslation(),Knee=P[E].GetTranslation(),Ankle=P[F].GetTranslation();const FVector Target=Bind[U].GetTranslation()+(SP(TEXT("foot_")+Low).GetTranslation()-SB(TEXT("thigh_")+Low).GetTranslation())*LegScale+FVector(0,0,FloorShift);
+        const FVector Hip=P[U].GetTranslation(),Knee=P[E].GetTranslation(),Ankle=P[F].GetTranslation();const FVector Target=FootTargets[Side==TEXT("L")?0:1];
         const double A=(Bind[E].GetTranslation()-Bind[U].GetTranslation()).Size(),B=(Bind[F].GetTranslation()-Bind[E].GetTranslation()).Size();FVector NK;
         if(!TwoBone(Hip,Knee,Target,A,B,0,NK))return false;
         P[U].SetRotation((Between(Knee-Hip,NK-Hip)*P[U].GetRotation()).GetNormalized());P[E].SetTranslation(NK);P[E].SetRotation((Between(Ankle-Knee,Target-NK)*P[E].GetRotation()).GetNormalized());
@@ -178,7 +204,16 @@ bool FLiveCarryRetarget::Evaluate(const TArray<FTransform>& Input,const TArray<F
         const int RightWrist=Index(TEXT("DJ_wrist_R"));
         const double AimFraction=FMath::Clamp(AimWeight/ArmedWeight,0.,1.);
         const FVector ArmedC=RawMapped[RightWrist].GetTranslation()+FinalQ.RotateVector(HoldMid-Hold[RightWrist].GetTranslation())+RawChest.RotateVector(FMath::Lerp(ReadyTranslation,AimTranslation,AimFraction));
-        const FVector FinalC=FMath::Lerp(HeldC,ArmedC,ArmedWeight);
+        FVector FinalC=FMath::Lerp(HeldC,ArmedC,ArmedWeight);
+        if(RefinePresentation)
+        {
+            // Rotate the sight-aligned weapon around its measured buttpad mount.
+            // Both hands move with it; source finger poses and contacts remain
+            // unchanged. This removes locomotion drift of the stock at full aim.
+            const FVector Mount=RawMapped[Index(TEXT("UpperArm_R"))].GetTranslation()+RawChest.RotateVector(StockFromShoulder);
+            const FVector MountedC=Mount-FinalQ.RotateVector(StockHold-HoldMid);
+            FinalC=FMath::Lerp(FinalC,MountedC,AimWeight);
+        }
         auto Held=[&](int I){return FTransform((FinalQ*Hold[I].GetRotation()).GetNormalized(),FinalC+FinalQ.RotateVector(Hold[I].GetTranslation()-HoldMid),Hold[I].GetScale3D());};
         for(int Side=0;Side<2;++Side)
         {

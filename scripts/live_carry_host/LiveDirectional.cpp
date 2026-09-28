@@ -10,6 +10,9 @@
 void ALiveCarryPawn::RequestTap(const FVector& Direction)
 {
     if(!Directional||!Ready||Audit)return;
+    // Presentation input is sampled once in AimInput. Adding this key-down
+    // impulse as well biases the first diagonal frame toward the pressed key.
+    if(PresentationStudy)return;
     AddMovementInput(FRotator(0,FacingYaw,0).RotateVector(Direction),1);
 }
 void ALiveCarryPawn::LeftDown(){RequestTap(FVector(0,-1,0));}

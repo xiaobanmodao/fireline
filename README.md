@@ -1,3 +1,5 @@
+当前最新独立候选：桌面「火力对决／**测试版·M4移动瞄准修正.app**」。WASD/Shift移动，右键或F瞄准，6自动演示，1–4四面观察。范围与验证见 [移动瞄准修订](unreal/Fireline/Docs/Validation/move-aim-refinement/README.md)，未替换默认游戏。
+
 # Fireline / 火力对决
 
 UE 5.8 桌面 FPS。当前开发基线：**手柄阶段重建基线** `gamepad-reconstructed-20260927`。

@@ -30,6 +30,10 @@ public:
     bool ForwardRequested=false,Ready=false,Audit=false;
     bool Directional=false,JogRequested=false;
     bool AimStudy=false,AimRequested=false;
+    bool AimLatched=false,Demo=false,PresentationStudy=false;
+    double DemoElapsed=0;
+    void ToggleAim(){if(AimStudy&&!Audit)AimLatched=!AimLatched;}
+    void ToggleDemo(){if(AimStudy&&!Audit){Demo=!Demo;DemoElapsed=0;AimLatched=false;if(Demo)ResetStudy();}}
     float AimPitch=0;
     bool ShowSource=false;
     FVector SourceFocus=FVector::ZeroVector;
@@ -80,6 +84,7 @@ class FLiveCarryStudy
     FString RawRows;
     void AimInput(class UWorld* World,float Dt,double Time);
     void ReadRifleStates();
+    void ConfigurePresentationTransitions();
     FString Folder,PoseRows,StateRows,SourceRows;
     void Record(float Dt,double T);
     void DirectionalInput(class UWorld* World,float Dt,double Time);

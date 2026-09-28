@@ -19,6 +19,9 @@ class FLiveCarryRetarget
     double ReadyPole[2]{};
     double MovingAimPoleDelta[2]{};
     FVector JogTranslation=FVector::ZeroVector;
+    FVector StockHold=FVector::ZeroVector,StockFromShoulder=FVector::ZeroVector;
+    FVector FootAnchor[2]{};
+    double PreviousFootLock[2]{};
     double JogPole[2]{};
     double PoleAngles[2]{},FloorShift=0,Amplitude=.55,LiveRightPoleDelta=0;
     struct FSoleInfluence { int32 Bone; double Weight; FVector Local; };
@@ -35,6 +38,10 @@ public:
     bool CompensateReach=false;
     double ArmedWeight=0,AimWeight=0,MovingWeight=0;
     FVector ViewDirection=FVector(0,1,0);
+    bool RefinePresentation=false;
+    FTransform BodyWorld=FTransform::Identity;
+    double FootLock[2]{};
+    bool ResetContacts=false;
 private:
     bool InReachPass=false;
 public:

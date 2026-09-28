@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-28",
+  "baseline_commit": "d944b05",
+  "flag": "-LiveCarryAimStudy -LiveCarryPresentationStudy",
+  "launcher": "/Users/hht/Desktop/\u706b\u529b\u5bf9\u51b3/\u6d4b\u8bd5\u7248\u00b7M4\u79fb\u52a8\u7784\u51c6\u4fee\u6b63.app",
+  "source_graph": "ALS Refactored b754d6f; source pose keys unchanged; aim transition class data adapted only in isolated process",
+  "traces": {
+    "30": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/presentation-stress-30",
+    "60": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/presentation-stress-60",
+    "120": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/presentation-stress-120"
+  },
+  "native_frames": 16173,
+  "all_frame_triangles": true,
+  "rendering": "60Hz Metal 38 screenshots, 30/120 NullRHI; final visibility-only fix reviewed in interactive Metal window",
+  "native_launcher_verified": true,
+  "interactive_log": "/Users/hht/Library/Logs/Fireline/StudyLaunch-23A6450A-FE70-42B3-AF12-17D7B1EF4FD4.log",
+  "asset_verification": "1252 selected game assets, 0 missing/changed",
+  "visual_acceptance": false,
+  "remaining": [
+    "exact eye/sightline and cheek contact",
+    "all armor/hand surfaces",
+    "entire support-phase zero slide and non-flat terrain",
+    "firing, reload, FP ADS and other weapons in this study"
+  ],
+  "files": {
+    "scripts/live_carry_host/FirelineLiveStudy.cpp": "46984c815ea9eecb46178abd0e6f905c588f698db82bb51d915d492b36ffd3b7",
+    "scripts/live_carry_host/LiveAim.cpp": "037698c1dd701431fa1aa9f4e838eb3e32de56db434c24059869955635f05ed5",
+    "scripts/live_carry_host/LiveCarryRetarget.cpp": "6a7d25825a532a3d647f5b2d9a8a83719a5fe45a9ad1765f56185c7b8f96234f",
+    "scripts/live_carry_host/LiveCarryRetarget.h": "b3afbc8a80ea4a6dd3740fc93567879c144c0552e5dfc1920df42e7b47787d38",
+    "scripts/live_carry_host/LiveCarryStudy.cpp": "f219321dffb82b4046770018a338b33ac04e73b8a4dc6ef5661e2bb95908d4bc",
+    "scripts/live_carry_host/LiveCarryStudy.h": "7a5f614ea3feb4cd228534fb8c98d5ec7c60a1afc1caa6f00b518ba90c05a4c2",
+    "scripts/live_carry_host/LiveDirectional.cpp": "ad49ca509b7f01c57c11671fca79be4819306235e099426365e050e9bdce0812"
+  }
+}

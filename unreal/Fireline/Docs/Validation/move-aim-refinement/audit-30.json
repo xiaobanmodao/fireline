@@ -1,0 +1,221 @@
+{
+  "frames": 2311,
+  "fps": 30,
+  "sample_step": 1,
+  "failed_poses": 0,
+  "max_speed_cm_s": 431.71020508,
+  "single_capsule_backward_step_cm_min": -14.390340920000199,
+  "visual_to_capsule_xy_offset_cm_max": 0.0,
+  "limb_length_error_cm_max": 6.287902820645286e-08,
+  "receiver_relative_grip_error_cm_max": 1.3160113650589975e-07,
+  "sole_height_cm_min": [
+    0.01999877840559361,
+    0.019998821618233964
+  ],
+  "lowest_sole_height_cm_max": 4.739686044631926,
+  "wrist_bend_deg_range": [
+    [
+      4.146859248792996,
+      16.50450216957797
+    ],
+    [
+      44.49999986593058,
+      39.858647232296185
+    ]
+  ],
+  "vertex_chest_intrusion_cm_max": [
+    0.0,
+    0.0
+  ],
+  "joint_step_cm_max": {
+    "LowerArm_L": 12.596501061076742,
+    "LowerArm_R": 11.246890454645335,
+    "DJ_wrist_L": 14.040650942214151,
+    "DJ_wrist_R": 9.933052127216762,
+    "LowerLeg_L": 22.605574851563446,
+    "LowerLeg_R": 21.146548826418048
+  },
+  "minimum_reach_margin_cm": 0.92561763,
+  "visual_acceptance": false,
+  "scope": "isolated M4 third-person ALS Relaxed/Ready/Aiming, eight-direction movement, interrupted aiming, view pitch +/-30 and turning; not FP ADS, firing or reload acceptance",
+  "skinned_sole_correction_cm_max": 3.70117187,
+  "fully_locked_ankle_xy_speed_cm_s_max": 1.5000044556247819e-06,
+  "surface_vertex_clearance_cm_min": [
+    0.9590205126289888,
+    0.4521160206751844
+  ],
+  "triangle_clipping_frames": 2311,
+  "intersecting_torso_triangles": 0,
+  "cases": {
+    "0": {
+      "frames": 150,
+      "failures": 0.0,
+      "sole_min_cm": 0.019998827308739475,
+      "lowest_sole_max_cm": 0.021104589012055697,
+      "penetration_max_cm": 0.0
+    },
+    "1": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020012844138441177,
+      "lowest_sole_max_cm": 0.020869782990239893,
+      "penetration_max_cm": 0.0
+    },
+    "2": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020022439091822997,
+      "lowest_sole_max_cm": 3.9548940241726362,
+      "penetration_max_cm": 0.0
+    },
+    "3": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.02000293336897785,
+      "lowest_sole_max_cm": 3.633388698017107,
+      "penetration_max_cm": 0.0
+    },
+    "4": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020007343404896294,
+      "lowest_sole_max_cm": 2.255532519883489,
+      "penetration_max_cm": 0.0
+    },
+    "5": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020010160149087297,
+      "lowest_sole_max_cm": 1.0094911734957663,
+      "penetration_max_cm": 0.0
+    },
+    "6": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.02001211283429949,
+      "lowest_sole_max_cm": 0.4699099471035554,
+      "penetration_max_cm": 0.0
+    },
+    "7": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.01999877840559361,
+      "lowest_sole_max_cm": 0.5258314530293976,
+      "penetration_max_cm": 0.0
+    },
+    "8": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020005820010162823,
+      "lowest_sole_max_cm": 3.0348671467842503,
+      "penetration_max_cm": 0.0
+    },
+    "9": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020026592807209087,
+      "lowest_sole_max_cm": 3.5066868663486086,
+      "penetration_max_cm": 0.0
+    },
+    "10": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.0200070213132143,
+      "lowest_sole_max_cm": 0.021024516044754527,
+      "penetration_max_cm": 0.0
+    },
+    "11": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020000201974038512,
+      "lowest_sole_max_cm": 0.021133133500805812,
+      "penetration_max_cm": 0.0
+    },
+    "12": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.01999984559561463,
+      "lowest_sole_max_cm": 0.31350352147291216,
+      "penetration_max_cm": 0.0
+    },
+    "13": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.019998821618233964,
+      "lowest_sole_max_cm": 0.02116700001991101,
+      "penetration_max_cm": 0.0
+    },
+    "14": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020010615154844147,
+      "lowest_sole_max_cm": 0.8096710794738333,
+      "penetration_max_cm": 0.0
+    },
+    "15": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020056955573947488,
+      "lowest_sole_max_cm": 0.5125109678065657,
+      "penetration_max_cm": 0.0
+    },
+    "16": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020028295066503943,
+      "lowest_sole_max_cm": 4.739686044631926,
+      "penetration_max_cm": 0.0
+    },
+    "17": {
+      "frames": 120,
+      "failures": 0.0,
+      "sole_min_cm": 0.020017812244638278,
+      "lowest_sole_max_cm": 0.7882352206773623,
+      "penetration_max_cm": 0.0
+    },
+    "18": {
+      "frames": 121,
+      "failures": 0.0,
+      "sole_min_cm": 0.02000754637971669,
+      "lowest_sole_max_cm": 0.3342109965355883,
+      "penetration_max_cm": 0.0
+    }
+  },
+  "actor_source_yaw_error_deg_max": 1.0000007932831068e-08,
+  "pelvis_reach_offset_cm_max": 0.0,
+  "trajectory_reach_offset_cm_max": 0.0,
+  "case_notes": {
+    "0": "stationary aim/release",
+    "1": "ready to relaxed",
+    "2-9": "eight-direction jog/aim-walk/jog",
+    "10": "rapid aim interruptions",
+    "11": "stationary pitch +/-30",
+    "12": "aiming strafe with turning and pitch +/-20",
+    "13": "release and settle",
+    "14": "continuous left/right full aim",
+    "15": "forward/back full aim with +/-30 pitch",
+    "16": "diagonal jog/aim interruption",
+    "17": "rapid reversal + 90deg/s turn + +/-30 pitch",
+    "18": "release/settle"
+  },
+  "planted_sole_height_cm_max": 0.02253959302827535,
+  "walk_lowest_sole_height_cm_max": 0.8096710794738333,
+  "speed_step_cm_max": 14.390340927189142,
+  "aim_axis_error_deg_max": 1.4787793334710982e-06,
+  "aim_axis_error_deg_p95": 1.2074182697257333e-06,
+  "aim_frames": 1223,
+  "state_weight_sum_error": 3.0000000039720476e-08,
+  "all_source_states_seen": true,
+  "wrist_peak_frames": {
+    "L": {
+      "sample": 1743,
+      "time": 58.10000303
+    },
+    "R": {
+      "sample": 366,
+      "time": 12.20000064
+    }
+  },
+  "invalid_pose_times": [],
+  "capsule_z_range_cm": 0.0
+}

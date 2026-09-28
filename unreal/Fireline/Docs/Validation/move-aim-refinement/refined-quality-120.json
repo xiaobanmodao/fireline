@@ -1,0 +1,34 @@
+{
+  "frames": 9241,
+  "stock_mount_drift_during_full_aim_cm_max": 1.5653007278576894e-07,
+  "stock_mount_drift_during_full_aim_cm_p95": 1.0661724732560242e-07,
+  "fully_locked_foot_speed_cm_s_max": 6.118835885493039e-06,
+  "chest_relative_joint_speed": {
+    "DJ_wrist_L": {
+      "max_cm_s": 549.3020852929108,
+      "p99_cm_s": 268.82088541092816,
+      "time": 9.6000005,
+      "case": 2
+    },
+    "DJ_wrist_R": {
+      "max_cm_s": 447.19602580407,
+      "p99_cm_s": 107.69465964232079,
+      "time": 57.00833631,
+      "case": 14
+    },
+    "LowerArm_L": {
+      "max_cm_s": 409.60087482550614,
+      "p99_cm_s": 196.51437317946946,
+      "time": 57.00833631,
+      "case": 14
+    },
+    "LowerArm_R": {
+      "max_cm_s": 217.74179869994106,
+      "p99_cm_s": 111.66040795680892,
+      "time": 9.6250005,
+      "case": 2
+    }
+  },
+  "visual_acceptance": false,
+  "stock_scope": "rear buttpad relative to calibrated shoulder mount; not eye-line or cheek-contact acceptance"
+}

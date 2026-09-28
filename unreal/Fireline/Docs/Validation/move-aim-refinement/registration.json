@@ -1,0 +1,13 @@
+{
+  "stock_hold_cm": [
+    -21.299943793879372,
+    6.000412472750545,
+    156.98676189172102
+  ],
+  "stock_from_shoulder_chest_cm": [
+    -1.117393400391634,
+    -0.19372654936286882,
+    1.5866941662567338
+  ],
+  "basis": "actual rear buttpad vertex centroid, settled native baseline frame120 at2s; measured common assembly mount, not eye/cheek acceptance"
+}
