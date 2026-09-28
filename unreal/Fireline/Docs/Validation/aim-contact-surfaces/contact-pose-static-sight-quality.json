@@ -1,0 +1,18 @@
+{
+  "frames": 151,
+  "sampled_frames": 31,
+  "sample_step": 5,
+  "full_aim_frames": 13,
+  "eye_proxy_sight_error_cm_max": 0.04249922444245619,
+  "eye_proxy_sight_error_cm_p95": 0.04249922021100292,
+  "eye_proxy_relief_cm_range": [
+    7.3445651067032145,
+    7.3445651567032115
+  ],
+  "neck_clavicle_length_error_cm_max": 2.9136607793134317e-08,
+  "gun_helmet_intersecting_triangles": 8339,
+  "gun_helmet_vertex_clearance_cm_min": -3.5648245359261352,
+  "visual_acceptance": false,
+  "eye_scope": "Design proxy inside the helmet visor; Ryan has no eye bones. Must validate actual helmet/rifle surfaces, not only this point.",
+  "helmet_scope": "Conservative convex hull of deformed Head-dominant vertices, not an exact concave mesh test. Triangle count is per-frame instances; signed half-space clearance is not Euclidean surface distance."
+}

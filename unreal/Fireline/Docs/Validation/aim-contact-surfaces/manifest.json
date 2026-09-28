@@ -1,0 +1,377 @@
+{
+  "status": "REJECTED; no runtime integration",
+  "baseline_commit": "d9308ad",
+  "scope": "Local diagnostic evidence. Third-party geometry and source files are not redistributed.",
+  "files": [
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/contact-aim-registration.json",
+      "bytes": 48854,
+      "sha256": "a8ba6c5a11455d7cf059d5066f0fc0b050da242dd49ea76308a7a436360acf25"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/exact-head-contact-checked.json",
+      "bytes": 21911,
+      "sha256": "749374f930434ff3b6a3643618d59cf63d11cfc10a036cd3a068773e559d6ba2"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/exact-head-contact.json",
+      "bytes": 19316,
+      "sha256": "92abb417bcc9c906881a2ff5e224a9fb5ea7defa7e3ac28a603b490e469f984c"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/frame120.json",
+      "bytes": 56245,
+      "sha256": "24b70c3b5dbf9d17a07a3a078deac6590839f54b68892c58986e8a13f17bffe7"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/isolated-helmet-feasibility.json",
+      "bytes": 93794,
+      "sha256": "e9859b4926dd463c399122881dd5ceab8af9d9aae3483f9a24d9b5eed99dcacf"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/LiveCarryRetarget.cpp",
+      "bytes": 27614,
+      "sha256": "45d1ed855470f9d5b5e1c356f54c5d4cac457d99775fb7c0fcfb367d17ea1d3d"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/LiveCarryRetarget.h",
+      "bytes": 2555,
+      "sha256": "2910e3624d20df9bd9f3339bd7b60cc212c789d9a3221e92126a4faf5e08eb55"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/LiveCarryStudy.cpp",
+      "bytes": 24498,
+      "sha256": "60ecf8f97c9586997f4449130f2ed02e870f8e908fa3fd7e1b9201f3c7da2f2d"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/LiveContactAim.cpp",
+      "bytes": 6129,
+      "sha256": "d078684cc0e04e6e528a27901ae090bd10fba27c90125c4267464ee18f46a0bc"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/mesh_contact_geometry.py",
+      "bytes": 2177,
+      "sha256": "be183db630a91b6e87c98131c60e789b2cbf5a530b6917a27284d5a7e8851dcf"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/render_static_aim_contact.py",
+      "bytes": 2660,
+      "sha256": "2ecb7cd1b21f910eccdad782550feecbb3bafd9e34599e107a79c5f3b0ba9cef"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/run_background_review.py",
+      "bytes": 3946,
+      "sha256": "41bf08dc354de8a73fd96aee8b36e0e4923f6a788ab581c8a50530730311e570"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/runtime-experiment.patch",
+      "bytes": 6981,
+      "sha256": "38583461213da335f6955ae6688232e3d98673a99d1efc3f524e6f683f9060e1"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/rejected-sources/study_static_aim_contact.py",
+      "bytes": 11637,
+      "sha256": "2790c320e4a2f908f8f54cdabc7f7353be860522342ec749c0c2cbfdcfdedb38"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-constrained-back.png",
+      "bytes": 859585,
+      "sha256": "ba80eb19d39887949039c62ae1d6bcf1165bc4488e4583072124c4b82036a046"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-constrained-front.png",
+      "bytes": 868272,
+      "sha256": "2ba2056f817bfe443d4aa0a0094831bc6f1f0e55715beaacc3e6ac8f15f942d8"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-constrained-left.png",
+      "bytes": 885350,
+      "sha256": "840c2b21b546676863c67fe2518c0f0d16f81c98ec915dd5e89a1bd1c73d8408"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-constrained-pose.json",
+      "bytes": 29211,
+      "sha256": "c9beb9ffed3a0fd1321070ae909d42b73c42678dc3ba5fe1d4ee6eded9dcedce"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-constrained-right.png",
+      "bytes": 891589,
+      "sha256": "d09eb3f2b20bd161482027766945f1fc0d08bade573c34c9ae1b68e2fb5eb76e"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-constrained.json",
+      "bytes": 1883,
+      "sha256": "6a17fc7db8357581726bc570aed19705c061ec891b61c05d16a5f4cb78befb86"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-contact-back.png",
+      "bytes": 856737,
+      "sha256": "e48aeccbf0c1c57f2d9de70920f9f383850a59acd7bcf41dd7dba642c224cd51"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-contact-front.png",
+      "bytes": 867650,
+      "sha256": "a2ead551c3c63f5744035e75c2edb8481e43c594bf864f1be1c8d58b206d2fe0"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-contact-left.png",
+      "bytes": 889257,
+      "sha256": "c377581307217e85c3d70a59672d38c9e7e0a82491dcab3f8136c780e3996da7"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-contact-pose.json",
+      "bytes": 29224,
+      "sha256": "e72b29645db374460ae3bfb6cd95339f0165a6c35936b3336920627716783a71"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-contact-right.png",
+      "bytes": 888697,
+      "sha256": "82388a7835b02443248c6c0e661ec7ea8f7f79db3451071686ae7396f4217396"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-contact.json",
+      "bytes": 1686,
+      "sha256": "191fbb2f708102fd7e30328bf261d03e548a25f163fdbb0ddc7976c34ecf3f03"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-gaze-pose.json",
+      "bytes": 29232,
+      "sha256": "675e6afee551c1d25a98e9d3c1f7449ca7fb06a332771437cecaebf5ccb09808"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-gaze.json",
+      "bytes": 1673,
+      "sha256": "9f162e622c37a01a4f974f12866d4930ca739e68d88e697eca3912313f6b39b2"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-profile-back.png",
+      "bytes": 864004,
+      "sha256": "f3d16cd0bd733597238a6edd27357f13e815402746f8d38726ec6f9c4b878eb7"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-profile-front.png",
+      "bytes": 869697,
+      "sha256": "afa5ebc7a7b5e1a4486c0498d3b7f60d14cfe4cb0de889218df0e0f05c0599f4"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-profile-left.png",
+      "bytes": 886343,
+      "sha256": "3f79f289fb7826d47c220db10b61cd55e30e2e3ecde3bcab49991149a10d8d2e"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-profile-pose.json",
+      "bytes": 29242,
+      "sha256": "3d630eed2132e91c720869034a4eb0d247e2e074908055cdb41821ea280592dc"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-profile-right.png",
+      "bytes": 890443,
+      "sha256": "5b092b545d5bbc3fec89de97d8cfdf5cbcbe7f64a1783de416fefec9db8d7af2"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-profile.json",
+      "bytes": 1909,
+      "sha256": "7518317b21cbc0b5348f210a263cda6bf62bd9a46174d00b0159afe139cb2db2"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-surface-pose.json",
+      "bytes": 29192,
+      "sha256": "7b92ec3ba6b73c8783b55c24353edc1170be019063a0eede815dab211253a8cc"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimContactStudy/static-surface.json",
+      "bytes": 1874,
+      "sha256": "8a662c0354fa56ad072a11baa6ac6c4215ecc6884a3dd685d55740d20183152b"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-dynamic-30/poses.csv",
+      "bytes": 46866568,
+      "sha256": "898f21e3b735bb79e3a35a5f79af0793adfe1a0e25259ddb0de27c168e72d58c"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-dynamic-30/raw-poses.csv",
+      "bytes": 46901611,
+      "sha256": "aeaa8807bb97aebfc784d832ccb0855e645e7cffe28c43a7effd9fd7d2fe6a3b"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-dynamic-30/source-poses.csv",
+      "bytes": 27002902,
+      "sha256": "06a11cdd82fca1dc1a7b796a26617d61eb19aeaea84f377b51dc373f79c15558"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-dynamic-30/states.csv",
+      "bytes": 939807,
+      "sha256": "1e729355570d0915e04a32538f321190ad7442253c90f16c47a484f4a1083e81"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-dynamic-30/audit.json",
+      "bytes": 6048,
+      "sha256": "fc08f114ea728684e0ca596bb46c8852dc772f1de56295b6f3b24f63004a3c3a"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-dynamic-30/background-review.json",
+      "bytes": 668,
+      "sha256": "0f34e873a6ac68bc739c18b4efeacff607b3d5a1703687bd67e65ac96975d22a"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-dynamic-30/poses.csv",
+      "bytes": 46856167,
+      "sha256": "fb5f13e7df7c51070ce5229b01c159a3acd89589ccd5c817101087041f9f061c"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-dynamic-30/raw-poses.csv",
+      "bytes": 46901611,
+      "sha256": "0f3e8390c8f055f400477a30536e9dc7f732565b37c971611fd39b6d1c08dcf8"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-dynamic-30/source-poses.csv",
+      "bytes": 27002902,
+      "sha256": "d87e490e7d607d40881beb3bdf71e0f2b0fb3dac7cde9aa14d915cfa13dfec2c"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-dynamic-30/states.csv",
+      "bytes": 936946,
+      "sha256": "06ce329af5bfec7251efdd1ece7ea1d99031ecb5de799366a571c3d5c6b404fe"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-dynamic-30/triangle-intersections.json",
+      "bytes": 31574,
+      "sha256": "c9aec8cce8339e8c8b843936477df915795c9c70d36ad94cd7c0fe4b0caa11cf"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-static-30/background-review.json",
+      "bytes": 666,
+      "sha256": "1fbce58d6e6c2d45eb8c5fdd3d2d67a77bc73e595ab3c5c03e42609ba2b6cdf4"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-static-30/helmet-intersections.json",
+      "bytes": 866679,
+      "sha256": "41d55fd53a4754db15a9d52667df70365e172d910b3b385255d6696839bfe2f0"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-static-30/poses.csv",
+      "bytes": 3018507,
+      "sha256": "f46186628d500f65aa658616113f311c96f404b00d5a2180863b5960685a00fd"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-static-30/raw-poses.csv",
+      "bytes": 3022308,
+      "sha256": "2dc09c1c7f0fa09b4bea7a385e0dbeb2cd3d37710878db40da5e62e16cd6c323"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-static-30/sight-quality.json",
+      "bytes": 842,
+      "sha256": "be9deb5d7c6ebdd3434c8f8f3274721418205547f1a17959dc9dc39e14d7a673"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-static-30/source-poses.csv",
+      "bytes": 1739035,
+      "sha256": "929f66bcace9894c06e239ab30cc3c48f0edd8b0cb55e8088ac3bd07f7734b5a"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-pose-static-30/states.csv",
+      "bytes": 60113,
+      "sha256": "7a6fecc96154a2411a6c945d0f1105ff419390e8fc2301f238c824fd8d2d2dea"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-30/audit.json",
+      "bytes": 3605,
+      "sha256": "ca4c84283e4f33d2e0e4929c4331c6b206866e5b7fea1e1a65fc86e84fba10bd"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-30/poses.csv",
+      "bytes": 3018631,
+      "sha256": "fb9a25ebdf8eb2ffa5425e0660330d39bd127851b04025b962459c674d9cfe1c"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-30/raw-poses.csv",
+      "bytes": 3022308,
+      "sha256": "5f39e6bba12ac87b247d26c19eddb0104158534bda720299bf7b3dea952d8b1f"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-30/source-poses.csv",
+      "bytes": 1739035,
+      "sha256": "2a8aca8e41a3e6217fc9357b3c08f9e07c8953540df7354b4551467b87e612e4"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-30/states.csv",
+      "bytes": 60192,
+      "sha256": "0b7f3127c702bf6e5df1af67a2a2c0d86f895e5da74c30791048046d237cccbb"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-30/triangle-intersections.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/audit.json",
+      "bytes": 2763,
+      "sha256": "65f7cb6a8d3b3a4b9e8c58d4cd92af94e06eebd0e8d3a8669468d12afd61207b"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/background-review.json",
+      "bytes": 668,
+      "sha256": "e140a3d9de2fedca235964da436198c68dd958ce357e08f7cf6c12dee5a226f9"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/helmet-intersections.json",
+      "bytes": 1241536,
+      "sha256": "a4e17bfbf1f9efede0567f27d54d7d9279328c6cb660873dc7f289cae8121606"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/poses.csv",
+      "bytes": 3019526,
+      "sha256": "d0d3c268cd2a7ad4c7582f5e06c0290f031fa5907af1048157bfb2d6925afd15"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/raw-poses.csv",
+      "bytes": 3022308,
+      "sha256": "e3f49b3ad72f6416ffb8ca9f0c6d9e050e1c9a6af2c0c83439bf887324d284d2"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/sight-quality.json",
+      "bytes": 839,
+      "sha256": "16e2bb164731bd453f34dc44249b2fcab51c8f2b2c4959cee01368184a00a72f"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/source-poses.csv",
+      "bytes": 1739035,
+      "sha256": "69593fa9b71d9ef939183a3a7407baec9c30616d5348e4ddfd5504ee9b03398e"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/states.csv",
+      "bytes": 60113,
+      "sha256": "c45f8810e8919cbbe710209353c739fcb5a4b0b1a3e420ca5a1e399709a250c8"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-static-reach-30/triangle-intersections.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-restore-20260929-30/background-review.json",
+      "bytes": 690,
+      "sha256": "1222fa53cf3420a40370a2f998d5a2eb00a732fa7a1f5f3a72af958cd04d449e"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-restore-20260929-30/shot-00.png",
+      "bytes": 776587,
+      "sha256": "007bd95b7f18b5c3f3826de55a09015866f6611d5320ce07c93040199c5f220a"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-restore-20260929-30/shot-01.png",
+      "bytes": 733165,
+      "sha256": "01e06cf3bf8a8a6731ab33cd4ec635b262269b52cb909eeb8dd59a2bc7a04d5f"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-restore-20260929-30/shot-02.png",
+      "bytes": 724529,
+      "sha256": "7e878a9f97f31060ad69fb73bfafebe993661fd6d1bb142c0e6ab97f850e4e0f"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-restore-20260929-30/shot-03.png",
+      "bytes": 754598,
+      "sha256": "ba232eb575ec9e78ece4a8521fa1419b08f9deb93c4262f355eacfcce3eb4519"
+    }
+  ]
+}

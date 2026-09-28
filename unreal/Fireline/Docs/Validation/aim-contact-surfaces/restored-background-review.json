@@ -1,0 +1,14 @@
+{
+  "entry": "existing M4 movement/aim candidate; no new pose",
+  "directory": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/contact-restore-20260929-30",
+  "log": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/BackgroundReview/contact-restore-20260929.log",
+  "native_window": false,
+  "physical_input_used": false,
+  "renderer": "Metal",
+  "fps": 30,
+  "full_sequence": false,
+  "screenshots": 4,
+  "wall_seconds": 16.71,
+  "visual_acceptance": false,
+  "scope": "background capture check; screenshots still need visual review"
+}
