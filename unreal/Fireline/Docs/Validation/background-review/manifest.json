@@ -1,0 +1,50 @@
+{
+  "entry": "existing M4 movement/aim candidate; no new pose",
+  "directory": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/background-four-view-30",
+  "log": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/BackgroundReview/background-four-view.log",
+  "native_window": false,
+  "physical_input_used": false,
+  "renderer": "Metal",
+  "fps": 30,
+  "full_sequence": false,
+  "screenshots": 4,
+  "wall_seconds": 21.9,
+  "visual_acceptance": false,
+  "scope": "background capture check; screenshots still need visual review",
+  "screenshots_visually_reviewed": 4,
+  "visual_findings": "Existing model and weapon render in four cardinal views. Visor remains above iron-sight line; no new pose acceptance.",
+  "test_type": "short Metal render/window isolation smoke check, not full animation regression",
+  "baseline_commit": "3bc689b",
+  "evidence": [
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/background-four-view-30/shot-00.png",
+      "bytes": 780822,
+      "sha256": "6ed81071897570abeff11b7a3ef55cb81381f04e6233c3a30d9435893095ac7b"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/background-four-view-30/shot-01.png",
+      "bytes": 718468,
+      "sha256": "8bb670eaf97dec761e0eb946729ff7d14c440c2e485c8840f79b9a2fb9600e4f"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/background-four-view-30/shot-02.png",
+      "bytes": 721573,
+      "sha256": "e6548cf4ace0c5ac678c6c9a5be02fc181d3b16f9470b673a9ad26bf029303df"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/background-four-view-30/shot-03.png",
+      "bytes": 735012,
+      "sha256": "ca9914b8b8152523eaa17fbbfa104090d36794c2ef8f1282d1079f465bd5d4bd"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/background-four-view-30/background-review.json",
+      "bytes": 681,
+      "sha256": "09309a75bbe9baf0126740b8041bae5dafde610205b8535f4d8a6d3fe07a904f"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/BackgroundReview/background-four-view.log",
+      "bytes": 257868,
+      "sha256": "558752503ed865a9e7d28af309118fff26f2dbeeb56565c269ef7182ff3ccafb"
+    }
+  ]
+}

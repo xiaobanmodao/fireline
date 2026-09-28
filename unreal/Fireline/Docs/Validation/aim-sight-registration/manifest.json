@@ -1,0 +1,56 @@
+{
+  "baseline_commit": "3bc689b",
+  "status": "rejected and reverted",
+  "runtime_enabled": false,
+  "new_launcher": false,
+  "native_frames": 2311,
+  "helmet_sampled_frames": 78,
+  "offline_surface_sampled_frames": 37,
+  "evidence": [
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/sight-chain-probe-30/poses.csv",
+      "bytes": 46873537,
+      "sha256": "77a638faa1a9fba5aaeebee0a9da6a1df0579a13ce8593b2f03a8f33ad7b2759"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/sight-chain-probe-30/states.csv",
+      "bytes": 936960,
+      "sha256": "bcdba95b1a45a90dca20702ed95e53118de36fd1a5bfd277a8e9d932759bdba4"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/sight-chain-probe-30/audit.json",
+      "bytes": 6269,
+      "sha256": "1a2748a64a6e5f7edb004f1485d967510a9213c0a2f67b73a4c5c70ec523d423"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/sight-chain-probe-30/sight-quality.json",
+      "bytes": 606,
+      "sha256": "8761bc5f1fd81b245da0533259839bed3887071d30fee813397932127add50f5"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/sight-chain-probe-30/helmet-intersections.json",
+      "bytes": 4276923,
+      "sha256": "d5f52460693fe139c7f8b2d11969aa7caf5ed1a32dda69c970dcf1cb7ad7b882"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimSightStudy/rejected-runtime.patch",
+      "bytes": 21684,
+      "sha256": "1ce3f49cc167fb10916ff3cba89d31df35c87caec01735ee9a7364e9ce479986"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimSightStudy/calibrate_aim_sight.py",
+      "bytes": 5453,
+      "sha256": "5ad06ad41d8297329be982b618bd11be360ed725aa3c36675f2ba9f015a6b03e"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimSightStudy/refine_aim_sight_surface.py",
+      "bytes": 6648,
+      "sha256": "5978f8dbfcbbfe98887ce10b797e243bf559970631a768ee57c6fa8aa04e2f70"
+    },
+    {
+      "path": "unreal/Fireline/Saved/MatureMotionResearch/AimSightStudy/surface-fit.json",
+      "bytes": 1231,
+      "sha256": "877aff00946d2b1eae8e0c2795cc44dd197d311e6b79374d7a3ec0b3dc5158ab"
+    }
+  ]
+}

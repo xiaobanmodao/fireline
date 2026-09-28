@@ -11,6 +11,9 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/Canvas.h"
 #include "Engine/World.h"
+#include "Engine/GameViewportClient.h"
+#include "Widgets/SWindow.h"
+#include "GenericPlatform/GenericWindow.h"
 #include "Engine/SkeletalMesh.h"
 #include "EnhancedInputSubsystems.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
@@ -80,7 +83,13 @@ void ALiveCarryPawn::ForwardUp(){if(!Audit)ForwardRequested=false;}
 void ALiveCarryPawn::OrbitX(float Value){if(Ready&&!Audit)OrbitYaw=FMath::UnwindDegrees(OrbitYaw-Value*.20f);}
 void ALiveCarryPawn::OrbitY(float Value){if(Ready&&!Audit)OrbitPitch=FMath::Clamp(OrbitPitch+Value*.15f,-15.f,45.f);}
 void ALiveCarryPawn::ResetStudy(){if(Audit)return;GetCharacterMovement()->StopMovementImmediately();SetActorLocation(Spawn,false,nullptr,ETeleportType::TeleportPhysics);ForwardRequested=false;if(AimStudy)AimPitch=0;}
-void ALiveCarryPawn::UpdateCamera(){const FVector Focus=ShowSource?SourceFocus:GetActorLocation()+FVector(0,0,12);const FVector Offset=FRotator(OrbitPitch,OrbitYaw,0).Vector()*OrbitDistance;StudyCamera->SetActorLocationAndRotation(Focus+Offset,(Focus-(Focus+Offset)).Rotation());}
+void ALiveCarryPawn::UpdateCamera()
+{
+    const bool Closeup=Audit&&FParse::Param(FCommandLine::Get(),TEXT("StudyCloseup"));
+    const FVector Focus=ShowSource?SourceFocus:GetActorLocation()+FVector(0,0,Closeup?58:12);
+    const FVector Offset=FRotator(OrbitPitch,OrbitYaw,0).Vector()*(Closeup?260:OrbitDistance);
+    StudyCamera->SetActorLocationAndRotation(Focus+Offset,(Focus-(Focus+Offset)).Rotation());
+}
 void ALiveCarryHUD::DrawHUD()
 {
     Super::DrawHUD();auto* P=Cast<ALiveCarryPawn>(GetOwningPawn());if(!Canvas||!P)return;
@@ -122,7 +131,17 @@ void FLiveCarryStudy::Before(UWorld* W,float Dt)
         Pawn=W->SpawnActor<ALiveCarryPawn>(Spawn,FRotator::ZeroRotator);if(!Pawn.IsValid()){Finished=true;return;}
         auto* P=Pawn.Get();P->Audit=Audit||Parity;P->Directional=Directional;P->AimStudy=AimStudy;P->PresentationStudy=Retarget.RefinePresentation;P->ShowSource=AimStudy&&FParse::Param(FCommandLine::Get(),TEXT("LiveAimSourceView"));P->LegScale=Retarget.LegScale;P->GetCharacterMovement()->MaxWalkSpeed=175*Retarget.LegScale;PawnOrigin=P->GetActorLocation();
         PC->UnPossess();PC->Possess(P);if(auto* Sub=ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))Sub->ClearAllMappings();
-        PC->SetViewTarget(P->StudyCamera);PC->ClientSetHUD(ALiveCarryHUD::StaticClass());UWidgetLayoutLibrary::RemoveAllWidgets(PC);PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;PC->SetControlRotation(FRotator::ZeroRotator);
+        PC->SetViewTarget(P->StudyCamera);PC->ClientSetHUD(ALiveCarryHUD::StaticClass());UWidgetLayoutLibrary::RemoveAllWidgets(PC);
+        if(Audit||Parity){PC->SetInputMode(FInputModeUIOnly());PC->bShowMouseCursor=true;}
+        else{PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;}
+        PC->SetControlRotation(FRotator::ZeroRotator);
+        if(Audit&&FParse::Param(FCommandLine::Get(),TEXT("RenderOffscreen")))
+        {
+            const auto Window=GEngine->GameViewport->GetWindow();
+            const bool NativeWindow=Window.IsValid()&&Window->GetNativeWindow().IsValid()&&Window->GetNativeWindow()->GetOSWindowHandle()!=nullptr;
+            checkf(!NativeWindow,TEXT("Background audit unexpectedly created an OS window"));
+            UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_BACKGROUND native_window=%d scripted_input=1"),NativeWindow?1:0);
+        }
         FAssetCompilingManager::Get().FinishAllCompilation();P->Ready=true;Start=W->GetTimeSeconds();Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveCarry/%s-%d"),Parity?TEXT("parity"):TEXT("audit"),FPS);IFileManager::Get().MakeDirectory(*Folder,true);
         PoseRows=TEXT("frame,time,bone,x,y,z,qx,qy,qz,qw,sx,sy,sz\n");StateRows=TEXT("frame,time,dt,input,speed,actor_x,actor_y,actor_z,body_x,body_y,body_z,source_speed,failures,reach_margin,left_lock_curve,right_lock_curve,sole_correction,left_lock,right_lock\n");
         if(Directional){Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveDirectional/audit-%d"),FPS);IFileManager::Get().MakeDirectory(*Folder,true);SourceRows=PoseRows;StateRows.RemoveAt(StateRows.Len()-1);StateRows+=TEXT(",case,request_x,request_y,jog,view_yaw,actor_yaw,source_yaw,velocity_x,velocity_y,source_gait,pose_gait,turn_yaw_speed,jog_weight,pelvis_reach_offset,trajectory_reach_offset\n");}
@@ -200,7 +219,8 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
     if(Audit)
     {
         static const double Times[]={.6,1.1,1.6,2.0,3.25,3.8,4.33,4.65,5.3,6.0,7.25,7.8,8.8,10.3};
-        const bool Capture=AimStudy?(Shot<(Retarget.RefinePresentation?38:28)&&T>=1.+(Shot/2)*4.+(Shot%2?3.4:1.8)):Directional?(Shot<24&&T>=(Shot<19?1.+Shot*2.4+1.35:Shot<23?46.6+(Shot-19)*4.8+3.8:67.15)):(Shot<UE_ARRAY_COUNT(Times)&&T>=Times[Shot]);
+        const bool ReviewViews=FParse::Param(FCommandLine::Get(),TEXT("StudyReviewViews"));
+        const bool Capture=ReviewViews?(Shot<4&&T>=2.+Shot*.2):AimStudy?(Shot<(Retarget.RefinePresentation?38:28)&&T>=1.+(Shot/2)*4.+(Shot%2?3.4:1.8)):Directional?(Shot<24&&T>=(Shot<19?1.+Shot*2.4+1.35:Shot<23?46.6+(Shot-19)*4.8+3.8:67.15)):(Shot<UE_ARRAY_COUNT(Times)&&T>=Times[Shot]);
         if(Capture){P->OrbitYaw=(Shot%4)*90+P->GetActorRotation().Yaw;P->UpdateCamera();FScreenshotRequest::RequestScreenshot(Folder/FString::Printf(TEXT("shot-%02d.png"),Shot++),true,false);}
         double Duration=Retarget.RefinePresentation?77.:AimStudy?57.:Directional?69.2:11.;FParse::Value(FCommandLine::Get(),TEXT("StudyDuration="),Duration);
         if(T>=Duration){Finished=true;FFileHelper::SaveStringToFile(PoseRows,*(Folder/TEXT("poses.csv")));FFileHelper::SaveStringToFile(StateRows,*(Folder/TEXT("states.csv")));if(Directional)FFileHelper::SaveStringToFile(SourceRows,*(Folder/TEXT("source-poses.csv")));if(AimStudy)FFileHelper::SaveStringToFile(RawRows,*(Folder/TEXT("raw-poses.csv")));UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_AUDIT_COMPLETE frames=%d failures=%d"),Frame,Failures);FPlatformMisc::RequestExit(false);}

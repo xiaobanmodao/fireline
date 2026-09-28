@@ -19,6 +19,7 @@ public class FirelineLiveStudy : ModuleRules {
  public FirelineLiveStudy(ReadOnlyTargetRules Target) : base(Target) {
  PCHUsage=PCHUsageMode.UseExplicitOrSharedPCHs;
  PublicDependencyModuleNames.AddRange(new string[]{"Core","CoreUObject","Engine","Fireline","ALS","GameplayTags","InputCore","UMG","EnhancedInput","Json","AnimGraphRuntime"});
+ PrivateDependencyModuleNames.AddRange(new string[]{"Slate","SlateCore"});
  }
 }
 ''')

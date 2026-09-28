@@ -1,0 +1,70 @@
+{
+  "parameters": [
+    -0.44664513669019595,
+    -0.35616619264730537,
+    0.08726646259969403,
+    11.999999999999998,
+    3.895823437271664,
+    17.541559691277694,
+    0.20943951023931953,
+    0.43633231299858233
+  ],
+  "head_xyz_degrees": [
+    -25.590881272391982,
+    -20.40681964393401,
+    4.999999999998714
+  ],
+  "mount_delta_chest_cm": [
+    11.999999999999998,
+    3.895823437271664,
+    17.541559691277694
+  ],
+  "chest_pitch_degrees": 12.0,
+  "left_clavicle_toward_hand_degrees": 24.999999999999996,
+  "eye_bind_cm": [
+    -3.2,
+    16.0,
+    190.0
+  ],
+  "eye_head_local_cm": [
+    -3.2000038147108967,
+    -12.782385341412013,
+    15.999999274019354
+  ],
+  "frames": 2451,
+  "metrics": {
+    "neck_line_radius_squared": [
+      8.904416335053781,
+      66.70599797327858
+    ],
+    "eye_along_sight_cm": [
+      -7.559459848339976,
+      -4.511329258824092
+    ],
+    "neck_correction_degrees": [
+      0.17993956257406243,
+      17.411377942280403
+    ],
+    "head_correction_degrees": [
+      21.020589076455984,
+      32.256534372486925
+    ],
+    "arm_reach_margin_cm": [
+      0.7423164680848089,
+      27.269043171866645
+    ]
+  },
+  "converged": true,
+  "scope": "offline geometry candidate; not native playback or art acceptance",
+  "head_euler_xyz_radians": [
+    -0.44664513669019595,
+    -0.35616619264730537,
+    0.08726646259969403
+  ],
+  "neck_correction_limit_degrees": 25,
+  "eye_definition": "Design proxy inside the helmet visor; Ryan has no eye bones. Must validate actual helmet/rifle surfaces, not only this point.",
+  "target_sha256": "59499615dad711af6ae0f1decdd4e581723b43f85238886b8b31fabcbf8987cd",
+  "status": "REJECTED: native chest/helmet envelope intersections and excessive right wrist bend",
+  "runtime_enabled": false,
+  "launcher_installed": false
+}
