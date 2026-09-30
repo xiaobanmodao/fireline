@@ -50,6 +50,7 @@ void FLiveCarryStudy::ReadRifleStates()
 void FLiveCarryStudy::AimInput(UWorld* W,float Dt,double Time)
 {
     auto* P=Pawn.Get();auto* PC=W->GetFirstPlayerController();FVector Local=FVector::ZeroVector;
+    if(P->StaticContactStudy){P->AimRequested=true;P->JogRequested=false;P->AimPitch=0;P->MoveRequested=FVector::ZeroVector;P->ForwardRequested=false;return;}
     if(Audit||P->Demo)
     {
         const int LastCase=P->PresentationStudy?18:13;

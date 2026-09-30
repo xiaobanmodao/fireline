@@ -31,6 +31,7 @@ public:
     UPROPERTY() TObjectPtr<class UStaticMeshComponent> StudyOptic;
     bool CoyoteStudy=false,ShowCoyote=true,ContactGuides=false,CloseContactView=true;
     bool HeadContourStudy=false,ShowHeadContour=true;
+    bool StaticContactStudy=false;
     UPROPERTY() TObjectPtr<class USkeletalMesh> OriginalBody;
     UPROPERTY() TObjectPtr<class USkeletalMesh> ContourBody;
     FVector ContourEyeBind;
@@ -95,6 +96,7 @@ class FLiveCarryStudy
     FLiveCarryRetarget Retarget;
     TArray<FName> SourceNames;
     TArray<FTransform> LastLocal,LastComponent;
+    TArray<FTransform> StaticContact;
     double Start=-1,WarmStart=-1;
     FVector PawnOrigin,SourceOrigin;
     int32 Frame=0,Failures=0,Shot=0,FPS=60;

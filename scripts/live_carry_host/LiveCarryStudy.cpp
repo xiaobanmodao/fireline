@@ -29,6 +29,8 @@
 #include "AssetCompilingManager.h"
 #include "ShaderCompiler.h"
 #include "Serialization/MemoryReader.h"
+#include "Serialization/JsonReader.h"
+#include "Serialization/JsonSerializer.h"
 #include "UObject/UnrealType.h"
 #include "EngineUtils.h"
 
@@ -65,7 +67,8 @@ void ALiveCarryPawn::BeginPlay()
 {
     ACharacter::BeginPlay();
     for(auto* C:{GetMesh(),Arms.Get(),ViewGun.Get(),BodyGun.Get(),ViewKnife.Get(),BodyKnife.Get()}){C->SetVisibility(false,true);C->SetComponentTickEnabled(false);}
-    StudyBody->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/BodyProportionStudy/SK_RyanProportion.SK_RyanProportion")));
+    StaticContactStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveStaticContactStudy"));
+    StudyBody->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,StaticContactStudy?TEXT("/Game/ChestPanelStudy/SK_RyanChestPanels.SK_RyanChestPanels"):TEXT("/Game/BodyProportionStudy/SK_RyanProportion.SK_RyanProportion")));
     StudyGun->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/Fireline/Hands/SK_M4Action.SK_M4Action")));
     StudyBody->SetVisibility(false);StudyGun->SetVisibility(false);
     HeadContourStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryHeadContourStudy"));
@@ -92,7 +95,7 @@ void ALiveCarryPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::Z,IE_Pressed,this,&ALiveCarryPawn::ToggleContactCloseup);
     Input->BindKey(EKeys::A,IE_Pressed,this,&ALiveCarryPawn::LeftDown);Input->BindKey(EKeys::D,IE_Pressed,this,&ALiveCarryPawn::RightDown);Input->BindKey(EKeys::S,IE_Pressed,this,&ALiveCarryPawn::BackDown);
 }
-void ALiveCarryPawn::ForwardDown(){if(!Ready||Audit)return;if(Directional){RequestTap(FVector::ForwardVector);return;}ForwardRequested=true;AddMovementInput(FVector::ForwardVector,1);}
+void ALiveCarryPawn::ForwardDown(){if(!Ready||Audit||StaticContactStudy)return;if(Directional){RequestTap(FVector::ForwardVector);return;}ForwardRequested=true;AddMovementInput(FVector::ForwardVector,1);}
 void ALiveCarryPawn::ForwardUp(){if(!Audit)ForwardRequested=false;}
 void ALiveCarryPawn::OrbitX(float Value){if(Ready&&!Audit)OrbitYaw=FMath::UnwindDegrees(OrbitYaw-Value*.20f);}
 void ALiveCarryPawn::OrbitY(float Value){if(Ready&&!Audit)OrbitPitch=FMath::Clamp(OrbitPitch+Value*.15f,-15.f,45.f);}
@@ -108,6 +111,12 @@ void ALiveCarryHUD::DrawHUD()
 {
     Super::DrawHUD();auto* P=Cast<ALiveCarryPawn>(GetOwningPawn());if(!Canvas||!P)return;
     DrawRect(FLinearColor(.015,.025,.04,.88),0,0,Canvas->ClipX,90);
+    if(P->StaticContactStudy)
+    {
+        DrawText(TEXT("FIRELINE / AUTHOR RYAN STATIC CONTACT CANDIDATE"),FLinearColor::White,22,12,nullptr,1.25f);
+        DrawText(TEXT("Mouse orbit | 1-4 views | Z close-up | O optic | 7 guides"),FLinearColor(.65,.85,1),22,43);
+        DrawText(TEXT("Static aiming only | original helmet | eye line / moving hold unfinished"),FLinearColor::White,22,69);return;
+    }
     DrawText(P->HeadContourStudy&&!P->ShowSource?TEXT("FIRELINE / HELMET CONTOUR COMPARISON"):P->CoyoteStudy&&!P->ShowSource?TEXT("FIRELINE / M4 COYOTE CONTACT REVIEW"):P->ShowSource?(P->PresentationStudy?TEXT("ALS POSE REFERENCE / ADAPTED AIM TRANSITIONS"):TEXT("REFERENCE / ORIGINAL ALS RIFLE GRAPH")):P->PresentationStudy?TEXT("FIRELINE / M4 MOVEMENT & AIM REFINEMENT"):P->AimStudy?TEXT("FIRELINE / M4 READY-AIM STUDY"):P->Directional?TEXT("FIRELINE / M4 DIRECTIONAL MOVEMENT STUDY"):TEXT("FIRELINE / LIVE M4 START-STOP STUDY"),FLinearColor::White,22,12,nullptr,1.25f);
     DrawText(P->CoyoteStudy?TEXT("RMB/F aim | WASD/Shift | arrows pitch | 1-4 views | 5 source | 6 demo | O optic | 7 guides | Z close-up"):P->AimStudy?TEXT("RMB/F aim | arrows pitch | WASD/Shift move | Q/E facing | 1-4 views | 5 source | 6 demo | R reset"):P->Directional?TEXT("WASD move | Shift jog | Q/E turn facing | mouse orbit | 1-4 views | R reset"):TEXT("W hold: walk | release: stop | mouse: orbit | 1/2/3/4: views | R: reset position"),FLinearColor(.65,.85,1),22,43);
     if(P->HeadContourStudy)
@@ -151,6 +160,22 @@ void FLiveCarryStudy::Before(UWorld* W,float Dt)
         const auto& Ref=S->GetMesh()->GetSkeletalMeshAsset()->GetRefSkeleton();for(int I=0;I<Ref.GetNum();++I)SourceNames.Add(Ref.GetBoneName(I));
         Pawn=W->SpawnActor<ALiveCarryPawn>(Spawn,FRotator::ZeroRotator);if(!Pawn.IsValid()){Finished=true;return;}
         auto* P=Pawn.Get();P->Audit=Audit||Parity;P->Directional=Directional;P->AimStudy=AimStudy;P->PresentationStudy=Retarget.RefinePresentation;P->ShowSource=AimStudy&&FParse::Param(FCommandLine::Get(),TEXT("LiveAimSourceView"));P->LegScale=Retarget.LegScale;P->GetCharacterMovement()->MaxWalkSpeed=175*Retarget.LegScale;PawnOrigin=P->GetActorLocation();
+        if(P->StaticContactStudy)
+        {
+            FString Text;TSharedPtr<FJsonObject> Json;
+            bool Loaded=FFileHelper::LoadFileToString(Text,*(FPaths::ProjectSavedDir()/TEXT("LiveCarry/static-contact.json")))&&FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Json)&&Json.IsValid();
+            if(Loaded)for(const FName& Name:Retarget.Names)
+            {
+                const TSharedPtr<FJsonObject>* T=nullptr;
+                if(!Json->TryGetObjectField(Name.ToString(),T)){Loaded=false;break;}
+                const auto& V=(*T)->GetArrayField(TEXT("p"));const auto& Q=(*T)->GetArrayField(TEXT("q"));const auto& Scale=(*T)->GetArrayField(TEXT("s"));
+                if(V.Num()!=3||Q.Num()!=4||Scale.Num()!=3){Loaded=false;break;}
+                FTransform Pose(FQuat(Q[0]->AsNumber(),Q[1]->AsNumber(),Q[2]->AsNumber(),Q[3]->AsNumber()).GetNormalized(),FVector(V[0]->AsNumber(),V[1]->AsNumber(),V[2]->AsNumber()),FVector(Scale[0]->AsNumber(),Scale[1]->AsNumber(),Scale[2]->AsNumber()));
+                if(Pose.ContainsNaN()){Loaded=false;break;}StaticContact.Add(Pose);
+            }
+            if(!Loaded||StaticContact.Num()!=131){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED static contact"));Finished=true;FPlatformMisc::RequestExit(false);return;}
+            UE_LOG(LogTemp,Display,TEXT("LIVE_STATIC_CONTACT_READY bones=131 original_helmet=1 moving_enabled=0"));
+        }
         PC->UnPossess();PC->Possess(P);if(auto* Sub=ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))Sub->ClearAllMappings();
         PC->SetViewTarget(P->StudyCamera);PC->ClientSetHUD(ALiveCarryHUD::StaticClass());UWidgetLayoutLibrary::RemoveAllWidgets(PC);
         if(Audit||Parity){PC->SetInputMode(FInputModeUIOnly());PC->bShowMouseCursor=true;}
@@ -232,6 +257,17 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
     bool Valid=Retarget.Evaluate(Input,SourceNames,Local,CS,!Parity);
     if(AimStudy&&Audit)for(int I=0;I<Retarget.RawMapped.Num();++I)RawRows+=FString::Printf(TEXT("%d,%.8f,%s,"),Frame,T,*Retarget.Names[I].ToString())+TransformRow(Retarget.RawMapped[I]);
     if(Valid&&!Parity)Valid=Retarget.PlaceSoles(SM->GetAnimInstance()->GetCurveValue(TEXT("FootLeftLock")),SM->GetAnimInstance()->GetCurveValue(TEXT("FootRightLock")),Local,CS);
+    if(P->StaticContactStudy)
+    {
+        CS=StaticContact;
+        const auto& Ref=CastChecked<USkeletalMesh>(P->StudyBody->GetSkinnedAsset())->GetRefSkeleton();
+        for(int I=0;I<Retarget.Names.Num();++I)
+        {
+            const int B=Ref.FindBoneIndex(Retarget.Names[I]),Parent=B>=0?Ref.GetParentIndex(B):INDEX_NONE;
+            Local[I]=Parent>=0?CS[I].GetRelativeTransform(CS[Retarget.Names.Find(Ref.GetBoneName(Parent))]):CS[I];
+        }
+        Valid=true;
+    }
     if(Valid){LastLocal=MoveTemp(Local);LastComponent=MoveTemp(CS);}else{++Failures;UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_POSE_INVALID frame=%d time=%.4f"),Frame,T);}
     if(LastLocal.Num())
     {

@@ -1,0 +1,439 @@
+{
+  "native_import_and_static_surface": {
+    "native_render_vertices": 9936,
+    "triangles": 9360,
+    "native_bind_bones": 131,
+    "geometry_unchanged": true,
+    "bind_unchanged": true,
+    "changed_native_vertices": 230,
+    "changed_authored_vertices": 34,
+    "hand_weights_unchanged": true,
+    "head_gun_pairs": 0,
+    "chest_gun_pairs": 0,
+    "arm_torso_pairs": 0,
+    "arm_torso_faces": [],
+    "head_body_pairs": 0,
+    "upperarm_gun_pairs": 0,
+    "rear_pad_faces": 135,
+    "rear_pad_shoulder_distance_cm": 0.12153226536541062,
+    "distance_method": "All vertex-face and interior edge-edge candidates plus triangle crossings",
+    "rear_pad_inside_body_votes": [
+      0,
+      0,
+      0
+    ],
+    "native_component_pose_export_parity": true,
+    "runtime_default_enabled": false,
+    "visual_acceptance": false,
+    "moving_hold_passed": false,
+    "eye_registration_finished": false
+  },
+  "bounded_static_pose": {
+    "wrist_deg": [
+      11.204586201083464,
+      38.05139418871905
+    ],
+    "reach_cm": [
+      7.6138462913983815,
+      16.55649720856556
+    ],
+    "elbow_arc_from_source_deg": [
+      -6.461749267578125,
+      25.734515380859374
+    ],
+    "clavicle_reach_correction_deg": [
+      0.0,
+      0.0
+    ],
+    "head_gun_pairs": 0,
+    "chest_gun_pairs": 0,
+    "arm_torso_pairs": 0,
+    "arm_torso_faces": [],
+    "head_body_pairs": 0,
+    "outward_arc_correction_deg": {
+      "L": -6.461749267578125,
+      "R": 25.734515380859374
+    },
+    "before": {
+      "head_gun_pairs": 0,
+      "chest_gun_pairs": 0,
+      "arm_torso_pairs": 6,
+      "arm_torso_faces": [
+        [
+          1247,
+          1166
+        ],
+        [
+          1248,
+          1166
+        ],
+        [
+          1248,
+          1182
+        ],
+        [
+          1248,
+          1183
+        ],
+        [
+          1249,
+          1154
+        ],
+        [
+          1249,
+          1182
+        ]
+      ],
+      "head_body_pairs": 0
+    },
+    "chest_panel_authored_vertices_changed": 34,
+    "mesh_bind_unchanged": true,
+    "source_action": "AimRifle",
+    "head_source": false,
+    "head_orientation_source": false,
+    "seat_stock": true,
+    "delta_cm": [
+      2.4009935976477525e-16,
+      -3.112691852648484,
+      -0.0
+    ],
+    "runtime_enabled": false,
+    "visual_acceptance": false
+  },
+  "failed_authored_hold": {
+    "wrist_deg": [
+      10.549889049219551,
+      36.12207588504169
+    ],
+    "reach_cm": [
+      0.9999999999999929,
+      16.21164021202175
+    ],
+    "elbow_arc_from_source_deg": [
+      0.0,
+      0.0
+    ],
+    "clavicle_reach_correction_deg": [
+      9.932072118889343,
+      0.0
+    ],
+    "head_gun_pairs": 0,
+    "chest_gun_pairs": 0,
+    "arm_torso_pairs": 20,
+    "arm_torso_faces": [
+      [
+        738,
+        656
+      ],
+      [
+        738,
+        672
+      ],
+      [
+        738,
+        673
+      ],
+      [
+        739,
+        656
+      ],
+      [
+        741,
+        645
+      ],
+      [
+        741,
+        672
+      ],
+      [
+        757,
+        645
+      ],
+      [
+        1238,
+        1174
+      ],
+      [
+        1239,
+        1174
+      ],
+      [
+        1246,
+        1182
+      ],
+      [
+        1246,
+        1183
+      ],
+      [
+        1247,
+        1182
+      ],
+      [
+        1248,
+        1154
+      ],
+      [
+        1248,
+        1182
+      ],
+      [
+        1249,
+        1154
+      ],
+      [
+        1249,
+        1155
+      ],
+      [
+        1249,
+        1174
+      ],
+      [
+        1249,
+        1175
+      ],
+      [
+        1253,
+        1182
+      ],
+      [
+        1253,
+        1183
+      ]
+    ],
+    "head_body_pairs": 0,
+    "outward_arc_correction_deg": {
+      "L": 0.0,
+      "R": 0.0
+    },
+    "before": {
+      "head_gun_pairs": 0,
+      "chest_gun_pairs": 0,
+      "arm_torso_pairs": 20,
+      "arm_torso_faces": [
+        [
+          738,
+          656
+        ],
+        [
+          738,
+          672
+        ],
+        [
+          738,
+          673
+        ],
+        [
+          739,
+          656
+        ],
+        [
+          741,
+          645
+        ],
+        [
+          741,
+          672
+        ],
+        [
+          757,
+          645
+        ],
+        [
+          1238,
+          1174
+        ],
+        [
+          1239,
+          1174
+        ],
+        [
+          1246,
+          1182
+        ],
+        [
+          1246,
+          1183
+        ],
+        [
+          1247,
+          1182
+        ],
+        [
+          1248,
+          1154
+        ],
+        [
+          1248,
+          1182
+        ],
+        [
+          1249,
+          1154
+        ],
+        [
+          1249,
+          1155
+        ],
+        [
+          1249,
+          1174
+        ],
+        [
+          1249,
+          1175
+        ],
+        [
+          1253,
+          1182
+        ],
+        [
+          1253,
+          1183
+        ]
+      ],
+      "head_body_pairs": 0
+    },
+    "chest_panel_authored_vertices_changed": 34,
+    "mesh_bind_unchanged": true,
+    "source_action": "HoldRifle-loop",
+    "head_source": false,
+    "delta_cm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "runtime_enabled": false,
+    "visual_acceptance": false
+  },
+  "failed_als_head_orientation": {
+    "wrist_deg": [
+      10.790509799951206,
+      33.62351936338416
+    ],
+    "reach_cm": [
+      4.837731156256275,
+      13.46616172549578
+    ],
+    "elbow_arc_from_source_deg": [
+      0.0,
+      26.07921142578125
+    ],
+    "clavicle_reach_correction_deg": [
+      0.0,
+      0.0
+    ],
+    "head_gun_pairs": 285,
+    "chest_gun_pairs": 0,
+    "arm_torso_pairs": 0,
+    "arm_torso_faces": [],
+    "head_body_pairs": 0,
+    "outward_arc_correction_deg": {
+      "L": 0.0,
+      "R": 26.07921142578125
+    },
+    "before": {
+      "head_gun_pairs": 0,
+      "chest_gun_pairs": 0,
+      "arm_torso_pairs": 6,
+      "arm_torso_faces": [
+        [
+          1247,
+          1166
+        ],
+        [
+          1248,
+          1166
+        ],
+        [
+          1248,
+          1182
+        ],
+        [
+          1248,
+          1183
+        ],
+        [
+          1249,
+          1154
+        ],
+        [
+          1249,
+          1182
+        ]
+      ],
+      "head_body_pairs": 0
+    },
+    "chest_panel_authored_vertices_changed": 34,
+    "mesh_bind_unchanged": true,
+    "source_action": "AimRifle",
+    "head_source": false,
+    "delta_cm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "runtime_enabled": false,
+    "visual_acceptance": false
+  },
+  "background_capture": {
+    "entry": "Ryan authored static contact candidate; moving hold / eye registration unfinished",
+    "directory": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/native-stock-seat-20261001-30",
+    "log": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/BackgroundReview/native-stock-seat-20261001.log",
+    "native_window": false,
+    "physical_input_used": false,
+    "static_contact": true,
+    "head_swap": false,
+    "head_contour": false,
+    "original_head": false,
+    "renderer": "Metal",
+    "fps": 30,
+    "full_sequence": false,
+    "screenshots": 4,
+    "wall_seconds": 14.81,
+    "visual_acceptance": false,
+    "scope": "background capture check; screenshots still need visual review"
+  },
+  "existing_entry_regression": {
+    "entry": "Head contour geometry comparison; original pose / unfinished contact",
+    "directory": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/LiveAim/static-contact-regression-20261001-30",
+    "log": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/Saved/BackgroundReview/static-contact-regression-20261001.log",
+    "native_window": false,
+    "physical_input_used": false,
+    "static_contact": false,
+    "head_swap": false,
+    "head_contour": true,
+    "original_head": false,
+    "renderer": "Metal",
+    "fps": 30,
+    "full_sequence": false,
+    "screenshots": 4,
+    "wall_seconds": 15.04,
+    "visual_acceptance": false,
+    "scope": "background capture check; screenshots still need visual review"
+  },
+  "source": {
+    "source_file": "/Users/hht/Documents/ChatGPT/火力对决/assets/source/ryan-character/original/Character.blend",
+    "source_sha256": "0880d74bae612b0196692ab5059ae48d9682064e39097692629e3c76bfac9268",
+    "author": "Ryan / rcorre",
+    "url": "https://rcorre.itch.io/scifi-fps-character",
+    "actions": {
+      "HoldRifle-loop": 31,
+      "AimRifle": 1,
+      "CombatIdle-loop": 31
+    },
+    "bones": 37
+  },
+  "date": "2026-10-01",
+  "assets_checked": 1252,
+  "original_assets_changed": 0,
+  "visual_acceptance": false,
+  "read_only_default_baseline": true,
+  "scope": "Isolated STATIC contact candidate only; original author head tilt retained; actual eye/cheek alignment and moving hold NOT finished",
+  "local_recipe_hashes": {
+    "NativeStockSeatStudy/AimRifle-pose.json": "6b49cc439e0801f46c5f21ee99e6d4827f6562e7d69a401493c5016df9b16f2f",
+    "ChestPanelStudy/weights.json": "e7ab76b1912d701f635e35f3426784dce698aeb073b3b1cd4bd8c3e07af34242",
+    "ReferenceProject/Saved/ChestPanelStudy/candidate.fbx": "bad9f7986d3039de13af6420fc262d4f8cc2a5aa04c7484dcba69c785f5e2fcf"
+  }
+}
