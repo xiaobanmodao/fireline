@@ -49,6 +49,7 @@ void ULiveCarryMesh::ApplyFrame(const TArray<FTransform>& Local,const TArray<FNa
 {
     const auto* Asset=Cast<USkeletalMesh>(GetSkinnedAsset());if(!Asset)return;const auto& Ref=Asset->GetRefSkeleton();
     for(int I=0;I<BoneSpaceTransforms.Num();++I){const int J=Names.Find(Ref.GetBoneName(I));if(J>=0)BoneSpaceTransforms[I]=Local[J];}
+    LastFrameLocal=Local;LastFrameNames=Names;
     MarkRefreshTransformDirty();RefreshBoneTransforms();
 }
 ALiveCarryPawn::ALiveCarryPawn()
@@ -67,6 +68,8 @@ void ALiveCarryPawn::BeginPlay()
     StudyBody->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/BodyProportionStudy/SK_RyanProportion.SK_RyanProportion")));
     StudyGun->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/Fireline/Hands/SK_M4Action.SK_M4Action")));
     StudyBody->SetVisibility(false);StudyGun->SetVisibility(false);
+    HeadContourStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryHeadContourStudy"));
+    if(HeadContourStudy&&!InitializeHeadContour()){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED head contour asset/bind"));FPlatformMisc::RequestExit(false);return;}
     CoyoteStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryCoyoteStudy"));
     ContactGuides=FParse::Param(FCommandLine::Get(),TEXT("StudyOpticDiagnostics"));
     if(CoyoteStudy&&!InitializeStudyOptic()){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED Coyote asset/socket registration"));FPlatformMisc::RequestExit(false);return;}
@@ -83,6 +86,7 @@ void ALiveCarryPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::Five,IE_Pressed,this,&ALiveCarryPawn::ToggleSource);
     Input->BindKey(EKeys::F,IE_Pressed,this,&ALiveCarryPawn::ToggleAim);
     Input->BindKey(EKeys::Six,IE_Pressed,this,&ALiveCarryPawn::ToggleDemo);
+    Input->BindKey(EKeys::H,IE_Pressed,this,&ALiveCarryPawn::ToggleHeadContour);
     Input->BindKey(EKeys::O,IE_Pressed,this,&ALiveCarryPawn::ToggleStudyOptic);
     Input->BindKey(EKeys::Seven,IE_Pressed,this,&ALiveCarryPawn::ToggleContactGuides);
     Input->BindKey(EKeys::Z,IE_Pressed,this,&ALiveCarryPawn::ToggleContactCloseup);
@@ -104,8 +108,14 @@ void ALiveCarryHUD::DrawHUD()
 {
     Super::DrawHUD();auto* P=Cast<ALiveCarryPawn>(GetOwningPawn());if(!Canvas||!P)return;
     DrawRect(FLinearColor(.015,.025,.04,.88),0,0,Canvas->ClipX,90);
-    DrawText(P->CoyoteStudy&&!P->ShowSource?TEXT("FIRELINE / M4 COYOTE CONTACT REVIEW"):P->ShowSource?(P->PresentationStudy?TEXT("ALS POSE REFERENCE / ADAPTED AIM TRANSITIONS"):TEXT("REFERENCE / ORIGINAL ALS RIFLE GRAPH")):P->PresentationStudy?TEXT("FIRELINE / M4 MOVEMENT & AIM REFINEMENT"):P->AimStudy?TEXT("FIRELINE / M4 READY-AIM STUDY"):P->Directional?TEXT("FIRELINE / M4 DIRECTIONAL MOVEMENT STUDY"):TEXT("FIRELINE / LIVE M4 START-STOP STUDY"),FLinearColor::White,22,12,nullptr,1.25f);
+    DrawText(P->HeadContourStudy&&!P->ShowSource?TEXT("FIRELINE / HELMET CONTOUR COMPARISON"):P->CoyoteStudy&&!P->ShowSource?TEXT("FIRELINE / M4 COYOTE CONTACT REVIEW"):P->ShowSource?(P->PresentationStudy?TEXT("ALS POSE REFERENCE / ADAPTED AIM TRANSITIONS"):TEXT("REFERENCE / ORIGINAL ALS RIFLE GRAPH")):P->PresentationStudy?TEXT("FIRELINE / M4 MOVEMENT & AIM REFINEMENT"):P->AimStudy?TEXT("FIRELINE / M4 READY-AIM STUDY"):P->Directional?TEXT("FIRELINE / M4 DIRECTIONAL MOVEMENT STUDY"):TEXT("FIRELINE / LIVE M4 START-STOP STUDY"),FLinearColor::White,22,12,nullptr,1.25f);
     DrawText(P->CoyoteStudy?TEXT("RMB/F aim | WASD/Shift | arrows pitch | 1-4 views | 5 source | 6 demo | O optic | 7 guides | Z close-up"):P->AimStudy?TEXT("RMB/F aim | arrows pitch | WASD/Shift move | Q/E facing | 1-4 views | 5 source | 6 demo | R reset"):P->Directional?TEXT("WASD move | Shift jog | Q/E turn facing | mouse orbit | 1-4 views | R reset"):TEXT("W hold: walk | release: stop | mouse: orbit | 1/2/3/4: views | R: reset position"),FLinearColor(.65,.85,1),22,43);
+    if(P->HeadContourStudy)
+    {
+        if(P->ShowSource)DrawText(TEXT("Original ALS character / Rifle graph reference"),FLinearColor::White,22,69);
+        else DrawText(FString::Printf(TEXT("H: %s | geometry comparison only | stock / shoulder contact unfinished"),P->ShowHeadContour?TEXT("REFERENCE CONTOUR"):TEXT("PREVIOUS HELMET")),FLinearColor::White,22,69);
+        return;
+    }
     if(P->CoyoteStudy){DrawText(FString::Printf(TEXT("%s | %s | eye alignment unfinished"),*P->RifleState,P->ShowCoyote?TEXT("COYOTE"):TEXT("IRON")),FLinearColor::White,22,69);return;}
     DrawText(FString::Printf(TEXT("%.0f cm/s | %s | %s"),P->GetVelocity().Size2D(),P->JogRequested?TEXT("JOG"):TEXT("WALK"),P->AimStudy?*FString::Printf(TEXT("%s | pitch %.0f | third-person pose study"),*P->RifleState,P->AimPitch):P->Directional?TEXT("M4 flat ground; aim/fire/actions not enabled"):TEXT("forward M4 only; other actions are not enabled")),FLinearColor::White,22,69);
 }
@@ -213,6 +223,11 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
         const FTransform BodyWorld(FRotator(0,P->GetActorRotation().Yaw-90,0),P->GetActorLocation());
         Retarget.ResetContacts=Frame==0||FVector::Dist(BodyWorld.GetTranslation(),Retarget.BodyWorld.GetTranslation())>50;
         Retarget.BodyWorld=BodyWorld;
+    }
+    if(P->HeadContourStudy&&FParse::Param(FCommandLine::Get(),TEXT("StudyHeadSwapAudit")))
+    {
+        const bool Next=FMath::FloorToInt(T/.5)%2==0;
+        if(Next!=P->ShowHeadContour){P->ShowHeadContour=Next;P->SelectHeadContour();}
     }
     bool Valid=Retarget.Evaluate(Input,SourceNames,Local,CS,!Parity);
     if(AimStudy&&Audit)for(int I=0;I<Retarget.RawMapped.Num();++I)RawRows+=FString::Printf(TEXT("%d,%.8f,%s,"),Frame,T,*Retarget.Names[I].ToString())+TransformRow(Retarget.RawMapped[I]);

@@ -32,7 +32,7 @@ bool ALiveCarryPawn::InitializeStudyOptic()
     const auto& BodyRef=CastChecked<USkeletalMesh>(StudyBody->GetSkinnedAsset())->GetRefSkeleton();TArray<FTransform> BodyB;
     for(int I=0;I<BodyRef.GetNum();++I){const int Parent=BodyRef.GetParentIndex(I);BodyB.Add(Parent<0?BodyRef.GetRefBonePose()[I]:BodyRef.GetRefBonePose()[I]*BodyB[Parent]);}
     const int Head=BodyRef.FindBoneIndex(TEXT("Head"));if(Head<0)return false;
-    EyeHeadLocal=BodyB[Head].InverseTransformPosition(FVector(-3.2,16,190));
+    EyeHeadLocal=BodyB[Head].InverseTransformPosition(HeadContourStudy&&ShowHeadContour?ContourEyeBind:FVector(-3.2,16,190));
     FString Text;TSharedPtr<FJsonObject> Calibration;
     if(!FFileHelper::LoadFileToString(Text,*(FPaths::ProjectSavedDir()/TEXT("LiveCarry/calibration.json")))||!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Calibration))return false;
     const FTransform Hold=ReadHold(Calibration->GetObjectField(TEXT("target"))->GetObjectField(TEXT("hold"))->GetObjectField(TEXT("M4_body")));
@@ -82,4 +82,41 @@ void ALiveCarryPawn::ExportStudyOptic(const FString& Folder)
     for(uint32 I=0;I<LOD.VertexBuffers.PositionVertexBuffer.GetNumVertices();++I){const FVector3f V=LOD.VertexBuffers.PositionVertexBuffer.VertexPosition(I);Vertices+=FString::Printf(TEXT("%u,%.9f,%.9f,%.9f\n"),I,double(V.X),double(V.Y),double(V.Z));}
     for(int I=0;I<LOD.IndexBuffer.GetNumIndices();I+=3)Triangles+=FString::Printf(TEXT("%d,%u,%u,%u\n"),I/3,LOD.IndexBuffer.GetIndex(I),LOD.IndexBuffer.GetIndex(I+1),LOD.IndexBuffer.GetIndex(I+2));
     FFileHelper::SaveStringToFile(Vertices,*(Folder/TEXT("optic.vertices.csv")));FFileHelper::SaveStringToFile(Triangles,*(Folder/TEXT("optic.triangles.csv")));
+}
+
+// Geometry-only review: native bone transforms, scales and movement registration
+// remain the same. No failed offline contact pose is consumed by this host.
+bool ALiveCarryPawn::InitializeHeadContour()
+{
+    OriginalBody=Cast<USkeletalMesh>(StudyBody->GetSkinnedAsset());
+    ContourBody=LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/HeadContourStudy/SK_RyanHeadContour.SK_RyanHeadContour"));
+    if(!OriginalBody||!ContourBody)return false;
+    const auto& A=OriginalBody->GetRefSkeleton();const auto& B=ContourBody->GetRefSkeleton();
+    if(A.GetNum()!=131||A.GetNum()!=B.GetNum())return false;
+    for(int I=0;I<A.GetNum();++I)
+        if(A.GetBoneName(I)!=B.GetBoneName(I)||A.GetParentIndex(I)!=B.GetParentIndex(I)||!A.GetRefBonePose()[I].Equals(B.GetRefBonePose()[I],.000001))return false;
+    FString Text;TSharedPtr<FJsonObject> Calibration;
+    if(!FFileHelper::LoadFileToString(Text,*(FPaths::ProjectSavedDir()/TEXT("LiveCarry/head-contour.json")))||!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Calibration))return false;
+    const auto& V=Calibration->GetArrayField(TEXT("eye_proxy_bind_cm"));if(V.Num()!=3)return false;
+    ContourEyeBind=FVector(V[0]->AsNumber(),V[1]->AsNumber(),V[2]->AsNumber());
+    ShowHeadContour=!FParse::Param(FCommandLine::Get(),TEXT("StudyOriginalHead"));SelectHeadContour();
+    UE_LOG(LogTemp,Display,TEXT("LIVE_HEAD_CONTOUR_READY original_bind=1 original_weights=1 pose_unchanged=1 static_contact_unfinished=1"));return true;
+}
+void ALiveCarryPawn::SelectHeadContour()
+{
+    const auto Local=StudyBody->LastFrameLocal;const auto Names=StudyBody->LastFrameNames;
+    TArray<FTransform> Before;
+    if(!Local.IsEmpty())for(const auto& Name:Names)Before.Add(StudyBody->GetSocketTransform(Name,RTS_Component));
+    StudyBody->SetSkinnedAssetAndUpdate(ShowHeadContour?ContourBody:OriginalBody);
+    if(!Local.IsEmpty())
+    {
+        StudyBody->ApplyFrame(Local,Names);
+        for(int I=0;I<Names.Num();++I)
+            if(!Before[I].Equals(StudyBody->GetSocketTransform(Names[I],RTS_Component),.000001))UE_LOG(LogTemp,Error,TEXT("LIVE_HEAD_SWAP_INVALID bone=%s"),*Names[I].ToString());
+        if(Audit)UE_LOG(LogTemp,Display,TEXT("LIVE_HEAD_SWAP_VERIFIED bones=%d contour=%d"),Names.Num(),ShowHeadContour);
+    }
+    const auto& Ref=CastChecked<USkeletalMesh>(StudyBody->GetSkinnedAsset())->GetRefSkeleton();TArray<FTransform> Bind;
+    for(int I=0;I<Ref.GetNum();++I){const int P=Ref.GetParentIndex(I);Bind.Add(P<0?Ref.GetRefBonePose()[I]:Ref.GetRefBonePose()[I]*Bind[P]);}
+    const int Head=Ref.FindBoneIndex(TEXT("Head"));check(Head>=0);
+    EyeHeadLocal=Bind[Head].InverseTransformPosition(ShowHeadContour?ContourEyeBind:FVector(-3.2,16,190));
 }

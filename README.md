@@ -1,3 +1,5 @@
+最新轮廓对照：桌面「火力对决／**测试版·头颈轮廓对照.app**」。H新旧轮廓，F/右键瞄准，1–4四面，Z近景。局部调整头盔/下颌，保留131骨骼与原权重；完整瞄准仍有穿插，未合入默认游戏。[范围、失败与验证](unreal/Fireline/Docs/Validation/head-contour-review/README.md)。
+
 最新观察入口：桌面「火力对决／**测试版·M4红点接触观察.app**」。O切换机瞄/Coyote，Z近景/全身，F瞄准，7辅助线；只增加真实瞄具与接触观察，未修复眼线/贴腮，未更换身体姿态或默认游戏。详见[观察与失败诊断](unreal/Fireline/Docs/Validation/coyote-contact-review/README.md)。
 
 当前最新独立候选：桌面「火力对决／**测试版·M4移动瞄准修正.app**」。WASD/Shift移动，右键或F瞄准，6自动演示，1–4四面观察。范围与验证见 [移动瞄准修订](unreal/Fireline/Docs/Validation/move-aim-refinement/README.md)，未替换默认游戏。

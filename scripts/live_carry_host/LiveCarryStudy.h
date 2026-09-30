@@ -10,6 +10,8 @@ class ULiveCarryMesh : public UPoseableMeshComponent
     GENERATED_BODY()
 public:
     void ApplyFrame(const TArray<FTransform>& Local,const TArray<FName>& Names);
+    TArray<FTransform> LastFrameLocal;
+    TArray<FName> LastFrameNames;
 };
 
 // Inherits the existing Fireline capsule and CharacterMovement constructor.
@@ -28,6 +30,13 @@ public:
     UPROPERTY() TObjectPtr<ULiveCarryMesh> StudyGun;
     UPROPERTY() TObjectPtr<class UStaticMeshComponent> StudyOptic;
     bool CoyoteStudy=false,ShowCoyote=true,ContactGuides=false,CloseContactView=true;
+    bool HeadContourStudy=false,ShowHeadContour=true;
+    UPROPERTY() TObjectPtr<class USkeletalMesh> OriginalBody;
+    UPROPERTY() TObjectPtr<class USkeletalMesh> ContourBody;
+    FVector ContourEyeBind;
+    bool InitializeHeadContour();
+    void SelectHeadContour();
+    void ToggleHeadContour(){if(HeadContourStudy&&!Audit){ShowHeadContour=!ShowHeadContour;SelectHeadContour();}}
     double SightProxyErrorCm=0,OpticMountErrorCm=0;
     FTransform OpticMount;
     FVector EyeHeadLocal,StockCenterLocal,StockCornerLocal;

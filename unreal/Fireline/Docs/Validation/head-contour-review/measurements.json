@@ -1,0 +1,133 @@
+{
+  "geometry": {
+    "revision": "collar-preserved",
+    "source_eye_center_bind_cm": [
+      -3.684860059957197,
+      7.281163842217323,
+      169.80184799323052
+    ],
+    "eye_proxy_bind_cm": [
+      -4.077879796307903,
+      14.070173489933602,
+      181.9604878405022
+    ],
+    "collar_identity_band_top_cm": 175.33756494522095,
+    "head_z_map": [
+      [
+        175.33756494522095,
+        175.33756494522095
+      ],
+      [
+        190.0,
+        181.9604878405022
+      ],
+      [
+        202.32133865356445,
+        196.91365972697838
+      ]
+    ],
+    "changed_vertices": 151,
+    "vertices": 4682,
+    "triangles": 9360,
+    "max_displacement_cm": 8.537318248332163,
+    "min_triangle_area_cm2": 0.009313181164073705,
+    "native_bind_weights_topology_unchanged": true,
+    "geometry_review_only": true,
+    "static_aim_accepted": false,
+    "source_sections": "Native ALS FBX head/neck sections and eyeball material; .8cm shell allowance"
+  },
+  "native_import": {
+    "bones": 131,
+    "max_bind_scalar_error": 0.0,
+    "authored_vertices": 4682,
+    "triangles": 9360,
+    "native_render_vertices": 9977,
+    "native_vertex_parity_cm": 1.7649794541845044e-05,
+    "native_weight_mismatches": 0,
+    "static_aim_accepted": false
+  },
+  "runtime": {
+    "fps": 30,
+    "cases": 19,
+    "frames": 2311,
+    "screenshots": 38,
+    "model_swaps": 10,
+    "bone_transforms_verified_per_swap": 131,
+    "native_window": false,
+    "physical_input_used": false
+  },
+  "surface_sampling": {
+    "frames": 57,
+    "same_pose_comparison": true,
+    "counts": {
+      "old": {
+        "head_neck_gun_crossings": {
+          "sampled_frames_with_crossings": 13,
+          "maximum_triangle_pairs": 410
+        },
+        "head_neck_body_nonadjacent_crossings": {
+          "sampled_frames_with_crossings": 0,
+          "maximum_triangle_pairs": 0
+        }
+      },
+      "new": {
+        "head_neck_gun_crossings": {
+          "sampled_frames_with_crossings": 11,
+          "maximum_triangle_pairs": 335
+        },
+        "head_neck_body_nonadjacent_crossings": {
+          "sampled_frames_with_crossings": 0,
+          "maximum_triangle_pairs": 0
+        }
+      }
+    },
+    "all_frame_surface_acceptance": false
+  },
+  "separate_run_pose_differences": {
+    "position": 0.0017814999999998804,
+    "quaternion": 1.4334000000004732e-05,
+    "scale": 0.0
+  },
+  "static_diagnostic": {
+    "rear_pad_faces": 113,
+    "stock_faces": 1759,
+    "pad_shoulder_vertex_face_distance_cm": 1.7325371735601836,
+    "stock_helmet_vertex_face_distance_cm": 0.48556545463393597,
+    "rear_pad_inside_body_votes": [
+      0,
+      0,
+      0
+    ],
+    "arm_torso_nonadjacent_crossings": 15,
+    "triangle_distance_note": "Vertex-face fields are upper bounds; rear pad/shoulder was supplemented with all interior edge-edge candidates. Stock/helmet field remains a vertex-face bound.",
+    "static_contact_accepted": false,
+    "pad_shoulder_triangle_distance_cm": 0.48038876550313037,
+    "pad_triangle_distance_method": "All vertex-face and interior edge-edge candidates on selected disjoint triangle sets",
+    "arm_torso_witnesses": {
+      "left_upperarm_chest_shoulder_pairs": 9,
+      "right_upperarm_chest_shoulder_pairs": 6,
+      "strict_noncoplanar_pairs": 15,
+      "same_pose_on_final_native_mesh": true,
+      "runtime_enabled": false,
+      "scope": "Previously rejected offline pose; not final eye/shoulder acceptance"
+    }
+  },
+  "original_assets_unchanged": 1252,
+  "default_game_changed": false,
+  "first_person_changed": false,
+  "providers_changed": false,
+  "static_contact_accepted": false,
+  "visual_user_acceptance": false,
+  "local_asset_manifest": [
+    {
+      "asset": "HeadContourStudy/SK_RyanHeadContour.uasset",
+      "bytes": 2174386,
+      "sha256": "5b85327d4b28ac86a4d416851ae8c58c362f812068781f43263068aa40637f5e"
+    },
+    {
+      "asset": "HeadContourStudy/SK_RyanHeadContour_Skeleton.uasset",
+      "bytes": 29181,
+      "sha256": "d058b4355e8edd871debb013a31222e4565f78b38221d6584b41cdc571c5f9ff"
+    }
+  ]
+}
