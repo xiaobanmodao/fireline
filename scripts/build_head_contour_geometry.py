@@ -37,6 +37,16 @@ def radius(h,u):
     q=np.divide(h[:,0]*e[:,1]-h[:,1]*e[:,0],den,out=np.full(len(h),np.inf),where=abs(den)>1e-9)
     t=np.divide(h[:,0]*u[1]-h[:,1]*u[0],den,out=np.full(len(h),np.inf),where=abs(den)>1e-9)
     valid=(q>0)&(t>=-1e-6)&(t<=1+1e-6);assert valid.any();return q[valid].min()
+def round_profile(z):
+    """Keep the original collar, then taper both ends of the helmet shell.
+
+    The prior source-section fit left too much width immediately above the
+    collar and narrowed the crown, producing a bell silhouette. This profile
+    is deliberately shallow: the widest area stays around the middle and the
+    top is kept close to the original rounded shell.
+    """
+    t=np.clip((z-collar)/max(1e-6,top-collar),0,1)
+    return 1.0-smooth((z-collar)/1.2)*(1-(.78+.24*t+.10*np.sin(np.pi*t)))
 zold=[lo,190.,top];zref=tb[2]+(np.array([slo,eye[2],stop])-sb[2])*scale
 new=tv.copy()
 for i,p in enumerate(tv):
@@ -50,8 +60,13 @@ for i,p in enumerate(tv):
     shell=.8*smooth((np.interp(p[2],zold,zref)-zref[0])/3)
     xy=tb[:2]+(sc-sb[:2])*scale+u*fraction*(radius(sh-sc,u)*scale+shell)
     b=smooth((p[2]-(lo+.42*(top-lo)))/(.18*(top-lo)))
-    xy=(1-b)*xy+b*p[:2]*upper;a=smooth((p[2]-collar)/(190-collar))
-    new[i,:2]=(1-a)*p[:2]+a*xy
+    # Apply the same shallow taper to the old shell and the measured profile;
+    # this removes the lower flare without creating a sharp seam at the collar.
+    taper=round_profile(p[2])
+    rounded_old=tb[:2]+(p[:2]-tb[:2])*taper
+    xy=tb[:2]+(xy-tb[:2])*taper
+    xy=(1-b)*xy+b*rounded_old;a=smooth((p[2]-collar)/(190-collar))
+    new[i,:2]=(1-a)*rounded_old+a*xy
     new[i,2]=np.interp(p[2],[collar,190.,top],[collar,zref[1],zref[2]])
 glass=new[tri[mi==dst['materials'].index('M_Visor')]];hits=[]
 for t in glass:
@@ -63,7 +78,7 @@ assert hits;proxy=[float(eyet[0]),float(max(hits)-1),float(eyet[2])]
 area=np.linalg.norm(np.cross(new[tri][:,1]-new[tri][:,0],new[tri][:,2]-new[tri][:,0]),axis=1)/2;assert area.min()>1e-8
 edges=Counter(tuple(sorted((int(a),int(b)))) for t in tri for a,b in zip(t,np.roll(t,-1)));assert set(edges.values())=={2}
 changed=np.flatnonzero(np.linalg.norm(new-tv,axis=1)>1e-5)
-report={'revision':'collar-preserved','source_eye_center_bind_cm':eye.tolist(),'eye_proxy_bind_cm':proxy,
+report={'revision':'rounded-collar','source_eye_center_bind_cm':eye.tolist(),'eye_proxy_bind_cm':proxy,
     'collar_identity_band_top_cm':collar,'head_z_map':[[collar,collar],[190.,float(zref[1])],[float(top),float(zref[2])]],
     'changed_vertices':len(changed),'vertices':len(new),'triangles':len(tri),
     'max_displacement_cm':float(np.linalg.norm(new-tv,axis=1).max()),'min_triangle_area_cm2':float(area.min()),

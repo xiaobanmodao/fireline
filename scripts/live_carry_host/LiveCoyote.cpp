@@ -89,7 +89,7 @@ void ALiveCarryPawn::ExportStudyOptic(const FString& Folder)
 bool ALiveCarryPawn::InitializeHeadContour()
 {
     OriginalBody=Cast<USkeletalMesh>(StudyBody->GetSkinnedAsset());
-    ContourBody=LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/HeadContourStudy/SK_RyanHeadContour.SK_RyanHeadContour"));
+    ContourBody=LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/HeadContourStudy/SK_RyanHeadContourRounded.SK_RyanHeadContourRounded"));
     if(!OriginalBody||!ContourBody)return false;
     const auto& A=OriginalBody->GetRefSkeleton();const auto& B=ContourBody->GetRefSkeleton();
     if(A.GetNum()!=131||A.GetNum()!=B.GetNum())return false;
