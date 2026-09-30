@@ -48,7 +48,9 @@ assert 'LIVE_CARRY_BACKGROUND native_window=0 scripted_input=1' in text,'No proo
 assert 'LIVE_CARRY_AUDIT_COMPLETE' in text and 'LIVE_CARRY_POSE_INVALID' not in text,'Native playback failed; inspect retained log'
 if a.coyote:
  assert 'LIVE_COYOTE_READY' in text and 'LIVE_COYOTE_INVALID' not in text,'Coyote mount/visibility check failed'
-if a.head_contour:assert 'LIVE_HEAD_CONTOUR_READY' in text and 'LIVE_HEAD_SWAP_INVALID' not in text,'Head contour failed native bind/pose cache validation'
+if a.head_contour:
+ assert 'LIVE_HEAD_CONTOUR_READY' in text and 'LIVE_HEAD_SWAP_INVALID' not in text,'Head contour failed native bind/pose cache validation'
+ assert 'restored_original_profile=1' in text,'Rejected flattened helmet is still the active presentation'
 if a.head_swap:assert 'LIVE_HEAD_SWAP_VERIFIED bones=131' in text,'Head comparison did not exercise swapping'
 shots=sorted(out.glob('shot-*.png'));expected=38 if a.full else 4
 assert len(shots)==expected,(len(shots),expected,log)

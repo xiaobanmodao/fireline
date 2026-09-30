@@ -113,7 +113,7 @@ void ALiveCarryHUD::DrawHUD()
     if(P->HeadContourStudy)
     {
         if(P->ShowSource)DrawText(TEXT("Original ALS character / Rifle graph reference"),FLinearColor::White,22,69);
-        else DrawText(FString::Printf(TEXT("H: %s | geometry comparison only | stock / shoulder contact unfinished"),P->ShowHeadContour?TEXT("REFERENCE CONTOUR"):TEXT("PREVIOUS HELMET")),FLinearColor::White,22,69);
+        else DrawText(FString::Printf(TEXT("H: %s | original helmet proportions | stock / shoulder contact unfinished"),P->ShowHeadContour?TEXT("REJECTED FLATTENED HELMET"):TEXT("RESTORED ORIGINAL HELMET")),FLinearColor::White,22,69);
         return;
     }
     if(P->CoyoteStudy){DrawText(FString::Printf(TEXT("%s | %s | eye alignment unfinished"),*P->RifleState,P->ShowCoyote?TEXT("COYOTE"):TEXT("IRON")),FLinearColor::White,22,69);return;}

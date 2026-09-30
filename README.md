@@ -1,4 +1,4 @@
-最新轮廓对照：桌面「火力对决／**测试版·头颈轮廓对照.app**」。H新旧轮廓，F/右键瞄准，1–4四面，Z近景。圆形轮廓修复了上窄下宽的铃铛比例，保留131骨骼与原权重；完整瞄准仍有枪械接触穿插，未合入默认游戏。[范围、失败与验证](unreal/Fireline/Docs/Validation/head-contour-review/README.md)。
+最新头部修订：桌面「火力对决／**测试版·头颈轮廓对照.app**」。上一版扁平轮廓被用户否决，已恢复原Ryan头盔比例；H对照被否决的扁平版，F/右键瞄准，1–4四面，Z近景。没有重雕、压缩、骨骼或蒙皮改动；枪托/头颈及肩臂接触仍未完成，未合入默认游戏。[原因、范围与验证](unreal/Fireline/Docs/Validation/head-contour-review/README.md)。
 
 最新观察入口：桌面「火力对决／**测试版·M4红点接触观察.app**」。O切换机瞄/Coyote，Z近景/全身，F瞄准，7辅助线；只增加真实瞄具与接触观察，未修复眼线/贴腮，未更换身体姿态或默认游戏。详见[观察与失败诊断](unreal/Fireline/Docs/Validation/coyote-contact-review/README.md)。
 

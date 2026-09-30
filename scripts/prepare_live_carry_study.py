@@ -105,7 +105,7 @@ if a.install:
   settings['Arguments'].append('-LiveCarryCoyoteStudy')
   info.update(CFBundleIdentifier='local.fireline.coyote-contact-study',CFBundleName='测试版·M4红点接触观察')
  if a.head_contour:
-  settings['Candidate']='Head/neck contour comparison derived from native ALS geometry; unchanged pose, unfinished stock/shoulder contact'
+  settings['Candidate']='Restored original Ryan helmet profile; H compares rejected flattened contour; unchanged pose, unfinished stock/shoulder contact'
   settings['Arguments'].append('-LiveCarryHeadContourStudy')
   info.update(CFBundleIdentifier='local.fireline.head-contour-study',CFBundleName='测试版·头颈轮廓对照')
  for n,v in [('Info.plist',info),('Resources/Study.plist',settings)]:

@@ -1,8 +1,15 @@
-"""Local reference-derived shell candidate. Requires existing NumPy/SciPy.
+"""REJECTED historical shell construction, retained for diagnosis only.
+
+Do not run this to prepare the current review: it compresses helmet height and
+was rejected on 2026-09-30. Current review reuses the unchanged original mesh.
+Requires existing NumPy/SciPy.
 
 Preserve the collar interface and all original topology/weights/bones. This
 constructs geometry only; it does not establish a valid aiming pose.
 """
+import sys
+if '--reproduce-rejected' not in sys.argv:
+    raise SystemExit('Rejected flattened helmet generator. Current review reuses the original mesh; historical reproduction requires --reproduce-rejected.')
 from pathlib import Path
 from collections import Counter
 import json,numpy as np

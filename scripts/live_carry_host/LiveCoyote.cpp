@@ -99,8 +99,11 @@ bool ALiveCarryPawn::InitializeHeadContour()
     if(!FFileHelper::LoadFileToString(Text,*(FPaths::ProjectSavedDir()/TEXT("LiveCarry/head-contour.json")))||!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Calibration))return false;
     const auto& V=Calibration->GetArrayField(TEXT("eye_proxy_bind_cm"));if(V.Num()!=3)return false;
     ContourEyeBind=FVector(V[0]->AsNumber(),V[1]->AsNumber(),V[2]->AsNumber());
-    ShowHeadContour=!FParse::Param(FCommandLine::Get(),TEXT("StudyOriginalHead"));SelectHeadContour();
-    UE_LOG(LogTemp,Display,TEXT("LIVE_HEAD_CONTOUR_READY original_bind=1 original_weights=1 pose_unchanged=1 static_contact_unfinished=1"));return true;
+    // Both generated contours were rejected. Keep the original Ryan helmet
+    // surface as the active presentation, not a vertically compressed proxy
+    // for eye registration. H retains the failed mesh for an honest A/B view.
+    ShowHeadContour=false;SelectHeadContour();
+    UE_LOG(LogTemp,Display,TEXT("LIVE_HEAD_CONTOUR_READY original_bind=1 original_weights=1 pose_unchanged=1 restored_original_profile=1 static_contact_unfinished=1"));return true;
 }
 void ALiveCarryPawn::SelectHeadContour()
 {
