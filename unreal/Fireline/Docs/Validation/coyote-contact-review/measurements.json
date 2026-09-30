@@ -1,0 +1,112 @@
+{
+  "date": "2026-09-30",
+  "type": "Coyote contact observation, not a repaired eye/cheek pose",
+  "body_pose_algorithm_changed": false,
+  "selected_provider": "GoldbergR / Coyote Sight",
+  "native_geometry": {
+    "native_render_vertices": 1322,
+    "native_triangles": 668,
+    "source_to_native_max_cm": 9.41857430885298e-07,
+    "native_to_source_max_cm": 9.41857430885298e-07
+  },
+  "native_motion_review": {
+    "fps": 30,
+    "samples": 2311,
+    "cases": 19,
+    "screenshots": 38,
+    "max_relative_mount_cm": 1e-09,
+    "max_relative_mount_deg": 0.0,
+    "optic_modes": [
+      0,
+      1
+    ],
+    "visibility_errors": 0,
+    "source_view_exercised": false,
+    "native_window": false,
+    "physical_input": false
+  },
+  "restored_short_pose_comparison": {
+    "rows": 19781,
+    "max_component_delta": {
+      "x": 3.5839999998898975e-05,
+      "y": 0.00010639000000089993,
+      "z": 0.00017942000000914504,
+      "qx": 8.540000000500925e-07,
+      "qy": 1.0190000000048771e-06,
+      "qz": 5.860000000038057e-07,
+      "qw": 1.016000000020334e-06,
+      "sx": 0.0,
+      "sy": 0.0,
+      "sz": 0.0
+    }
+  },
+  "steady_aim_proxy_perpendicular_error_cm": {
+    "iron": {
+      "min": 14.01670499,
+      "max": 17.49570958
+    },
+    "Coyote": {
+      "min": 12.45453873,
+      "max": 16.12233446
+    }
+  },
+  "proxy_is_anatomical_eye_bone": false,
+  "mount_optical_up_offset_from_iron_cm": 1.368637656879425,
+  "stock_pad_diagnostic": {
+    "selected_faces": 34,
+    "selected_area_cm2": 53.29394,
+    "area_centroid_hold_cm": [
+      -21.29994306,
+      6.14827946,
+      152.83730692
+    ],
+    "former_upper_edge_hold_cm": [
+      -21.29994379,
+      6.00041247,
+      156.98676189
+    ],
+    "centroid_height_difference_cm": 4.14945497,
+    "note": "scoped rear-facing pad area; not an accepted shoulder contact"
+  },
+  "native_surface_rechecks": {
+    "static-constrained": {
+      "head_neck_gun_pairs": 265,
+      "head_neck_optic_pairs": 0,
+      "accepted": false
+    },
+    "static-surface": {
+      "head_neck_gun_pairs": 162,
+      "head_neck_optic_pairs": 0,
+      "accepted": false
+    },
+    "fireline-coyote-feasible": {
+      "head_neck_gun_pairs": 163,
+      "head_neck_optic_pairs": 0,
+      "accepted": false
+    },
+    "fireline-coyote-bladed-20": {
+      "head_neck_gun_pairs": 245,
+      "head_neck_optic_pairs": 0,
+      "accepted": false
+    }
+  },
+  "raw_head_surface_bounds_cm": {
+    "source": [
+      18.01661491394043,
+      24.25418758392334,
+      26.813430786132812
+    ],
+    "target": [
+      27.9684,
+      32.7191,
+      28.8987
+    ],
+    "note": "raw model units/pose bounds, not a direct global scale prescription"
+  },
+  "local_assets_checked": 1252,
+  "local_assets_missing_or_changed": 0,
+  "appearance_choice": "pending; no helmet/neck mesh modification or rejected pose import",
+  "static_contact_accepted": false,
+  "stage3_complete": false,
+  "visual_acceptance": false
+}

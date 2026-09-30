@@ -26,6 +26,18 @@ public:
     virtual void SetupPlayerInputComponent(UInputComponent* Input) override;
     UPROPERTY() TObjectPtr<ULiveCarryMesh> StudyBody;
     UPROPERTY() TObjectPtr<ULiveCarryMesh> StudyGun;
+    UPROPERTY() TObjectPtr<class UStaticMeshComponent> StudyOptic;
+    bool CoyoteStudy=false,ShowCoyote=true,ContactGuides=false,CloseContactView=true;
+    double SightProxyErrorCm=0,OpticMountErrorCm=0;
+    FTransform OpticMount;
+    FVector EyeHeadLocal,StockCenterLocal,StockCornerLocal;
+    FString OpticRows;
+    bool InitializeStudyOptic();
+    void UpdateStudyOptic(double Time);
+    void ExportStudyOptic(const FString& Folder);
+    void ToggleStudyOptic(){if(CoyoteStudy&&!Audit)ShowCoyote=!ShowCoyote;}
+    void ToggleContactGuides(){if(CoyoteStudy&&!Audit)ContactGuides=!ContactGuides;}
+    void ToggleContactCloseup(){if(CoyoteStudy&&!Audit)CloseContactView=!CloseContactView;}
     UPROPERTY() TObjectPtr<class ACameraActor> StudyCamera;
     bool ForwardRequested=false,Ready=false,Audit=false;
     bool Directional=false,JogRequested=false;

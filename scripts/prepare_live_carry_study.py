@@ -3,7 +3,8 @@ from pathlib import Path
 import argparse,csv,gzip,hashlib,json,shutil,subprocess,plistlib
 ROOT=Path(__file__).resolve().parents[1]
 ENGINE=Path('/Users/Shared/Epic Games/UE_5.8')
-p=argparse.ArgumentParser();p.add_argument('--build',action='store_true');p.add_argument('--install',action='store_true');p.add_argument('--directional',action='store_true');p.add_argument('--aim',action='store_true');p.add_argument('--aim-fit',type=Path);p.add_argument('--presentation',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--build',action='store_true');p.add_argument('--install',action='store_true');p.add_argument('--directional',action='store_true');p.add_argument('--aim',action='store_true');p.add_argument('--aim-fit',type=Path);p.add_argument('--presentation',action='store_true');p.add_argument('--coyote',action='store_true');a=p.parse_args()
+if a.coyote:a.presentation=True
 if a.presentation:a.aim=True
 research=ROOT/'unreal/Fireline/Saved/MatureMotionResearch';old=research/'ReferenceProject';project=research/'LiveCarryProject';source=research/'ALS-Refactored-b754d6f0f2bb03741d301f8fb88077ebfe561e17'
 assert old.is_dir() and source.is_dir(),'Prepare the pinned source/proportion review first'
@@ -78,7 +79,7 @@ if aim_fit.exists():
  (project/'Saved/LiveCarry/aim-registration.json').write_text(json.dumps(aim))
 if a.build:subprocess.run([str(ENGINE/'Engine/Build/BatchFiles/Mac/Build.sh'),'FirelineLiveStudyEditor','Mac','Development',str(uproject),'-MaxParallelActions=2','-WaitMutex','-NoHotReloadFromIDE'],check=True)
 if a.install:
- app=Path.home()/'UnrealBuilds/Fireline/Launchers'/('FirelinePresentationStudy.app' if a.presentation else 'FirelineAimStudy.app' if a.aim else 'FirelineDirectionalStudy.app' if a.directional else 'FirelineLiveCarryStudy.app');contents=app/'Contents'
+ app=Path.home()/'UnrealBuilds/Fireline/Launchers'/('FirelineCoyoteStudy.app' if a.coyote else 'FirelinePresentationStudy.app' if a.presentation else 'FirelineAimStudy.app' if a.aim else 'FirelineDirectionalStudy.app' if a.directional else 'FirelineLiveCarryStudy.app');contents=app/'Contents'
  for n in ['MacOS','Resources']:(contents/n).mkdir(parents=True,exist_ok=True)
  settings={'Candidate':'Input-driven M4 forward start-stop; derived Ryan/DJ; live original ALS graph; isolated study', 'Editor':str(ENGINE/'Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor'),'Arguments':[str(uproject),'/ALS/ALSExtras/Levels/L_Als_Playground','-game','-windowed','-ResX=1280','-ResY=800','-nosound','-ExecCmds=t.MaxFPS 60,sg.ShadowQuality 0,sg.GlobalIlluminationQuality 0,sg.ReflectionQuality 0']}
  info={'CFBundleExecutable':'FirelineStudyLauncher','CFBundleIdentifier':'local.fireline.live-carry-study','CFBundleName':'测试版·M4实时起停','CFBundlePackageType':'APPL','CFBundleVersion':'1','LSUIElement':True,'NSHighResolutionCapable':True}
@@ -94,13 +95,17 @@ if a.install:
   settings['Candidate']='M4 world foot contacts, stable stock mount and whole-chain aim transitions; isolated study'
   settings['Arguments'].append('-LiveCarryPresentationStudy')
   info.update(CFBundleIdentifier='local.fireline.presentation-study',CFBundleName='测试版·M4移动瞄准修正')
+ if a.coyote:
+  settings['Candidate']='Existing M4 Presentation pose with selected Coyote and contact diagnostics; static eye/cheek correction unfinished'
+  settings['Arguments'].append('-LiveCarryCoyoteStudy')
+  info.update(CFBundleIdentifier='local.fireline.coyote-contact-study',CFBundleName='测试版·M4红点接触观察')
  for n,v in [('Info.plist',info),('Resources/Study.plist',settings)]:
   with (contents/n).open('wb') as f:plistlib.dump(v,f)
  text=(ROOT/'scripts/LatestStudyLauncher.m').read_text().replace('Bringing World /Game/Fireline/Maps/FirelineRange.FirelineRange up for play','LIVE_CARRY_READY').replace('[log containsString:@"Failed to enter /Game/"]','([log containsString:@"Failed to enter /ALS/"] || [log containsString:@"LIVE_CARRY_INIT_FAILED"])')
  launcher=project/'Saved/LiveCarry/Launcher.m';launcher.write_text(text)
  subprocess.run(['xcrun','clang','-fobjc-arc','-framework','Cocoa',str(launcher),'-o',str(contents/'MacOS/FirelineStudyLauncher')],check=True)
  subprocess.run(['codesign','--force','--sign','-',str(app)],check=True)
- link=Path.home()/'Desktop/火力对决'/('测试版·M4移动瞄准修正.app' if a.presentation else '测试版·M4准备与瞄准.app' if a.aim else '测试版·M4多方向走跑.app' if a.directional else '测试版·M4实时起停.app')
+ link=Path.home()/'Desktop/火力对决'/('测试版·M4红点接触观察.app' if a.coyote else '测试版·M4移动瞄准修正.app' if a.presentation else '测试版·M4准备与瞄准.app' if a.aim else '测试版·M4多方向走跑.app' if a.directional else '测试版·M4实时起停.app')
  if not link.exists():link.symlink_to(app,target_is_directory=True)
  assert link.resolve()==app.resolve();print(link)
 print(uproject)

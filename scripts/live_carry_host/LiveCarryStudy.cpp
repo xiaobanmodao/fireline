@@ -5,6 +5,7 @@
 #include "Utility/AlsGameplayTags.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Camera/CameraActor.h"
 #include "Camera/CameraComponent.h"
 #include "Camera/PlayerCameraManager.h"
@@ -26,6 +27,7 @@
 #include "Misc/App.h"
 #include "UnrealClient.h"
 #include "AssetCompilingManager.h"
+#include "ShaderCompiler.h"
 #include "Serialization/MemoryReader.h"
 #include "UObject/UnrealType.h"
 #include "EngineUtils.h"
@@ -54,6 +56,8 @@ ALiveCarryPawn::ALiveCarryPawn()
     bUseControllerRotationYaw=false;GetCharacterMovement()->bOrientRotationToMovement=false;GetCharacterMovement()->bUseControllerDesiredRotation=false;
     StudyBody=CreateDefaultSubobject<ULiveCarryMesh>(TEXT("ReviewedRyanBody"));StudyBody->SetupAttachment(RootComponent);
     StudyGun=CreateDefaultSubobject<ULiveCarryMesh>(TEXT("ReviewedM4"));StudyGun->SetupAttachment(RootComponent);
+    StudyOptic=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ReviewedCoyote"));StudyOptic->SetupAttachment(StudyGun,TEXT("M4_body"));
+    StudyOptic->SetCollisionEnabled(ECollisionEnabled::NoCollision);StudyOptic->SetVisibility(false);
     for(auto* Mesh:{StudyBody.Get(),StudyGun.Get()}){Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);Mesh->SetRelativeRotation(FRotator(0,-90,0));Mesh->BoundsScale=3;}
 }
 void ALiveCarryPawn::BeginPlay()
@@ -63,6 +67,9 @@ void ALiveCarryPawn::BeginPlay()
     StudyBody->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/BodyProportionStudy/SK_RyanProportion.SK_RyanProportion")));
     StudyGun->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/Fireline/Hands/SK_M4Action.SK_M4Action")));
     StudyBody->SetVisibility(false);StudyGun->SetVisibility(false);
+    CoyoteStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryCoyoteStudy"));
+    ContactGuides=FParse::Param(FCommandLine::Get(),TEXT("StudyOpticDiagnostics"));
+    if(CoyoteStudy&&!InitializeStudyOptic()){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED Coyote asset/socket registration"));FPlatformMisc::RequestExit(false);return;}
     auto* M=GetCharacterMovement();M->GroundFriction=8;M->BrakingDecelerationWalking=2048;M->BrakingFrictionFactor=2;M->MaxAcceleration=2048;
     StudyCamera=GetWorld()->SpawnActor<ACameraActor>();StudyCamera->GetCameraComponent()->SetFieldOfView(48);StudyCamera->GetCameraComponent()->PostProcessSettings.bOverride_MotionBlurAmount=true;StudyCamera->GetCameraComponent()->PostProcessSettings.MotionBlurAmount=0;
 }
@@ -76,6 +83,9 @@ void ALiveCarryPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::Five,IE_Pressed,this,&ALiveCarryPawn::ToggleSource);
     Input->BindKey(EKeys::F,IE_Pressed,this,&ALiveCarryPawn::ToggleAim);
     Input->BindKey(EKeys::Six,IE_Pressed,this,&ALiveCarryPawn::ToggleDemo);
+    Input->BindKey(EKeys::O,IE_Pressed,this,&ALiveCarryPawn::ToggleStudyOptic);
+    Input->BindKey(EKeys::Seven,IE_Pressed,this,&ALiveCarryPawn::ToggleContactGuides);
+    Input->BindKey(EKeys::Z,IE_Pressed,this,&ALiveCarryPawn::ToggleContactCloseup);
     Input->BindKey(EKeys::A,IE_Pressed,this,&ALiveCarryPawn::LeftDown);Input->BindKey(EKeys::D,IE_Pressed,this,&ALiveCarryPawn::RightDown);Input->BindKey(EKeys::S,IE_Pressed,this,&ALiveCarryPawn::BackDown);
 }
 void ALiveCarryPawn::ForwardDown(){if(!Ready||Audit)return;if(Directional){RequestTap(FVector::ForwardVector);return;}ForwardRequested=true;AddMovementInput(FVector::ForwardVector,1);}
@@ -85,7 +95,7 @@ void ALiveCarryPawn::OrbitY(float Value){if(Ready&&!Audit)OrbitPitch=FMath::Clam
 void ALiveCarryPawn::ResetStudy(){if(Audit)return;GetCharacterMovement()->StopMovementImmediately();SetActorLocation(Spawn,false,nullptr,ETeleportType::TeleportPhysics);ForwardRequested=false;if(AimStudy)AimPitch=0;}
 void ALiveCarryPawn::UpdateCamera()
 {
-    const bool Closeup=Audit&&FParse::Param(FCommandLine::Get(),TEXT("StudyCloseup"));
+    const bool Closeup=(Audit&&FParse::Param(FCommandLine::Get(),TEXT("StudyCloseup")))||(!Audit&&CoyoteStudy&&CloseContactView);
     const FVector Focus=ShowSource?SourceFocus:GetActorLocation()+FVector(0,0,Closeup?58:12);
     const FVector Offset=FRotator(OrbitPitch,OrbitYaw,0).Vector()*(Closeup?260:OrbitDistance);
     StudyCamera->SetActorLocationAndRotation(Focus+Offset,(Focus-(Focus+Offset)).Rotation());
@@ -94,8 +104,9 @@ void ALiveCarryHUD::DrawHUD()
 {
     Super::DrawHUD();auto* P=Cast<ALiveCarryPawn>(GetOwningPawn());if(!Canvas||!P)return;
     DrawRect(FLinearColor(.015,.025,.04,.88),0,0,Canvas->ClipX,90);
-    DrawText(P->ShowSource?(P->PresentationStudy?TEXT("ALS POSE REFERENCE / ADAPTED AIM TRANSITIONS"):TEXT("REFERENCE / ORIGINAL ALS RIFLE GRAPH")):P->PresentationStudy?TEXT("FIRELINE / M4 MOVEMENT & AIM REFINEMENT"):P->AimStudy?TEXT("FIRELINE / M4 READY-AIM STUDY"):P->Directional?TEXT("FIRELINE / M4 DIRECTIONAL MOVEMENT STUDY"):TEXT("FIRELINE / LIVE M4 START-STOP STUDY"),FLinearColor::White,22,12,nullptr,1.25f);
-    DrawText(P->AimStudy?TEXT("RMB/F aim | arrows pitch | WASD/Shift move | Q/E facing | 1-4 views | 5 source | 6 demo | R reset"):P->Directional?TEXT("WASD move | Shift jog | Q/E turn facing | mouse orbit | 1-4 views | R reset"):TEXT("W hold: walk | release: stop | mouse: orbit | 1/2/3/4: views | R: reset position"),FLinearColor(.65,.85,1),22,43);
+    DrawText(P->CoyoteStudy&&!P->ShowSource?TEXT("FIRELINE / M4 COYOTE CONTACT REVIEW"):P->ShowSource?(P->PresentationStudy?TEXT("ALS POSE REFERENCE / ADAPTED AIM TRANSITIONS"):TEXT("REFERENCE / ORIGINAL ALS RIFLE GRAPH")):P->PresentationStudy?TEXT("FIRELINE / M4 MOVEMENT & AIM REFINEMENT"):P->AimStudy?TEXT("FIRELINE / M4 READY-AIM STUDY"):P->Directional?TEXT("FIRELINE / M4 DIRECTIONAL MOVEMENT STUDY"):TEXT("FIRELINE / LIVE M4 START-STOP STUDY"),FLinearColor::White,22,12,nullptr,1.25f);
+    DrawText(P->CoyoteStudy?TEXT("RMB/F aim | WASD/Shift | arrows pitch | 1-4 views | 5 source | 6 demo | O optic | 7 guides | Z close-up"):P->AimStudy?TEXT("RMB/F aim | arrows pitch | WASD/Shift move | Q/E facing | 1-4 views | 5 source | 6 demo | R reset"):P->Directional?TEXT("WASD move | Shift jog | Q/E turn facing | mouse orbit | 1-4 views | R reset"):TEXT("W hold: walk | release: stop | mouse: orbit | 1/2/3/4: views | R: reset position"),FLinearColor(.65,.85,1),22,43);
+    if(P->CoyoteStudy){DrawText(FString::Printf(TEXT("%s | %s | eye alignment unfinished"),*P->RifleState,P->ShowCoyote?TEXT("COYOTE"):TEXT("IRON")),FLinearColor::White,22,69);return;}
     DrawText(FString::Printf(TEXT("%.0f cm/s | %s | %s"),P->GetVelocity().Size2D(),P->JogRequested?TEXT("JOG"):TEXT("WALK"),P->AimStudy?*FString::Printf(TEXT("%s | pitch %.0f | third-person pose study"),*P->RifleState,P->AimPitch):P->Directional?TEXT("M4 flat ground; aim/fire/actions not enabled"):TEXT("forward M4 only; other actions are not enabled")),FLinearColor::White,22,69);
 }
 void FLiveCarryStudy::Before(UWorld* W,float Dt)
@@ -142,7 +153,7 @@ void FLiveCarryStudy::Before(UWorld* W,float Dt)
             checkf(!NativeWindow,TEXT("Background audit unexpectedly created an OS window"));
             UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_BACKGROUND native_window=%d scripted_input=1"),NativeWindow?1:0);
         }
-        FAssetCompilingManager::Get().FinishAllCompilation();P->Ready=true;Start=W->GetTimeSeconds();Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveCarry/%s-%d"),Parity?TEXT("parity"):TEXT("audit"),FPS);IFileManager::Get().MakeDirectory(*Folder,true);
+        FAssetCompilingManager::Get().FinishAllCompilation();if(P->CoyoteStudy&&GShaderCompilingManager)GShaderCompilingManager->FinishAllCompilation();P->Ready=true;Start=W->GetTimeSeconds();Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveCarry/%s-%d"),Parity?TEXT("parity"):TEXT("audit"),FPS);IFileManager::Get().MakeDirectory(*Folder,true);
         PoseRows=TEXT("frame,time,bone,x,y,z,qx,qy,qz,qw,sx,sy,sz\n");StateRows=TEXT("frame,time,dt,input,speed,actor_x,actor_y,actor_z,body_x,body_y,body_z,source_speed,failures,reach_margin,left_lock_curve,right_lock_curve,sole_correction,left_lock,right_lock\n");
         if(Directional){Folder=FPaths::ProjectSavedDir()/FString::Printf(TEXT("LiveDirectional/audit-%d"),FPS);IFileManager::Get().MakeDirectory(*Folder,true);SourceRows=PoseRows;StateRows.RemoveAt(StateRows.Len()-1);StateRows+=TEXT(",case,request_x,request_y,jog,view_yaw,actor_yaw,source_yaw,velocity_x,velocity_y,source_gait,pose_gait,turn_yaw_speed,jog_weight,pelvis_reach_offset,trajectory_reach_offset\n");}
         FString RunLabel;FParse::Value(FCommandLine::Get(),TEXT("StudyRun="),RunLabel);
@@ -215,6 +226,7 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
         P->StudyBody->SetRelativeLocation(Offset);P->StudyGun->SetRelativeLocation(Offset);P->StudyBody->SetVisibility(true);P->StudyGun->SetVisibility(true);
     }
     if(AimStudy){SetReferenceVisibility(S,P->ShowSource);P->StudyBody->SetVisibility(!P->ShowSource);P->StudyGun->SetVisibility(!P->ShowSource);P->SourceFocus=S->GetActorLocation()+FVector(0,0,6);}
+    if(P->CoyoteStudy)P->UpdateStudyOptic(T);
     if(Audit||Parity)Record(Dt,T);
     if(Audit)
     {
@@ -223,7 +235,7 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
         const bool Capture=ReviewViews?(Shot<4&&T>=2.+Shot*.2):AimStudy?(Shot<(Retarget.RefinePresentation?38:28)&&T>=1.+(Shot/2)*4.+(Shot%2?3.4:1.8)):Directional?(Shot<24&&T>=(Shot<19?1.+Shot*2.4+1.35:Shot<23?46.6+(Shot-19)*4.8+3.8:67.15)):(Shot<UE_ARRAY_COUNT(Times)&&T>=Times[Shot]);
         if(Capture){P->OrbitYaw=(Shot%4)*90+P->GetActorRotation().Yaw;P->UpdateCamera();FScreenshotRequest::RequestScreenshot(Folder/FString::Printf(TEXT("shot-%02d.png"),Shot++),true,false);}
         double Duration=Retarget.RefinePresentation?77.:AimStudy?57.:Directional?69.2:11.;FParse::Value(FCommandLine::Get(),TEXT("StudyDuration="),Duration);
-        if(T>=Duration){Finished=true;FFileHelper::SaveStringToFile(PoseRows,*(Folder/TEXT("poses.csv")));FFileHelper::SaveStringToFile(StateRows,*(Folder/TEXT("states.csv")));if(Directional)FFileHelper::SaveStringToFile(SourceRows,*(Folder/TEXT("source-poses.csv")));if(AimStudy)FFileHelper::SaveStringToFile(RawRows,*(Folder/TEXT("raw-poses.csv")));UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_AUDIT_COMPLETE frames=%d failures=%d"),Frame,Failures);FPlatformMisc::RequestExit(false);}
+        if(T>=Duration){Finished=true;FFileHelper::SaveStringToFile(PoseRows,*(Folder/TEXT("poses.csv")));FFileHelper::SaveStringToFile(StateRows,*(Folder/TEXT("states.csv")));if(Directional)FFileHelper::SaveStringToFile(SourceRows,*(Folder/TEXT("source-poses.csv")));if(AimStudy)FFileHelper::SaveStringToFile(RawRows,*(Folder/TEXT("raw-poses.csv")));if(P->CoyoteStudy)P->ExportStudyOptic(Folder);UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_AUDIT_COMPLETE frames=%d failures=%d"),Frame,Failures);FPlatformMisc::RequestExit(false);}
     }
     P->UpdateCamera();if(auto* Manager=W->GetFirstPlayerController()->PlayerCameraManager.Get())Manager->UpdateCamera(Dt);++Frame;
 }
