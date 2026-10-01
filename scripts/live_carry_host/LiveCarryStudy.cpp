@@ -111,12 +111,26 @@ void ALiveCarryPawn::UpdateCamera()
 void ALiveCarryHUD::DrawHUD()
 {
     Super::DrawHUD();auto* P=Cast<ALiveCarryPawn>(GetOwningPawn());if(!Canvas||!P)return;
-    DrawRect(FLinearColor(.015,.025,.04,.88),0,0,Canvas->ClipX,90);
+    DrawRect(FLinearColor(.015,.025,.04,.88),0,0,Canvas->ClipX,P->NativeReadyAimStudy&&P->ContactGuides?114:90);
     if(P->NativeReadyAimStudy)
     {
         DrawText(TEXT("FIRELINE / NATIVE READY - AIM CONTACT CANDIDATE"),FLinearColor::White,22,12,nullptr,1.25f);
         DrawText(TEXT("RMB/F raise | 6 demo | mouse orbit | 1-4 views | Z close-up | O optic | 7 guides"),FLinearColor(.65,.85,1),22,43);
-        DrawText(TEXT("Static raise/lower only | original helmet | eye line / movement / actions unfinished"),FLinearColor::White,22,69);return;
+        DrawText(TEXT("Static raise/lower only | original helmet | eye line / movement / actions unfinished"),FLinearColor::White,22,69);
+        if(P->ContactGuides)
+        {
+            DrawText(TEXT("Green: sight axis | cyan: author camera | magenta: legacy proxy (neither is an eye bone)"),FLinearColor(.7,.9,.9),22,94);
+            // Screen markers remain readable when an anchor lies inside the
+            // opaque helmet. These diagnose the layout, not new eye anatomy.
+            const FVector Camera=Project(P->StudyBody->GetSocketLocation(TEXT("Camera")));
+            const FVector Proxy=Project(P->StudyBody->GetSocketTransform(TEXT("Head")).TransformPosition(P->EyeHeadLocal));
+            for(const auto& Marker:{TPair<FVector,FLinearColor>(Camera,FLinearColor(0,1,1)),TPair<FVector,FLinearColor>(Proxy,FLinearColor(1,0,1))})
+            {
+                const FVector S=Marker.Key;
+                if(S.Z>0){DrawLine(S.X-5,S.Y,S.X+5,S.Y,Marker.Value,1.5f);DrawLine(S.X,S.Y-5,S.X,S.Y+5,Marker.Value,1.5f);}
+            }
+        }
+        return;
     }
     if(P->StaticContactStudy)
     {

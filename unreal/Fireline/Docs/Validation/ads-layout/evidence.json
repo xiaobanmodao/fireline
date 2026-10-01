@@ -1,0 +1,188 @@
+{
+  "date": "2026-10-01",
+  "entry": "/Users/hht/Desktop/\u706b\u529b\u5bf9\u51b3/\u6d4b\u8bd5\u7248\u00b7\u81ea\u7136\u6301\u67aa\u4e0e\u62ac\u67aa.app",
+  "entry_target": "/Users/hht/UnrealBuilds/Fireline/Launchers/FirelineNativeReadyAimStudy.app",
+  "entry_type": "mutable shared study",
+  "native_run": {
+    "run": "optic-axis-final-20261001-30",
+    "native_frames": 241,
+    "unique_actual_poses": 96,
+    "maxima": {
+      "physical_link_error_cm": 3.1594220928354844e-07,
+      "grip_error_cm": 8.965732576132648e-07,
+      "grip_error_deg": 1.4313983701643274e-07,
+      "gun_axis_error_deg": 0.0,
+      "wrist_deg": 38.05139417843654,
+      "head_gun_pairs": 0.0,
+      "chest_gun_pairs": 0.0,
+      "arm_torso_pairs": 0.0,
+      "head_body_pairs": 0.0,
+      "upperarm_gun_pairs": 0.0,
+      "head_optic_pairs": 0.0,
+      "chest_optic_pairs": 0.0
+    },
+    "failed_frames": [],
+    "max_elbow_travel_per_frame_cm": 2.2470481178637236,
+    "max_elbow_speed_cm_s": 67.4114300536257,
+    "aim_weight_range": [
+      0.0,
+      1.0
+    ],
+    "native_window": false,
+    "renderer": "Metal",
+    "eye_registration_finished": false,
+    "movement_actions_enabled": false,
+    "default_changed": false,
+    "visual_acceptance": false,
+    "eye_proxy_error_range_cm": [
+      8.29023158,
+      23.99137243
+    ]
+  },
+  "layout": {
+    "run": "optic-axis-final-20261001-30",
+    "prior": "native-ready-aim-20261001-30",
+    "pose_parity_endpoints": [
+      {
+        "frame": 0,
+        "position_cm": 0.0,
+        "rotation_deg": 8.559019894657523e-15
+      },
+      {
+        "frame": 67,
+        "position_cm": 0.0,
+        "rotation_deg": 8.559019894657523e-15
+      }
+    ],
+    "optical_axis_max_error_deg": 7.09e-07,
+    "basis": "sight-axis-primary",
+    "contacts": [
+      {
+        "frame": 0,
+        "aim_weight": 0.0,
+        "rear_band_faces": 135,
+        "rear_band_area_centroid_cm": [
+          -19.172252195991476,
+          8.275644181485257,
+          149.76414956721453
+        ],
+        "surface_distances_cm": {
+          "legacy_chest_or_shoulder_or_arm": 0.9144808917558324,
+          "current_chest": 2.1311888016627933,
+          "current_shoulder_junction": 0.9144808917558324,
+          "current_shoulder_cap_only": 0.9144808917558324
+        },
+        "face_counts": {
+          "legacy_chest_or_shoulder_or_arm": 236,
+          "current_chest": 180,
+          "current_shoulder_junction": 77,
+          "current_shoulder_cap_only": 34
+        }
+      },
+      {
+        "frame": 67,
+        "aim_weight": 1.0,
+        "rear_band_faces": 135,
+        "rear_band_area_centroid_cm": [
+          -11.187958745991475,
+          10.350010351485256,
+          153.79303011721464
+        ],
+        "surface_distances_cm": {
+          "legacy_chest_or_shoulder_or_arm": 0.12153168539296788,
+          "current_chest": 0.12153168539296788,
+          "current_shoulder_junction": 3.5261769329880006,
+          "current_shoulder_cap_only": 4.675862970506245
+        },
+        "face_counts": {
+          "legacy_chest_or_shoulder_or_arm": 236,
+          "current_chest": 180,
+          "current_shoulder_junction": 77,
+          "current_shoulder_cap_only": 34
+        }
+      }
+    ],
+    "author_camera_ray_error_range_cm": [
+      11.22430234,
+      23.4546083
+    ],
+    "legacy_eye_proxy_ray_error_range_cm": [
+      8.29023158,
+      23.99137243
+    ],
+    "eye_landmarks": "Neither proxy nor author camera is an anatomical eye bone. No inter-pupillary offset invented.",
+    "contact_semantics": "Legacy broad region is not the shoulder cap. Current dominance labels describe regions; original frozen collision masks remain unchanged.",
+    "lyra_ads_source": {
+      "path": "/Game/Characters/Heroes/Mannequin/Animations/Locomotion/Rifle/MM_Rifle_Idle_ADS",
+      "sample_count": 61,
+      "duration": 3.4000000953674316,
+      "data_sha256": "9b4e1d12c29cf6c43368941251a946437319c014beec9d07c50dd81760300648",
+      "physical_neck_segments_cm_min": [
+        11.887843127064507,
+        5.110253331760015,
+        4.912972924681262
+      ],
+      "physical_neck_segments_cm_max": [
+        11.887929912678658,
+        5.110253333538952,
+        4.912972926979379
+      ],
+      "native_bind_exported": true,
+      "source_runtime_graph_evaluated": false,
+      "source_rifle_eye_alignment_validated": false,
+      "retargeted": false,
+      "head_deformation_relative_to_chest_deg_range": [
+        16.22814379035621,
+        16.871113684269538
+      ]
+    },
+    "full_ads_completed": false,
+    "default_changed": false,
+    "pose_parity_all_frames": {
+      "position_component_cm": 0.0,
+      "quaternion_component": 0.0,
+      "scale_component": 0.0
+    }
+  },
+  "static_regression": {
+    "run": "static-optic-isolation-20261001-30",
+    "prior": "static-contact-regression-20261001-ready-30",
+    "pose_rows": 19781,
+    "max_component_difference": 0,
+    "max_optic_axis_and_center_difference": 0.0,
+    "retained_basis": "up-marker-primary"
+  },
+  "original_assets": {
+    "checked": 1252,
+    "missing_or_changed": 0
+  },
+  "baseline_sha256": "02f7bb09db2aaecaeded7b33768f04470311a575cd6e562f3b2afab6530f27da",
+  "visual_review": {
+    "native_screenshots": 9,
+    "guide_markers_visible": true,
+    "actual_metal": true,
+    "native_os_window": false,
+    "physical_input": false,
+    "continuous_body_path": "Unchanged all-frame parity to previously captured candidate; no new motion path",
+    "user_acceptance": false
+  },
+  "source_export_log": "/tmp/fireline-ads-reference-20261001.log",
+  "source_export_warnings": "3 missing Lyra physical-material class warnings in isolated project; no errors; bind extraction only, not source graph or physics validation",
+  "full_ads_completed": false,
+  "default_or_first_person_changed": false,
+  "launcher_arguments_verified": [
+    "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/LiveCarryProject/LiveCarryProject.uproject",
+    "/ALS/ALSExtras/Levels/L_Als_Playground",
+    "-game",
+    "-windowed",
+    "-ResX=1280",
+    "-ResY=800",
+    "-nosound",
+    "-ExecCmds=t.MaxFPS 60,sg.ShadowQuality 0,sg.GlobalIlluminationQuality 0,sg.ReflectionQuality 0",
+    "-LiveCarryDirectional",
+    "-LiveCarryAimStudy",
+    "-LiveCarryPresentationStudy",
+    "-LiveCarryCoyoteStudy",
+    "-LiveNativeReadyAimStudy"
+  ]
+}

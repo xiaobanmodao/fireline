@@ -21,6 +21,8 @@ def main():
     profile=json.loads((BASE/'CoyoteContactStudy/coyote-profile.json').read_text());sightlocal=np.array(profile['sight_center_cm'])
     gb={r['bone']:transform({'p':[float(r[k]) for k in ['x','y','z']],'q':[float(r[k]) for k in ['qx','qy','qz','qw']],'s':[float(r[k]) for k in ['sx','sy','sz']]}) for r in rows(REF/'gun.bind.csv')}
     up=unit(gb['M4_sightup'][0]-gb['M4_rearsight'][0]);direction=gb['M4_frontsight'][0]-gb['M4_rearsight'][0];mountq=frame(unit(direction-up*np.dot(up,direction)),up)
+    calibration_path=run/'optic.calibration.json'
+    calibration=json.loads(calibration_path.read_text()) if calibration_path.exists() else None
     maximum={k:0. for k in ['physical_link_error_cm','grip_error_cm','grip_error_deg','gun_axis_error_deg','wrist_deg','head_gun_pairs','chest_gun_pairs','arm_torso_pairs','head_body_pairs','upperarm_gun_pairs','head_optic_pairs','chest_optic_pairs']};unique={};failures=[];wrists=[];elbows=[];alphas=[]
     for i,p in recorded.items():
         key=hashlib.sha256(np.array([np.r_[p[n][0],p[n][1].as_quat(),p[n][2]] for n in s.names]).tobytes()).hexdigest()
@@ -28,7 +30,7 @@ def main():
         else:
             m=s.check(p);m.pop('arm_torso_faces');bv=s.body.deform(p);gv=s.gun.deform(p)
             m['upperarm_gun_pairs']=len(geo.triangle_crossings(bv[s.body.tris[upper]],gv[s.gun.tris]))
-            orow=optics[i];q=p['M4_body'][1]*gb['M4_body'][1].inv()*mountq;sight=np.array([float(orow['sight_'+k]) for k in 'xyz']);oc=q.apply(ov-sightlocal)+sight
+            orow=optics[i];q=p['M4_body'][1]*R.from_quat(calibration['relative_gun_quaternion']) if calibration else p['M4_body'][1]*gb['M4_body'][1].inv()*mountq;sight=np.array([float(orow['sight_'+k]) for k in 'xyz']);oc=q.apply(ov-sightlocal)+sight
             assert np.linalg.norm(q.apply([1.,0,0])-np.array([float(orow['axis_'+k]) for k in 'xyz']))<1e-5,'Optic orientation export mismatch'
             m['head_optic_pairs']=len(geo.triangle_crossings(bv[s.body.tris[s.head]],oc[ot]));m['chest_optic_pairs']=len(geo.triangle_crossings(bv[s.body.tris[s.chest]],oc[ot]))
             m['physical_link_error_cm']=0.;m['wrist_deg']=0.

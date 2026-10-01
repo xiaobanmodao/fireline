@@ -26,7 +26,13 @@ bool ALiveCarryPawn::InitializeStudyOptic()
     const int Rear=Ref.FindBoneIndex(TEXT("M4_rearsight")),Front=Ref.FindBoneIndex(TEXT("M4_frontsight")),Up=Ref.FindBoneIndex(TEXT("M4_sightup")),Gun=Ref.FindBoneIndex(TEXT("M4_body"));
     if(Rear<0||Front<0||Up<0||Gun<0)return false;
     const FVector Origin=B[Rear].GetLocation(),Vertical=(B[Up].GetLocation()-Origin).GetSafeNormal();
-    const FQuat Frame=FRotationMatrix::MakeFromXZ(FVector::VectorPlaneProject(B[Front].GetLocation()-Origin,Vertical),Vertical).ToQuat();
+    const FVector Forward=(B[Front].GetLocation()-Origin).GetSafeNormal();
+    // The up marker has a small longitudinal offset. Preserve the measured
+    // sight axis and orthogonalize up, rather than tilting the optical axis.
+    // Earlier review entries retain their original mount for comparison.
+    const FQuat Frame=NativeReadyAimStudy
+        ? FRotationMatrix::MakeFromXZ(Forward,FVector::VectorPlaneProject(Vertical,Forward)).ToQuat()
+        : FRotationMatrix::MakeFromXZ(FVector::VectorPlaneProject(Forward,Vertical),Vertical).ToQuat();
     const FTransform Mount(Frame,Origin+Frame.RotateVector(Optic->FindSocket(TEXT("RailFromRear"))->RelativeLocation));
     OpticMount=Mount.GetRelativeTransform(B[Gun]);StudyOptic->SetStaticMesh(Optic);StudyOptic->SetRelativeTransform(OpticMount);
     const auto& BodyRef=CastChecked<USkeletalMesh>(StudyBody->GetSkinnedAsset())->GetRefSkeleton();TArray<FTransform> BodyB;
@@ -38,13 +44,13 @@ bool ALiveCarryPawn::InitializeStudyOptic()
     const FTransform Hold=ReadHold(Calibration->GetObjectField(TEXT("target"))->GetObjectField(TEXT("hold"))->GetObjectField(TEXT("M4_body")));
     StockCenterLocal=Hold.InverseTransformPosition(FVector(-21.29994306,6.14827946,152.83730692));
     StockCornerLocal=Hold.InverseTransformPosition(FVector(-21.29994379,6.00041247,156.98676189));
-    OpticRows=TEXT("time,visible,source,selected,mount_cm,mount_deg,proxy_error_cm,sight_x,sight_y,sight_z,eye_x,eye_y,eye_z,axis_x,axis_y,axis_z,stock_x,stock_y,stock_z\n");
+    OpticRows=TEXT("time,visible,source,selected,mount_cm,mount_deg,proxy_error_cm,sight_x,sight_y,sight_z,eye_x,eye_y,eye_z,axis_x,axis_y,axis_z,stock_x,stock_y,stock_z,optical_gun_axis_deg,author_camera_x,author_camera_y,author_camera_z,author_camera_ray_cm\n");
     UE_LOG(LogTemp,Display,TEXT("LIVE_COYOTE_READY selected=GoldbergR native_mount=1 body_pose_unchanged=1"));return true;
 }
 void ALiveCarryPawn::UpdateStudyOptic(double Time)
 {
-    // Same native rigid attachment used by RangeOptics; update after both
-    // poseable meshes have evaluated so the optic never lags a frame.
+    // Update the rigid attachment after both poseable meshes have evaluated
+    // so the optic never lags a frame. Ready/Aim has its corrected study basis.
     const FTransform Gun=StudyGun->GetSocketTransform(TEXT("M4_body"));
     StudyOptic->SetWorldTransform(OpticMount*Gun);
     if(Audit)ShowCoyote=Scenario%2==0;
@@ -58,25 +64,44 @@ void ALiveCarryPawn::UpdateStudyOptic(double Time)
     FTransform Sight=StudyOptic->GetSocketTransform(TEXT("SightCenter"));
     if(!ShowCoyote){const FVector Rear=StudyGun->GetSocketLocation(TEXT("M4_rearsight")),Forward=(StudyGun->GetSocketLocation(TEXT("M4_frontsight"))-Rear).GetSafeNormal();Sight=FTransform(FRotationMatrix::MakeFromX(Forward).ToQuat(),Rear);}
     const FVector Eye=StudyBody->GetSocketTransform(TEXT("Head")).TransformPosition(EyeHeadLocal),Center=Sight.GetLocation(),Axis=Sight.GetUnitAxis(EAxis::X),Stock=Gun.TransformPosition(StockCenterLocal);
+    const FVector GunAxis=(StudyGun->GetSocketLocation(TEXT("M4_frontsight"))-StudyGun->GetSocketLocation(TEXT("M4_rearsight"))).GetSafeNormal();
+    const double AxisAngle=FMath::RadiansToDegrees(FMath::Atan2(FVector::CrossProduct(Axis,GunAxis).Size(),FVector::DotProduct(Axis,GunAxis)));
+    const FVector AuthorCamera=StudyBody->GetSocketLocation(TEXT("Camera"));
+    const double CameraRayError=FVector::VectorPlaneProject(AuthorCamera-Center,Axis).Size();
     SightProxyErrorCm=FVector::VectorPlaneProject(Eye-Center,Axis).Size();
     if(ContactGuides&&!ShowSource)
     {
         DrawDebugLine(GetWorld(),Center-Axis*40,Center+Axis*8,FColor::Green,false,0,0,.25f);
         DrawDebugSphere(GetWorld(),Eye,.7f,12,FColor::Magenta,false,0,0,.15f);
         DrawDebugLine(GetWorld(),Eye,Center+Axis*FVector::DotProduct(Eye-Center,Axis),FColor::Magenta,false,0,0,.15f);
-        DrawDebugSphere(GetWorld(),Stock,.8f,12,FColor::Orange,false,0,0,.15f);
-        DrawDebugSphere(GetWorld(),Gun.TransformPosition(StockCornerLocal),.6f,10,FColor::Yellow,false,0,0,.15f);
+        if(NativeReadyAimStudy)
+        {
+            // This is the author's camera bone, not an anatomical eye. Old
+            // stock tip markers are not a shoulder contact measurement.
+            DrawDebugSphere(GetWorld(),AuthorCamera,.7f,12,FColor::Cyan,false,0,0,.15f);
+            DrawDebugLine(GetWorld(),AuthorCamera,Center+Axis*FVector::DotProduct(AuthorCamera-Center,Axis),FColor::Cyan,false,0,0,.15f);
+        }
+        else
+        {
+            DrawDebugSphere(GetWorld(),Stock,.8f,12,FColor::Orange,false,0,0,.15f);
+            DrawDebugSphere(GetWorld(),Gun.TransformPosition(StockCornerLocal),.6f,10,FColor::Yellow,false,0,0,.15f);
+        }
     }
     if(Audit)
     {
         if(OpticMountErrorCm>.0001||MountAngle>.001||StudyOptic->IsVisible()!=Visible)UE_LOG(LogTemp,Error,TEXT("LIVE_COYOTE_INVALID mount=%.6f/%.6f"),OpticMountErrorCm,MountAngle);
+        if(NativeReadyAimStudy&&AxisAngle>.001)UE_LOG(LogTemp,Error,TEXT("LIVE_COYOTE_INVALID optical_gun_axis_deg=%.9f"),AxisAngle);
         const FTransform World=StudyBody->GetComponentTransform();const FVector LC=World.InverseTransformPosition(Center),LE=World.InverseTransformPosition(Eye),LS=World.InverseTransformPosition(Stock),LA=World.InverseTransformVectorNoScale(Axis);
-        OpticRows+=FString::Printf(TEXT("%.8f,%d,%d,%d,%.9f,%.9f,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f,%.9f,%.9f,%.9f,%.8f,%.8f,%.8f\n"),Time,Visible,ShowSource,ShowCoyote,OpticMountErrorCm,MountAngle,SightProxyErrorCm,LC.X,LC.Y,LC.Z,LE.X,LE.Y,LE.Z,LA.X,LA.Y,LA.Z,LS.X,LS.Y,LS.Z);
+        const FVector AC=World.InverseTransformPosition(AuthorCamera);
+        OpticRows+=FString::Printf(TEXT("%.8f,%d,%d,%d,%.9f,%.9f,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f,%.8f,%.9f,%.9f,%.9f,%.8f,%.8f,%.8f,%.9f,%.8f,%.8f,%.8f,%.8f\n"),Time,Visible,ShowSource,ShowCoyote,OpticMountErrorCm,MountAngle,SightProxyErrorCm,LC.X,LC.Y,LC.Z,LE.X,LE.Y,LE.Z,LA.X,LA.Y,LA.Z,LS.X,LS.Y,LS.Z,AxisAngle,AC.X,AC.Y,AC.Z,CameraRayError);
     }
 }
 void ALiveCarryPawn::ExportStudyOptic(const FString& Folder)
 {
     FFileHelper::SaveStringToFile(OpticRows,*(Folder/TEXT("optic.csv")));
+    auto Calibration=MakeShared<FJsonObject>();Calibration->SetStringField(TEXT("basis"),NativeReadyAimStudy?TEXT("sight-axis-primary"):TEXT("up-marker-primary"));
+    const FQuat Q=OpticMount.GetRotation();Calibration->SetArrayField(TEXT("relative_gun_quaternion"),{MakeShared<FJsonValueNumber>(Q.X),MakeShared<FJsonValueNumber>(Q.Y),MakeShared<FJsonValueNumber>(Q.Z),MakeShared<FJsonValueNumber>(Q.W)});
+    FString CalibrationText;FJsonSerializer::Serialize(Calibration,TJsonWriterFactory<>::Create(&CalibrationText));FFileHelper::SaveStringToFile(CalibrationText,*(Folder/TEXT("optic.calibration.json")));
     const auto* Render=StudyOptic->GetStaticMesh()->GetRenderData();if(!Render||Render->LODResources.IsEmpty())return;const auto& LOD=Render->LODResources[0];
     FString Vertices=TEXT("vertex,x,y,z\n"),Triangles=TEXT("face,a,b,c\n");
     for(uint32 I=0;I<LOD.VertexBuffers.PositionVertexBuffer.GetNumVertices();++I){const FVector3f V=LOD.VertexBuffers.PositionVertexBuffer.VertexPosition(I);Vertices+=FString::Printf(TEXT("%u,%.9f,%.9f,%.9f\n"),I,double(V.X),double(V.Y),double(V.Z));}
