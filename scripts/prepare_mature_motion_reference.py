@@ -62,6 +62,7 @@ public class MotionReference : ModuleRules {
  public MotionReference(ReadOnlyTargetRules Target) : base(Target) {
   PCHUsage=PCHUsageMode.UseExplicitOrSharedPCHs;
   PublicDependencyModuleNames.AddRange(new string[]{"Core","CoreUObject","Engine","ALS","GameplayTags","InputCore","UMG","EnhancedInput"});
+  PrivateDependencyModuleNames.AddRange(new string[]{"Slate","SlateCore","Json"});
  }
 }
 ''')

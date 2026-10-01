@@ -1,0 +1,459 @@
+{
+  "date": "2026-10-01",
+  "scope": "Original source reference verified; target adaptation FAILED, not imported",
+  "engine": "UE5.8 / native Metal offscreen",
+  "source_native_audit": {
+    "source_post_process": {
+      "mesh": "/Game/Characters/Heroes/Mannequin/Meshes/SKM_Manny.SKM_Manny",
+      "post_process_class": "/Game/Characters/Heroes/Mannequin/Rig/ABP_Manny_PostProcess.ABP_Manny_PostProcess_C",
+      "captured_run": "lyra-native-ads-clean-20261001",
+      "raw_frames": 129,
+      "bone_count": 164,
+      "assets_saved": false,
+      "final_gameplay_graph": false
+    },
+    "native_comparison_without_post_process": "lyra-native-ads-raw-20261001",
+    "captured_frames": 129,
+    "native_mesh_bones": 164,
+    "equipment_parity_max_position_cm": 1.9047416267566318e-06,
+    "equipment_parity_max_rotation_deg": 1.5324173887697248e-07,
+    "equipment_parity_max_scale": 3.949999216601441e-10,
+    "top_raw_native_bone_differences": [
+      [
+        "upperarm_fwd_l",
+        {
+          "position_cm": 11.177478397862627,
+          "rotation_deg": 5.550221624212627
+        }
+      ],
+      [
+        "lowerarm_fwd_r",
+        {
+          "position_cm": 9.778924069166186,
+          "rotation_deg": 55.27564022859477
+        }
+      ],
+      [
+        "lowerarm_bck_r",
+        {
+          "position_cm": 6.356758691576911,
+          "rotation_deg": 106.40864392554879
+        }
+      ],
+      [
+        "upperarm_bck_l",
+        {
+          "position_cm": 5.973347950434402,
+          "rotation_deg": 28.868323808252722
+        }
+      ],
+      [
+        "thigh_bck_l",
+        {
+          "position_cm": 5.33711501899856,
+          "rotation_deg": 26.69547091306506
+        }
+      ],
+      [
+        "clavicle_scap_r",
+        {
+          "position_cm": 5.262210756829803,
+          "rotation_deg": 14.209937453821988
+        }
+      ],
+      [
+        "thigh_bck_lwr_l",
+        {
+          "position_cm": 5.073328187917958,
+          "rotation_deg": 23.755270932141475
+        }
+      ],
+      [
+        "thigh_out_l",
+        {
+          "position_cm": 4.742700295128305,
+          "rotation_deg": 24.780062374551715
+        }
+      ],
+      [
+        "spine_04_latissimus_r",
+        {
+          "position_cm": 4.644008083410536,
+          "rotation_deg": 30.704179201748413
+        }
+      ],
+      [
+        "thigh_in_l",
+        {
+          "position_cm": 4.5166970056488775,
+          "rotation_deg": 23.247067137140043
+        }
+      ],
+      [
+        "thigh_fwd_l",
+        {
+          "position_cm": 4.370044194425297,
+          "rotation_deg": 30.720630447137996
+        }
+      ],
+      [
+        "clavicle_out_r",
+        {
+          "position_cm": 3.9760567171013306,
+          "rotation_deg": 3.024178670723695
+        }
+      ]
+    ],
+    "source_raw_native_skin": [
+      {
+        "frame": 0,
+        "all_vertices_max_cm": 4.4369829597775405,
+        "shoulder_vertices": 5302,
+        "shoulder_max_cm": 4.4369829597775405,
+        "shoulder_over_1cm": 2562
+      },
+      {
+        "frame": 44,
+        "all_vertices_max_cm": 4.473616546926468,
+        "shoulder_vertices": 5302,
+        "shoulder_max_cm": 4.473616546926468,
+        "shoulder_over_1cm": 2558
+      },
+      {
+        "frame": 74,
+        "all_vertices_max_cm": 4.432238533773078,
+        "shoulder_vertices": 5302,
+        "shoulder_max_cm": 4.432238533773078,
+        "shoulder_over_1cm": 2559
+      },
+      {
+        "frame": 104,
+        "all_vertices_max_cm": 4.438842503134871,
+        "shoulder_vertices": 5302,
+        "shoulder_max_cm": 4.438842503134871,
+        "shoulder_over_1cm": 2559
+      }
+    ],
+    "source_surface_samples": [
+      {
+        "frame": 0,
+        "head_neck_faces": 9280,
+        "spine_clavicle_faces": 20934,
+        "head_neck_gun_pairs": 0,
+        "spine_clavicle_gun_pairs": 223
+      },
+      {
+        "frame": 44,
+        "head_neck_faces": 9280,
+        "spine_clavicle_faces": 20934,
+        "head_neck_gun_pairs": 0,
+        "spine_clavicle_gun_pairs": 210
+      },
+      {
+        "frame": 74,
+        "head_neck_faces": 9280,
+        "spine_clavicle_faces": 20934,
+        "head_neck_gun_pairs": 0,
+        "spine_clavicle_gun_pairs": 224
+      },
+      {
+        "frame": 104,
+        "head_neck_faces": 9280,
+        "spine_clavicle_faces": 20934,
+        "head_neck_gun_pairs": 0,
+        "spine_clavicle_gun_pairs": 219
+      }
+    ],
+    "failed_transfer_chest_gun_pairs": 178,
+    "failed_transfer_pair_regions": {
+      "Chest/Shoulder_R": 43,
+      "Shoulder_R": 126,
+      "Chest": 9
+    },
+    "raw_clip_is_final_native_surface": false,
+    "final_lyra_gameplay_graph": false,
+    "anatomical_eye_validated": false,
+    "fireline_pose_imported": false,
+    "visual_acceptance": false
+  },
+  "toggle_audit": {
+    "frames": 129,
+    "toggle_events": [
+      [
+        29,
+        1
+      ],
+      [
+        59,
+        0
+      ]
+    ],
+    "error_units": [
+      "cm",
+      "degrees",
+      "scale"
+    ],
+    "raw_replay_vs_clip_max": [
+      0.15784169117967953,
+      0.14208786553841585,
+      0.0
+    ],
+    "toggle_vs_expected_mode_max": [
+      0.0,
+      1.019682176931182e-14,
+      0.0
+    ],
+    "passed": true,
+    "raw_extraction_is_identical_to_native_replay": false
+  },
+  "failed_target_probe": {
+    "source": "Original MM_Rifle_Idle_ADS sample0 + actual WID_Rifle equipment mount",
+    "mapping": "Physical spine/neck chain collapse and full clavicle/upper/lower arm FK; original native lengths, fixed static pelvis",
+    "original_mesh_bind_weights_unchanged": true,
+    "runtime_enabled": false,
+    "eye_landmark_used": false,
+    "visual_acceptance": false,
+    "source_raw_elbows": {
+      "L": [
+        6.645275867996153,
+        41.91660621511043,
+        139.29086165518055
+      ],
+      "R": [
+        -34.38889104064636,
+        10.71374510366584,
+        120.13043764161839
+      ]
+    },
+    "raw_crossings": {
+      "head_gun_pairs": 0,
+      "chest_gun_pairs": 178,
+      "arm_torso_pairs": 13,
+      "arm_torso_faces": [
+        [
+          728,
+          645
+        ],
+        [
+          738,
+          645
+        ],
+        [
+          738,
+          672
+        ],
+        [
+          739,
+          672
+        ],
+        [
+          1246,
+          1182
+        ],
+        [
+          1247,
+          1154
+        ],
+        [
+          1247,
+          1182
+        ],
+        [
+          1248,
+          1154
+        ],
+        [
+          1249,
+          1154
+        ],
+        [
+          1249,
+          1155
+        ],
+        [
+          1249,
+          1174
+        ],
+        [
+          1249,
+          1175
+        ],
+        [
+          1253,
+          1182
+        ]
+      ],
+      "head_body_pairs": 0
+    },
+    "wrist_deg": [
+      21.088007577403566,
+      31.934824507461904
+    ],
+    "reach_cm": [
+      8.202104454826717,
+      27.900359303023357
+    ],
+    "elbow_arc_from_source_deg": [
+      0.0,
+      0.0
+    ],
+    "clavicle_reach_correction_deg": [
+      0.0,
+      0.0
+    ],
+    "head_gun_pairs": 0,
+    "chest_gun_pairs": 178,
+    "arm_torso_pairs": 13,
+    "arm_torso_faces": [
+      [
+        728,
+        645
+      ],
+      [
+        738,
+        645
+      ],
+      [
+        738,
+        672
+      ],
+      [
+        739,
+        672
+      ],
+      [
+        1246,
+        1182
+      ],
+      [
+        1247,
+        1154
+      ],
+      [
+        1247,
+        1182
+      ],
+      [
+        1248,
+        1154
+      ],
+      [
+        1249,
+        1154
+      ],
+      [
+        1249,
+        1155
+      ],
+      [
+        1249,
+        1174
+      ],
+      [
+        1249,
+        1175
+      ],
+      [
+        1253,
+        1182
+      ]
+    ],
+    "head_body_pairs": 0,
+    "actual_shoulder_junction_gap_cm": 0.3828257751844919,
+    "elbow_registration_displacement_cm": {
+      "L": 3.919521043133123,
+      "R": 1.4210854715202004e-14
+    },
+    "accepted": false
+  },
+  "source_source_graph_note": "Single-node ADS with original mesh post-process only; not final Lyra gameplay AnimBP",
+  "original_assets_checked": 1252,
+  "original_assets_changed": 0,
+  "source_assets_saved": false,
+  "target_geometry_bind_weights_changed": false,
+  "default_baseline_changed": false,
+  "first_person_changed": false,
+  "subagents_used": false,
+  "paid_actions": false,
+  "playable_reference": "/Users/hht/Desktop/\u706b\u529b\u5bf9\u51b3/\u53c2\u8003\u00b7Lyra\u539f\u7248\u4e3e\u67aa.app",
+  "capture_runs": [
+    {
+      "label": "lyra-native-ads-clean-20261001",
+      "metadata": {
+        "run": "lyra-native-ads-clean-20261001",
+        "directory": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/ReferenceProject/Saved/LyraADSReview/lyra-native-ads-clean-20261001",
+        "log": "/tmp/lyra-native-ads-clean-20261001-lyra-ads.log",
+        "wall_seconds": 15.663450916999999,
+        "native_window": false,
+        "physical_input": false,
+        "renderer": "Metal",
+        "original_mesh": true,
+        "original_rifle": true,
+        "original_equipment_transform": true,
+        "native_single_node_clip": true,
+        "final_lyra_gameplay_graph": false,
+        "fireline_retarget": false,
+        "visual_acceptance": false
+      },
+      "screenshots": [
+        "shot-00.png",
+        "shot-01.png",
+        "shot-02.png",
+        "shot-03.png"
+      ]
+    },
+    {
+      "label": "lyra-native-ads-raw-20261001",
+      "metadata": {
+        "run": "lyra-native-ads-raw-20261001",
+        "directory": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/ReferenceProject/Saved/LyraADSReview/lyra-native-ads-raw-20261001",
+        "log": "/tmp/lyra-native-ads-raw-20261001-lyra-ads.log",
+        "wall_seconds": 13.889536833000001,
+        "native_window": false,
+        "physical_input": false,
+        "renderer": "Metal",
+        "original_mesh": true,
+        "original_rifle": true,
+        "original_equipment_transform": true,
+        "native_single_node_clip": true,
+        "source_mesh_post_process": false,
+        "final_lyra_gameplay_graph": false,
+        "fireline_retarget": false,
+        "visual_acceptance": false
+      },
+      "screenshots": [
+        "shot-00.png",
+        "shot-01.png",
+        "shot-02.png",
+        "shot-03.png"
+      ]
+    },
+    {
+      "label": "lyra-native-ads-toggle-20261001",
+      "metadata": {
+        "run": "lyra-native-ads-toggle-20261001",
+        "directory": "/Users/hht/Documents/ChatGPT/fireline-gamepad-baseline/unreal/Fireline/Saved/MatureMotionResearch/ReferenceProject/Saved/LyraADSReview/lyra-native-ads-toggle-20261001",
+        "log": "/tmp/lyra-native-ads-toggle-20261001-lyra-ads.log",
+        "wall_seconds": 13.437594542,
+        "native_window": false,
+        "physical_input": false,
+        "renderer": "Metal",
+        "original_mesh": true,
+        "original_rifle": true,
+        "original_equipment_transform": true,
+        "native_single_node_clip": true,
+        "initial_source_mesh_post_process": true,
+        "toggle_audit": true,
+        "final_lyra_gameplay_graph": false,
+        "fireline_retarget": false,
+        "visual_acceptance": false
+      },
+      "screenshots": [
+        "shot-00.png",
+        "shot-01.png",
+        "shot-02.png",
+        "shot-03.png"
+      ]
+    }
+  ]
+}

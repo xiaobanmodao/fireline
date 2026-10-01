@@ -1,3 +1,5 @@
+新增原版参考：桌面「火力对决／**参考·Lyra原版举枪.app**」。原Manny、原枪、真实装备安装与原ADS片段回放；鼠标环绕、1–4四面、空格暂停、Z近景、P后处理对照。已查明原版肩臂有额外表面修正，Ryan/M4第一次适配仍有肩甲穿插，未导入游戏。[参考、失败位置与下一步](unreal/Fireline/Docs/Validation/lyra-native-ads/README.md)。
+
 同日更新自然持枪入口：修正Coyote光轴偏差，7显示作者相机／眼线代理，保持原姿态。已查明抬枪枪托贴的是胸甲，精确贴肩与眼线仍待修复；见[布局诊断](unreal/Fireline/Docs/Validation/ads-layout/README.md)。
 
 新增独立候选：桌面「火力对决／**测试版·自然持枪与抬枪.app**」。右键/F抬枪、6自动演示、鼠标环绕、1–4四面、Z近景、O瞄具。普通持枪头部直立，抬枪跟随成熟参考头姿；整条肩臂与枪械共同过渡。原头盔和此前静止接触入口保留，默认游戏未替换。仅静止抬枪/收枪，眼线、移动组合、换弹未完成；见[范围与原生检查](unreal/Fireline/Docs/Validation/native-ready-aim/README.md)。

@@ -8,6 +8,7 @@
 #include "Misc/Parse.h"
 #include "ReferenceMotionCapture.h"
 #include "WholeCarryReview.h"
+#include "LyraADSReview.h"
 
 class FMotionReferenceModule : public FDefaultGameModuleImpl
 {
@@ -19,6 +20,15 @@ class FMotionReferenceModule : public FDefaultGameModuleImpl
 public:
     virtual void StartupModule() override
     {
+        if(FParse::Param(FCommandLine::Get(),TEXT("LyraADSReview")))
+        {
+            TickHandle=FWorldDelegates::OnWorldPostActorTick.AddLambda([this](UWorld* W,ELevelTick,float){
+                if(ReviewStarted||!W||!W->IsGameWorld()||W->GetTimeSeconds()<2)return;
+                auto* PC=W->GetFirstPlayerController();auto* C=PC?Cast<AAlsCharacter>(PC->GetPawn()):nullptr;if(!C)return;
+                ReviewStarted=true;auto* Review=W->SpawnActor<ALyraADSReview>();
+                if(!Review->Initialize(C)){UE_LOG(LogTemp,Error,TEXT("LYRA_ADS_INIT_FAILED"));FPlatformMisc::RequestExit(false);}
+            });return;
+        }
         if(FParse::Param(FCommandLine::Get(),TEXT("WholeCarryReview")))
         {
             TickHandle=FWorldDelegates::OnWorldPostActorTick.AddLambda([this](UWorld* W,ELevelTick,float){
