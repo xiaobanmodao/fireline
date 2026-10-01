@@ -68,7 +68,8 @@ void ALiveCarryPawn::BeginPlay()
     ACharacter::BeginPlay();
     for(auto* C:{GetMesh(),Arms.Get(),ViewGun.Get(),BodyGun.Get(),ViewKnife.Get(),BodyKnife.Get()}){C->SetVisibility(false,true);C->SetComponentTickEnabled(false);}
     StaticContactStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveStaticContactStudy"));
-    StudyBody->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,StaticContactStudy?TEXT("/Game/ChestPanelStudy/SK_RyanChestPanels.SK_RyanChestPanels"):TEXT("/Game/BodyProportionStudy/SK_RyanProportion.SK_RyanProportion")));
+    NativeReadyAimStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveNativeReadyAimStudy"));
+    StudyBody->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,(StaticContactStudy||NativeReadyAimStudy)?TEXT("/Game/ChestPanelStudy/SK_RyanChestPanels.SK_RyanChestPanels"):TEXT("/Game/BodyProportionStudy/SK_RyanProportion.SK_RyanProportion")));
     StudyGun->SetSkinnedAssetAndUpdate(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/Fireline/Hands/SK_M4Action.SK_M4Action")));
     StudyBody->SetVisibility(false);StudyGun->SetVisibility(false);
     HeadContourStudy=FParse::Param(FCommandLine::Get(),TEXT("LiveCarryHeadContourStudy"));
@@ -95,7 +96,7 @@ void ALiveCarryPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::Z,IE_Pressed,this,&ALiveCarryPawn::ToggleContactCloseup);
     Input->BindKey(EKeys::A,IE_Pressed,this,&ALiveCarryPawn::LeftDown);Input->BindKey(EKeys::D,IE_Pressed,this,&ALiveCarryPawn::RightDown);Input->BindKey(EKeys::S,IE_Pressed,this,&ALiveCarryPawn::BackDown);
 }
-void ALiveCarryPawn::ForwardDown(){if(!Ready||Audit||StaticContactStudy)return;if(Directional){RequestTap(FVector::ForwardVector);return;}ForwardRequested=true;AddMovementInput(FVector::ForwardVector,1);}
+void ALiveCarryPawn::ForwardDown(){if(!Ready||Audit||StaticContactStudy||NativeReadyAimStudy)return;if(Directional){RequestTap(FVector::ForwardVector);return;}ForwardRequested=true;AddMovementInput(FVector::ForwardVector,1);}
 void ALiveCarryPawn::ForwardUp(){if(!Audit)ForwardRequested=false;}
 void ALiveCarryPawn::OrbitX(float Value){if(Ready&&!Audit)OrbitYaw=FMath::UnwindDegrees(OrbitYaw-Value*.20f);}
 void ALiveCarryPawn::OrbitY(float Value){if(Ready&&!Audit)OrbitPitch=FMath::Clamp(OrbitPitch+Value*.15f,-15.f,45.f);}
@@ -111,6 +112,12 @@ void ALiveCarryHUD::DrawHUD()
 {
     Super::DrawHUD();auto* P=Cast<ALiveCarryPawn>(GetOwningPawn());if(!Canvas||!P)return;
     DrawRect(FLinearColor(.015,.025,.04,.88),0,0,Canvas->ClipX,90);
+    if(P->NativeReadyAimStudy)
+    {
+        DrawText(TEXT("FIRELINE / NATIVE READY - AIM CONTACT CANDIDATE"),FLinearColor::White,22,12,nullptr,1.25f);
+        DrawText(TEXT("RMB/F raise | 6 demo | mouse orbit | 1-4 views | Z close-up | O optic | 7 guides"),FLinearColor(.65,.85,1),22,43);
+        DrawText(TEXT("Static raise/lower only | original helmet | eye line / movement / actions unfinished"),FLinearColor::White,22,69);return;
+    }
     if(P->StaticContactStudy)
     {
         DrawText(TEXT("FIRELINE / AUTHOR RYAN STATIC CONTACT CANDIDATE"),FLinearColor::White,22,12,nullptr,1.25f);
@@ -176,6 +183,7 @@ void FLiveCarryStudy::Before(UWorld* W,float Dt)
             if(!Loaded||StaticContact.Num()!=131){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED static contact"));Finished=true;FPlatformMisc::RequestExit(false);return;}
             UE_LOG(LogTemp,Display,TEXT("LIVE_STATIC_CONTACT_READY bones=131 original_helmet=1 moving_enabled=0"));
         }
+        if(P->NativeReadyAimStudy&&!LoadNativeReadyAim()){UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_INIT_FAILED native ready aim"));Finished=true;FPlatformMisc::RequestExit(false);return;}
         PC->UnPossess();PC->Possess(P);if(auto* Sub=ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))Sub->ClearAllMappings();
         PC->SetViewTarget(P->StudyCamera);PC->ClientSetHUD(ALiveCarryHUD::StaticClass());UWidgetLayoutLibrary::RemoveAllWidgets(PC);
         if(Audit||Parity){PC->SetInputMode(FInputModeUIOnly());PC->bShowMouseCursor=true;}
@@ -268,6 +276,7 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
         }
         Valid=true;
     }
+    if(P->NativeReadyAimStudy)Valid=EvaluateNativeReadyAim(AimingWeight,Local,CS);
     if(Valid){LastLocal=MoveTemp(Local);LastComponent=MoveTemp(CS);}else{++Failures;UE_LOG(LogTemp,Error,TEXT("LIVE_CARRY_POSE_INVALID frame=%d time=%.4f"),Frame,T);}
     if(LastLocal.Num())
     {
@@ -283,8 +292,11 @@ void FLiveCarryStudy::After(UWorld* W,float Dt)
     {
         static const double Times[]={.6,1.1,1.6,2.0,3.25,3.8,4.33,4.65,5.3,6.0,7.25,7.8,8.8,10.3};
         const bool ReviewViews=FParse::Param(FCommandLine::Get(),TEXT("StudyReviewViews"));
-        const bool Capture=ReviewViews?(Shot<4&&T>=2.+Shot*.2):AimStudy?(Shot<(Retarget.RefinePresentation?38:28)&&T>=1.+(Shot/2)*4.+(Shot%2?3.4:1.8)):Directional?(Shot<24&&T>=(Shot<19?1.+Shot*2.4+1.35:Shot<23?46.6+(Shot-19)*4.8+3.8:67.15)):(Shot<UE_ARRAY_COUNT(Times)&&T>=Times[Shot]);
+        static const double ReadyAimTimes[]={1.,1.2,1.4,1.6,3.,3.2,3.4,3.6,4.12};
+        const bool Motion=P->NativeReadyAimStudy&&FParse::Param(FCommandLine::Get(),TEXT("StudyMotionFrames"));
+        const bool Capture=!Motion&&(P->NativeReadyAimStudy?(Shot<UE_ARRAY_COUNT(ReadyAimTimes)&&T>=ReadyAimTimes[Shot]):ReviewViews?(Shot<4&&T>=2.+Shot*.2):AimStudy?(Shot<(Retarget.RefinePresentation?38:28)&&T>=1.+(Shot/2)*4.+(Shot%2?3.4:1.8)):Directional?(Shot<24&&T>=(Shot<19?1.+Shot*2.4+1.35:Shot<23?46.6+(Shot-19)*4.8+3.8:67.15)):(Shot<UE_ARRAY_COUNT(Times)&&T>=Times[Shot]));
         if(Capture){P->OrbitYaw=(Shot%4)*90+P->GetActorRotation().Yaw;P->UpdateCamera();FScreenshotRequest::RequestScreenshot(Folder/FString::Printf(TEXT("shot-%02d.png"),Shot++),true,false);}
+        if(Motion&&Frame%2==0){P->OrbitYaw=45;P->UpdateCamera();FScreenshotRequest::RequestScreenshot(Folder/FString::Printf(TEXT("motion-%04d.png"),Frame/2),true,false);}
         double Duration=Retarget.RefinePresentation?77.:AimStudy?57.:Directional?69.2:11.;FParse::Value(FCommandLine::Get(),TEXT("StudyDuration="),Duration);
         if(T>=Duration){Finished=true;FFileHelper::SaveStringToFile(PoseRows,*(Folder/TEXT("poses.csv")));FFileHelper::SaveStringToFile(StateRows,*(Folder/TEXT("states.csv")));if(Directional)FFileHelper::SaveStringToFile(SourceRows,*(Folder/TEXT("source-poses.csv")));if(AimStudy)FFileHelper::SaveStringToFile(RawRows,*(Folder/TEXT("raw-poses.csv")));if(P->CoyoteStudy)P->ExportStudyOptic(Folder);UE_LOG(LogTemp,Display,TEXT("LIVE_CARRY_AUDIT_COMPLETE frames=%d failures=%d"),Frame,Failures);FPlatformMisc::RequestExit(false);}
     }

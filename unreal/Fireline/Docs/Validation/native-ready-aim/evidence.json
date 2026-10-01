@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-01",
+  "entry": "/Users/hht/Desktop/火力对决/测试版·自然持枪与抬枪.app",
+  "entry_target": "/Users/hht/UnrealBuilds/Fireline/Launchers/FirelineNativeReadyAimStudy.app",
+  "entry_type": "mutable shared independent study, not frozen release",
+  "flags": [
+    "-game",
+    "-windowed",
+    "-ResX=1280",
+    "-ResY=800",
+    "-nosound",
+    "-ExecCmds=t.MaxFPS 60,sg.ShadowQuality 0,sg.GlobalIlluminationQuality 0,sg.ReflectionQuality 0",
+    "-LiveCarryDirectional",
+    "-LiveCarryAimStudy",
+    "-LiveCarryPresentationStudy",
+    "-LiveCarryCoyoteStudy",
+    "-LiveNativeReadyAimStudy"
+  ],
+  "scope": "stationary ready/raise/lower and repeated interruption; eye/movement/actions unfinished",
+  "sample_sha256": "5a7bdfeec3689bb13320ecfea826aa4c74bb2e1d2c349d8e127456ff41f6d5a4",
+  "sample_count": 65,
+  "baseline_sha256": "02f7bb09db2aaecaeded7b33768f04470311a575cd6e562f3b2afab6530f27da",
+  "native_runs": [
+    {
+      "run": "native-ready-aim-20261001-30",
+      "native_frames": 241,
+      "unique_actual_poses": 96,
+      "maxima": {
+        "physical_link_error_cm": 3.1594220928354844e-07,
+        "grip_error_cm": 8.965732576132648e-07,
+        "grip_error_deg": 1.4313983701643274e-07,
+        "gun_axis_error_deg": 0.0,
+        "wrist_deg": 38.05139417843654,
+        "head_gun_pairs": 0.0,
+        "chest_gun_pairs": 0.0,
+        "arm_torso_pairs": 0.0,
+        "head_body_pairs": 0.0,
+        "upperarm_gun_pairs": 0.0,
+        "head_optic_pairs": 0.0,
+        "chest_optic_pairs": 0.0
+      },
+      "failed_frames": [],
+      "max_elbow_travel_per_frame_cm": 2.2470481178637236,
+      "max_elbow_speed_cm_s": 67.4114300536257,
+      "aim_weight_range": [
+        0.0,
+        1.0
+      ],
+      "native_window": false,
+      "renderer": "Metal",
+      "eye_registration_finished": false,
+      "movement_actions_enabled": false,
+      "default_changed": false,
+      "visual_acceptance": false,
+      "eye_proxy_error_range_cm": [
+        8.52088307,
+        24.17733917
+      ],
+      "frozen_original_collision_face_sets": true
+    },
+    {
+      "run": "native-ready-aim-20261001-fps60-60",
+      "native_frames": 481,
+      "unique_actual_poses": 194,
+      "maxima": {
+        "physical_link_error_cm": 3.1594220928354844e-07,
+        "grip_error_cm": 8.965732576132648e-07,
+        "grip_error_deg": 1.4313983701643274e-07,
+        "gun_axis_error_deg": 0.0,
+        "wrist_deg": 38.05139417843654,
+        "head_gun_pairs": 0.0,
+        "chest_gun_pairs": 0.0,
+        "arm_torso_pairs": 0.0,
+        "head_body_pairs": 0.0,
+        "upperarm_gun_pairs": 0.0,
+        "head_optic_pairs": 0.0,
+        "chest_optic_pairs": 0.0
+      },
+      "failed_frames": [],
+      "max_elbow_travel_per_frame_cm": 1.2909540259092975,
+      "max_elbow_speed_cm_s": 77.45722606311263,
+      "aim_weight_range": [
+        0.0,
+        1.0
+      ],
+      "native_window": false,
+      "renderer": "Metal",
+      "eye_registration_finished": false,
+      "movement_actions_enabled": false,
+      "default_changed": false,
+      "visual_acceptance": false,
+      "eye_proxy_error_range_cm": [
+        8.52088307,
+        24.17733917
+      ],
+      "frozen_original_collision_face_sets": true
+    },
+    {
+      "run": "native-ready-aim-20261001-fps120-120",
+      "native_frames": 961,
+      "unique_actual_poses": 387,
+      "maxima": {
+        "physical_link_error_cm": 3.1594220928354844e-07,
+        "grip_error_cm": 8.965732576132648e-07,
+        "grip_error_deg": 1.4313983701643274e-07,
+        "gun_axis_error_deg": 0.0,
+        "wrist_deg": 38.05139417843654,
+        "head_gun_pairs": 0.0,
+        "chest_gun_pairs": 0.0,
+        "arm_torso_pairs": 0.0,
+        "head_body_pairs": 0.0,
+        "upperarm_gun_pairs": 0.0,
+        "head_optic_pairs": 0.0,
+        "chest_optic_pairs": 0.0
+      },
+      "failed_frames": [],
+      "max_elbow_travel_per_frame_cm": 0.6699789778224239,
+      "max_elbow_speed_cm_s": 80.39750949769467,
+      "aim_weight_range": [
+        0.0,
+        1.0
+      ],
+      "native_window": false,
+      "renderer": "Metal",
+      "eye_registration_finished": false,
+      "movement_actions_enabled": false,
+      "default_changed": false,
+      "visual_acceptance": false,
+      "eye_proxy_error_range_cm": [
+        8.52088307,
+        24.17733917
+      ],
+      "frozen_original_collision_face_sets": true
+    }
+  ],
+  "native_total_frames": 1683,
+  "motion": {
+    "native_frames": 241,
+    "captures": 121,
+    "render": "Metal",
+    "duration_seconds": 8,
+    "capture_fps": 15,
+    "native_window": false,
+    "physical_input_used": false,
+    "original_runner_count_issue": "assumed 120; frame zero and terminal frame produce 121, fixed to exported frame count",
+    "runtime_failures": 0,
+    "gif": "native-motion.gif",
+    "visual_acceptance": false
+  },
+  "static_contact_regression": {
+    "run": "static-contact-regression-20261001-ready-30",
+    "position_error_cm": 3.3853419729101345e-07,
+    "orientation_error_deg": 9.519717126893016e-08,
+    "original_static_file_sha256": "6b49cc439e0801f46c5f21ee99e6d4827f6562e7d69a401493c5016df9b16f2f"
+  },
+  "original_asset_verification": {
+    "count": 1252,
+    "changed": 0
+  },
+  "imported_new_asset": false,
+  "default_changed": false,
+  "first_person_changed": false,
+  "paid_action": false,
+  "subagents_used": false,
+  "visual_acceptance": false,
+  "eye_registration_finished": false,
+  "sweep_assertions": 10
+}

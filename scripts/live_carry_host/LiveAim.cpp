@@ -51,6 +51,16 @@ void FLiveCarryStudy::AimInput(UWorld* W,float Dt,double Time)
 {
     auto* P=Pawn.Get();auto* PC=W->GetFirstPlayerController();FVector Local=FVector::ZeroVector;
     if(P->StaticContactStudy){P->AimRequested=true;P->JogRequested=false;P->AimPitch=0;P->MoveRequested=FVector::ZeroVector;P->ForwardRequested=false;return;}
+    if(P->NativeReadyAimStudy)
+    {
+        if(Audit||P->Demo)
+        {
+            if(!Audit){P->DemoElapsed+=Dt;Time=P->DemoElapsed;if(Time>=8){P->Demo=false;P->AimLatched=false;}}
+            P->AimRequested=(Time>=2&&Time<4)||(Time>=4&&Time<7&&FMath::Fmod(Time-4.,.32)<.16);
+        }
+        else P->AimRequested=P->AimLatched||PC->IsInputKeyDown(EKeys::RightMouseButton);
+        P->JogRequested=false;P->AimPitch=0;P->FacingYaw=0;P->MoveRequested=FVector::ZeroVector;P->ForwardRequested=false;return;
+    }
     if(Audit||P->Demo)
     {
         const int LastCase=P->PresentationStudy?18:13;

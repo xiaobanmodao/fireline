@@ -5,6 +5,7 @@
 // fixed; no per-frame carry fitting or legacy arm/waist layers are applied.
 class FLiveCarryRetarget
 {
+    friend class FLiveCarryStudy;
     TArray<FTransform> Bind, LocalBind, Hold, HoldLocal, SourceBind, RawZero;
     TArray<int32> Parents;
     TArray<FName> SourceNames;

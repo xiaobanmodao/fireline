@@ -32,6 +32,7 @@ public:
     bool CoyoteStudy=false,ShowCoyote=true,ContactGuides=false,CloseContactView=true;
     bool HeadContourStudy=false,ShowHeadContour=true;
     bool StaticContactStudy=false;
+    bool NativeReadyAimStudy=false;
     UPROPERTY() TObjectPtr<class USkeletalMesh> OriginalBody;
     UPROPERTY() TObjectPtr<class USkeletalMesh> ContourBody;
     FVector ContourEyeBind;
@@ -59,7 +60,7 @@ public:
     float AimPitch=0;
     bool ShowSource=false;
     FVector SourceFocus=FVector::ZeroVector;
-    void ToggleSource(){if(AimStudy)ShowSource=!ShowSource;}
+    void ToggleSource(){if(AimStudy&&!NativeReadyAimStudy)ShowSource=!ShowSource;}
     FString RifleState;
     float FacingYaw=0,LegScale=1;
     FVector MoveRequested=FVector::ZeroVector;
@@ -97,6 +98,9 @@ class FLiveCarryStudy
     TArray<FName> SourceNames;
     TArray<FTransform> LastLocal,LastComponent;
     TArray<FTransform> StaticContact;
+    TArray<TArray<FTransform>> NativeReadyAim,NativeReadyAimLocal;
+    bool LoadNativeReadyAim();
+    bool EvaluateNativeReadyAim(double Alpha,TArray<FTransform>& Local,TArray<FTransform>& CS);
     double Start=-1,WarmStart=-1;
     FVector PawnOrigin,SourceOrigin;
     int32 Frame=0,Failures=0,Shot=0,FPS=60;

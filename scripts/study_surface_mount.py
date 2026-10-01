@@ -23,11 +23,13 @@ def escape_along(a,b,direction,margin=.15,first_contact=False):
     Solve continuous SAT overlap intervals, then merge the component containing
     zero. This is a triangle sweep, not a sampled offset/point-fit search.
     """
-    x=unit(np.cross(direction,[0,0,1]));z=unit(np.cross(x,direction));basis=np.column_stack([x,direction,z]);aa=a@basis;bb=b@basis
+    direction=unit(direction);helper=np.eye(3)[np.argmin(np.abs(direction))]
+    x=unit(np.cross(direction,helper));z=unit(np.cross(x,direction));basis=np.column_stack([x,direction,z]);aa=a@basis;bb=b@basis
     amin,amax=aa[:,:,[0,2]].min(1),aa[:,:,[0,2]].max(1);bmin,bmax=bb[:,:,[0,2]].min(1),bb[:,:,[0,2]].max(1)
     pairs=[]
     for i in range(len(a)):
         pairs.extend((i,int(j)) for j in np.flatnonzero(((bmax>=amin[i]-1e-6)&(bmin<=amax[i]+1e-6)).all(1)))
+    if not pairs:return float('inf') if first_contact else 0.
     pairs=np.array(pairs);aa=a[pairs[:,0]];bb=b[pairs[:,1]];ea=np.roll(aa,-1,axis=1)-aa;eb=np.roll(bb,-1,axis=1)-bb;na=np.cross(ea[:,0],ea[:,1]);nb=np.cross(eb[:,0],eb[:,1]);axes=np.concatenate([na[:,None],nb[:,None],np.cross(ea[:,:,None],eb[:,None]).reshape(-1,9,3),np.cross(na[:,None],ea),np.cross(nb[:,None],eb)],1);norm=np.linalg.norm(axes,axis=2);axes/=np.maximum(norm[:,:,None],1e-20)
     pa=np.einsum('nkj,nij->nki',axes,aa);pb=np.einsum('nkj,nij->nki',axes,bb);v=axes@direction;moving=np.abs(v)>1e-9;valid=(norm>1e-9)
     lo0=pa.min(2)-pb.max(2);hi0=pa.max(2)-pb.min(2);den=np.where(moving,v,1);l=lo0/den;h=hi0/den
